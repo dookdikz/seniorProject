@@ -2,6 +2,7 @@ package com.example.tanawat.eleccontrol.manager;
 
 import android.content.Context;
 
+import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -22,7 +23,10 @@ public class ButtonItemManager {
     }
 
     public void setCms(ButtonItemCollectionCms cms) {
+
         this.cms = cms;
+
+
     }
 
     public Context getmContext() {

@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
+import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 
 /**
@@ -53,10 +56,13 @@ Button btnCommand;
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+
         SharedPreferences pref = getContext().getSharedPreferences("dummy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("Hello","World");
         editor.apply();
+        Toast.makeText(getContext(),pref.getString("Hello",null),Toast.LENGTH_SHORT).show();
+
     }
 
     @SuppressWarnings("UnusedParameters")
