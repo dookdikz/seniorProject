@@ -1,20 +1,27 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class MainFragment extends Fragment {
-
+Button btnCommand;
+    ListView listView;
+    ButtonListAdapter listAdapter;
     public MainFragment() {
         super();
     }
@@ -46,6 +53,10 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        SharedPreferences pref = getContext().getSharedPreferences("dummy", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Hello","World");
+        editor.apply();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -53,6 +64,10 @@ public class MainFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        listView = (ListView) rootView.findViewById(R.id.listView);
+        listAdapter = new ButtonListAdapter();
+        listView.setAdapter(listAdapter);
+
     }
 
     @Override
