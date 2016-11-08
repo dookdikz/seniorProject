@@ -1,11 +1,17 @@
 package com.example.tanawat.eleccontrol.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -63,6 +69,7 @@ Button btnCommand;
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        setHasOptionsMenu(true);
 
     }
 
@@ -73,6 +80,7 @@ Button btnCommand;
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new ButtonListAdapter();
 
@@ -120,6 +128,15 @@ Button btnCommand;
     @SuppressWarnings("UnusedParameters")
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance (Fragment level's variables) State here
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_add_command,menu);
+
+
+
     }
 
 }
