@@ -6,21 +6,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
+import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
+import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 
 /**
  * Created by Tanawat on 7/11/2559.
  */
 public class ButtonListAdapter extends BaseAdapter {
+    ButtonItemCollectionCms buttonItemCollectionCms;
+
+    public ButtonItemCollectionCms getButtonItemCollectionCms() {
+        return buttonItemCollectionCms;
+    }
+
+    public void setButtonItemCollectionCms(ButtonItemCollectionCms buttonItemCollectionCms) {
+        this.buttonItemCollectionCms = buttonItemCollectionCms;
+    }
+
     @Override
     public int getCount() {
-        return 10;
+        return buttonItemCollectionCms.getData().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return buttonItemCollectionCms.getData().get(position);
     }
 
     @Override
@@ -38,11 +51,8 @@ public class ButtonListAdapter extends BaseAdapter {
         else {
            item = new ButtonListItem(parent.getContext());
        }
-        if(position%2==0){
-            SharedPreferences pref = parent.getContext().getSharedPreferences("dummy", Context.MODE_PRIVATE);
-            item.setNameText(pref.getString("Hello",null));
-
-        }
+        ButtonItemCms buttonItemCms =(ButtonItemCms) getItem(position) ;
+        item.setNameText(buttonItemCms.getName());
         return item;
     }
 }

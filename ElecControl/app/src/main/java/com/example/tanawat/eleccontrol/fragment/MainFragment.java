@@ -14,8 +14,14 @@ import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
+import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.manager.ButtonItemManager;
+import com.google.gson.Gson;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -23,6 +29,7 @@ import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
  */
 public class MainFragment extends Fragment {
 Button btnCommand;
+    ButtonItemManager buttonListManager;
     ListView listView;
     ButtonListAdapter listAdapter;
     public MainFragment() {
@@ -57,13 +64,9 @@ Button btnCommand;
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
 
-        SharedPreferences pref = getContext().getSharedPreferences("dummy", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("Hello","World");
-        editor.apply();
-        Toast.makeText(getContext(),pref.getString("Hello",null),Toast.LENGTH_SHORT).show();
-
     }
+
+
 
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
@@ -72,7 +75,39 @@ Button btnCommand;
         //       in onSavedInstanceState
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new ButtonListAdapter();
+
+        ButtonItemCms buttonItemCms1 = new ButtonItemCms();
+        buttonItemCms1.setId(1);
+        buttonItemCms1.setName("Light");
+        buttonItemCms1.setRoomName("Bed");
+        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
+        buttonItemCms2.setId(2);
+        buttonItemCms2.setName("Light2");
+        buttonItemCms2.setRoomName("Bed2");
+        List<ButtonItemCms> listCms = new ArrayList<ButtonItemCms>();
+        listCms.add(buttonItemCms1);
+        listCms.add(buttonItemCms2);
+
+
+        ButtonItemCollectionCms buttonItemCollectionCms = new ButtonItemCollectionCms(listCms);
+        String json = new Gson().toJson(buttonItemCollectionCms);
+        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("json",json);
+        editor.apply();
+        String jsonRead = pref.getString("json",null);
+        buttonItemCollectionCms = new Gson().fromJson(jsonRead,ButtonItemCollectionCms.class);
+        listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+
+
+
+
+
+
+
         listView.setAdapter(listAdapter);
+
+
 
     }
 

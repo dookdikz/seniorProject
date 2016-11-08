@@ -11,6 +11,10 @@ public class ButtonItemCms implements Parcelable {
     private String name;
     private String roomName;
 
+    public ButtonItemCms() {
+
+    }
+
     protected ButtonItemCms(Parcel in) {
         id = in.readInt();
         name = in.readString();

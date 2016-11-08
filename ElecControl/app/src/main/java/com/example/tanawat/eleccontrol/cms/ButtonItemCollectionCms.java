@@ -12,6 +12,10 @@ public class ButtonItemCollectionCms implements Parcelable {
 
     private List<ButtonItemCms> data;
 
+    public ButtonItemCollectionCms(List<ButtonItemCms> data) {
+        this.data = data;
+    }
+
     protected ButtonItemCollectionCms(Parcel in) {
         data = in.createTypedArrayList(ButtonItemCms.CREATOR);
     }
