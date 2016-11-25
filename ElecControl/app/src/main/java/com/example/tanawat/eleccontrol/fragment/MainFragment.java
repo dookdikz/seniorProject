@@ -34,6 +34,9 @@ import java.util.List;
  * Created by nuuneoi on 11/16/2014.
  */
 public class MainFragment extends Fragment {
+    public interface FragmentListener{
+        void onAddButtonClicked();
+    }
 Button btnCommand;
     ButtonItemManager buttonListManager;
     ListView listView;
@@ -131,6 +134,11 @@ Button btnCommand;
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         inflater.inflate(R.menu.menu_add_command,menu);
@@ -139,5 +147,16 @@ Button btnCommand;
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+            if(item.getItemId()==R.id.actionAdd){
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onAddButtonClicked();
 
+
+
+
+            }
+        return super.onOptionsItemSelected(item);
+    }
 }
