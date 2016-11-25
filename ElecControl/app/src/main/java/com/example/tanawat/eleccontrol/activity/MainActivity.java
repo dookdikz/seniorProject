@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.fragment.AddCommandFragment;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity {

@@ -2,4 +2,9 @@
     <string name="app_name">TheCheeseLibrary</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string-array name="typeOfElectronics">
+        <item>Light</item>
+        <item>Air</item>
+        <item>Moter</item>
+    </string-array>
 </resources>
