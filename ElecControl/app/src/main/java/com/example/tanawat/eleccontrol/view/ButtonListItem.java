@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
 import com.inthecheesefactory.thecheeselibrary.view.BaseCustomViewGroup;
@@ -16,7 +18,9 @@ import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
  */
 public class ButtonListItem extends BaseCustomViewGroup {
 
-    Button btnCommand;
+    LinearLayout layoutCommandClick;
+    TextView tvNameCommand;
+    TextView tvTypeCommand;
     public ButtonListItem(Context context) {
         super(context);
         initInflate();
@@ -48,7 +52,11 @@ public class ButtonListItem extends BaseCustomViewGroup {
     private void initInflate() {
 
         inflate(getContext(), R.layout.list_item_button, this);
-        btnCommand = (Button) findViewById(R.id.btnCommand);
+        layoutCommandClick = (LinearLayout) findViewById(R.id.layoutCommandClick);
+        tvNameCommand = (TextView) findViewById(R.id.tvNameCommand);
+        tvTypeCommand = (TextView) findViewById(R.id.tvTypeCommand);
+
+
 
     }
 
@@ -94,13 +102,16 @@ public class ButtonListItem extends BaseCustomViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = width *1/3;
+        int height = width *1/4;
         int newHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, newHeightMeasureSpec);
         setMeasuredDimension(width,height);
     }
-    public void setNameText(String text){
-        btnCommand.setText(text);
+    public void setTvNameText(String text){
+        tvNameCommand.setText(text);
+    }
+    public void setTvTypeText(String text){
+        tvTypeCommand.setText(text);
     }
 
 }

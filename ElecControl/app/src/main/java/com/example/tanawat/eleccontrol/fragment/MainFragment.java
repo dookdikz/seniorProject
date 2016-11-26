@@ -89,12 +89,14 @@ Button btnCommand;
 
         ButtonItemCms buttonItemCms1 = new ButtonItemCms();
         buttonItemCms1.setId(1);
-        buttonItemCms1.setName("Light");
+        buttonItemCms1.setName("Control Light");
         buttonItemCms1.setRoomName("Bed");
+        buttonItemCms1.setType("Light");
         ButtonItemCms buttonItemCms2 = new ButtonItemCms();
         buttonItemCms2.setId(2);
-        buttonItemCms2.setName("Light2");
+        buttonItemCms2.setName("Control Air");
         buttonItemCms2.setRoomName("Bed2");
+        buttonItemCms2.setType("Air");
         List<ButtonItemCms> listCms = new ArrayList<ButtonItemCms>();
         listCms.add(buttonItemCms1);
         listCms.add(buttonItemCms2);

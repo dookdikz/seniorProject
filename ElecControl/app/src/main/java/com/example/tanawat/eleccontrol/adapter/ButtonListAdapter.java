@@ -52,7 +52,8 @@ public class ButtonListAdapter extends BaseAdapter {
            item = new ButtonListItem(parent.getContext());
        }
         ButtonItemCms buttonItemCms =(ButtonItemCms) getItem(position) ;
-        item.setNameText(buttonItemCms.getName());
+        item.setTvNameText(buttonItemCms.getName());
+        item.setTvTypeText(buttonItemCms.getType());
         return item;
     }
 }

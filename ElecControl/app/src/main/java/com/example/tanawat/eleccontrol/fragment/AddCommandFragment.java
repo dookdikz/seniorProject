@@ -7,7 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -19,8 +23,10 @@ import java.util.ArrayList;
  * Created by nuuneoi on 11/16/2014.
  */
 public class AddCommandFragment extends Fragment {
-
-    private Spinner typeCommandSpinner;
+    Button btnAddCommand;
+    EditText editNameCommand;
+    String typeOfAddComand;
+    private Spinner spinAddCommand;
 
     public AddCommandFragment() {
         super();
@@ -62,11 +68,20 @@ public class AddCommandFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        typeCommandSpinner = (Spinner) rootView.findViewById(R.id.addCommandSpinner);
+        editNameCommand = (EditText) rootView.findViewById(R.id.editNameCommand);
+
+        btnAddCommand = (Button) rootView.findViewById(R.id.btnAddCommand) ;
+        btnAddCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),editNameCommand.getText(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        spinAddCommand = (Spinner) rootView.findViewById(R.id.spinAddCommand);
         String[] typeCommand = getResources().getStringArray(R.array.typeOfElectronics);
         ArrayAdapter<String> adapterEnglish = new ArrayAdapter<String>(rootView.getContext(),
                 android.R.layout.simple_dropdown_item_1line,typeCommand);
-        typeCommandSpinner.setAdapter(adapterEnglish);
+        spinAddCommand.setAdapter(adapterEnglish);
     }
 
     @Override

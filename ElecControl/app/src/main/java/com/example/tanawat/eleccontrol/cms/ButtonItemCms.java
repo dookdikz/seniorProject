@@ -10,7 +10,7 @@ public class ButtonItemCms implements Parcelable {
     private int id;
     private String name;
     private String roomName;
-
+    private String type;
     public ButtonItemCms() {
 
     }
@@ -19,6 +19,7 @@ public class ButtonItemCms implements Parcelable {
         id = in.readInt();
         name = in.readString();
         roomName = in.readString();
+        type = in.readString();
     }
 
     @Override
@@ -26,6 +27,7 @@ public class ButtonItemCms implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(roomName);
+        dest.writeString(type);
     }
 
     @Override
@@ -67,5 +69,13 @@ public class ButtonItemCms implements Parcelable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
