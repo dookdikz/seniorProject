@@ -147,17 +147,17 @@ public class MainFragment extends Fragment {
 
                 if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-                    
+
                     Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().openLight();
                     call.enqueue(new Callback<ButtonItemCollectionCms>() {
                         @Override
                         public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
-                            Toast.makeText(getContext(),"Suscess Open", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
-                            Toast.makeText(getContext(),"failled Open", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"failled OpenLight", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
@@ -166,12 +166,12 @@ public class MainFragment extends Fragment {
                     call.enqueue(new Callback<ButtonItemCollectionCms>() {
                         @Override
                         public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
-                            Toast.makeText(getContext(),"Suscess Close", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
-                            Toast.makeText(getContext(),"failled Close", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"failled CloseLight", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
