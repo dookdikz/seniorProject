@@ -152,17 +152,28 @@ public class MainFragment extends Fragment {
                     call.enqueue(new Callback<ButtonItemCollectionCms>() {
                         @Override
                         public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
-
+                            Toast.makeText(getContext(),"Suscess Open", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
-
+                            Toast.makeText(getContext(),"failled Open", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
                     Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().closeLight();
+                    call.enqueue(new Callback<ButtonItemCollectionCms>() {
+                        @Override
+                        public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
+                            Toast.makeText(getContext(),"Suscess Close", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
+                            Toast.makeText(getContext(),"failled Close", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
