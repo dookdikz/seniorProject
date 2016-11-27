@@ -28,7 +28,10 @@ public class ButtonListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return buttonItemCollectionCms.getData().size();
+        if(buttonItemCollectionCms!=null){
+            return buttonItemCollectionCms.getData().size();
+        }
+      return 0;
     }
 
     @Override
@@ -52,8 +55,10 @@ public class ButtonListAdapter extends BaseAdapter {
            item = new ButtonListItem(parent.getContext());
        }
         ButtonItemCms buttonItemCms =(ButtonItemCms) getItem(position) ;
-        item.setTvNameText(buttonItemCms.getName());
-        item.setTvTypeText(buttonItemCms.getType());
+        if(buttonItemCms!=null) {
+            item.setTvNameText(buttonItemCms.getName());
+            item.setTvTypeText(buttonItemCms.getType());
+        }
         return item;
     }
 }

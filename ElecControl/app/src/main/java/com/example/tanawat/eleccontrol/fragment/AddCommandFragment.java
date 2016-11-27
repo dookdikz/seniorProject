@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
  * Created by nuuneoi on 11/16/2014.
  */
 public class AddCommandFragment extends Fragment {
+    public interface FragmentListener{
+        void onAddCommandButtonClicked(ButtonItemCms buttonItemCms);
+    }
     Button btnAddCommand;
     EditText editNameCommand;
     String typeOfAddComand;
@@ -69,19 +73,36 @@ public class AddCommandFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
         editNameCommand = (EditText) rootView.findViewById(R.id.editNameCommand);
+        spinAddCommand = (Spinner) rootView.findViewById(R.id.spinAddCommand);
+        final String[] typeCommand = getResources().getStringArray(R.array.typeOfElectronics);
+        final ArrayAdapter<String> adapterType = new ArrayAdapter<String>(rootView.getContext(),
+                android.R.layout.simple_dropdown_item_1line,typeCommand);
+        spinAddCommand.setAdapter(adapterType);
+        spinAddCommand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                typeOfAddComand = typeCommand[position];
+                Toast.makeText(getContext(),typeOfAddComand,Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         btnAddCommand = (Button) rootView.findViewById(R.id.btnAddCommand) ;
         btnAddCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),editNameCommand.getText(),Toast.LENGTH_SHORT).show();
+
+                ButtonItemCms buttonItemCms = new ButtonItemCms();
+                buttonItemCms.setName(editNameCommand.getText().toString());
+                buttonItemCms.setType(typeOfAddComand);
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onAddCommandButtonClicked(buttonItemCms);
             }
         });
-        spinAddCommand = (Spinner) rootView.findViewById(R.id.spinAddCommand);
-        String[] typeCommand = getResources().getStringArray(R.array.typeOfElectronics);
-        ArrayAdapter<String> adapterEnglish = new ArrayAdapter<String>(rootView.getContext(),
-                android.R.layout.simple_dropdown_item_1line,typeCommand);
-        spinAddCommand.setAdapter(adapterEnglish);
+
     }
 
     @Override

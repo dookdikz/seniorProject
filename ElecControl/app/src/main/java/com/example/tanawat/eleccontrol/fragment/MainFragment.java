@@ -8,13 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,31 +26,43 @@ import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.manager.ButtonItemManager;
+import com.example.tanawat.eleccontrol.manager.HttpManager;
 import com.google.gson.Gson;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class MainFragment extends Fragment {
-    public interface FragmentListener{
+    public interface FragmentListener {
         void onAddButtonClicked();
     }
-Button btnCommand;
+
+    Button btnCommand;
     ButtonItemManager buttonListManager;
     ListView listView;
+    Button btnChangeUrl;
+    EditText editUrl;
     ButtonListAdapter listAdapter;
+    ButtonItemCms cms;
+    ButtonItemCollectionCms buttonItemCollectionCms;
+
     public MainFragment() {
         super();
     }
 
-    public static MainFragment newInstance() {
+    public static MainFragment newInstance(ButtonItemCms cms) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
+        args.putParcelable("cms", cms);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,6 +71,7 @@ Button btnCommand;
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
+        cms = getArguments().getParcelable("cms");
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -77,7 +93,6 @@ Button btnCommand;
     }
 
 
-
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
@@ -86,40 +101,73 @@ Button btnCommand;
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new ButtonListAdapter();
+//        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
+//        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
         ButtonItemCms buttonItemCms1 = new ButtonItemCms();
         buttonItemCms1.setId(1);
         buttonItemCms1.setName("Control Light");
         buttonItemCms1.setRoomName("Bed");
         buttonItemCms1.setType("Light");
-        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
-        buttonItemCms2.setId(2);
-        buttonItemCms2.setName("Control Air");
-        buttonItemCms2.setRoomName("Bed2");
-        buttonItemCms2.setType("Air");
+//        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
+//        buttonItemCms2.setId(2);
+//        buttonItemCms2.setName("Control Air");
+//        buttonItemCms2.setRoomName("Bed2");
+//        buttonItemCms2.setType("Air");
         List<ButtonItemCms> listCms = new ArrayList<ButtonItemCms>();
         listCms.add(buttonItemCms1);
-        listCms.add(buttonItemCms2);
+//        listCms.add(buttonItemCms2);
 
 
-        ButtonItemCollectionCms buttonItemCollectionCms = new ButtonItemCollectionCms(listCms);
-        String json = new Gson().toJson(buttonItemCollectionCms);
         SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("json",json);
+        String jsonRead = pref.getString("json", null);
+        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+        if (buttonItemCollectionCms != null) {
+
+            if (cms != null) {
+                buttonItemCollectionCms.addData(cms);
+            }
+        } else {
+            buttonItemCollectionCms = new ButtonItemCollectionCms(listCms);
+        }
+
+
+        String json = new Gson().toJson(buttonItemCollectionCms);
+        editor.putString("json", json);
+        Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
         editor.apply();
-        String jsonRead = pref.getString("json",null);
-        buttonItemCollectionCms = new Gson().fromJson(jsonRead,ButtonItemCollectionCms.class);
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
 
-
-
-
-
-
         listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
+//                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),HttpManager.getInstance().getBaseUrl(), Toast.LENGTH_SHORT).show();
+                    Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().openLight();
+                    call.enqueue(new Callback<ButtonItemCollectionCms>() {
+                        @Override
+                        public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
+
+                        }
+                    });
+                } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
+//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+                    Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().closeLight();
+                } else {
+                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
     }
@@ -143,22 +191,19 @@ Button btnCommand;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_add_command,menu);
-
+        inflater.inflate(R.menu.menu_add_command, menu);
 
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-            if(item.getItemId()==R.id.actionAdd){
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddButtonClicked();
+        if (item.getItemId() == R.id.actionAdd) {
+            FragmentListener listener = (FragmentListener) getActivity();
+            listener.onAddButtonClicked();
 
 
-
-
-            }
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -49,4 +49,8 @@ public class ButtonItemCollectionCms implements Parcelable {
     public void setData(List<ButtonItemCms> data) {
         this.data = data;
     }
+
+    public void addData(ButtonItemCms cms){
+        data.add(cms);
+    }
 }
