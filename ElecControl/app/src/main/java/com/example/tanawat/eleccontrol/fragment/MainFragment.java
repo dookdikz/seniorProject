@@ -147,7 +147,7 @@ public class MainFragment extends Fragment {
 
                 if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getContext(),HttpManager.getInstance().getBaseUrl(), Toast.LENGTH_SHORT).show();
+                    
                     Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().openLight();
                     call.enqueue(new Callback<ButtonItemCollectionCms>() {
                         @Override

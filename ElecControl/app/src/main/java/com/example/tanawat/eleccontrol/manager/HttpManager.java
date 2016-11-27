@@ -23,21 +23,15 @@ public class HttpManager {
 
     private Context mContext;
     private ApiService service;
-    private String baseUrl = "10.64.66.174";
+
     private HttpManager() {
         mContext = Contextor.getInstance().getContext();
-        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("http://"+baseUrl+":5000/").build();
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("http://158.108.122.48:5000").build();
         service = retrofit.create(ApiService.class);
     }
 
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
-    public String getBaseUrl() {
-        return baseUrl;
-    }
 
     public  ApiService getService(){
         return service;

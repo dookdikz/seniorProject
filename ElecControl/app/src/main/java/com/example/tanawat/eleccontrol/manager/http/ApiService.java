@@ -12,8 +12,12 @@ import retrofit2.http.POST;
  * Created by Tanawat on 27/11/2559.
  */
 public interface ApiService {
-    @GET("on")
+    @GET("on_light")
     Call<ButtonItemCollectionCms> openLight();
-    @GET("off")
+    @GET("off_light")
     Call<ButtonItemCollectionCms> closeLight();
+    @GET("on_air")
+    Call<ButtonItemCollectionCms> openAir();
+    @GET("off_air")
+    Call<ButtonItemCollectionCms> closeAir();
 }
