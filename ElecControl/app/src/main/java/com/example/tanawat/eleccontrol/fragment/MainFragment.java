@@ -25,6 +25,7 @@ import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.ButtonItemManager;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
 import com.google.gson.Gson;
@@ -148,30 +149,30 @@ public class MainFragment extends Fragment {
                 if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
 
-                    Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().openLight();
-                    call.enqueue(new Callback<ButtonItemCollectionCms>() {
+                   Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
+                    call.enqueue(new Callback<TestSendWeb>() {
                         @Override
-                        public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
+                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
                             Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
-                            Toast.makeText(getContext(),"failled OpenLight", Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                            Toast.makeText(getContext(),"Fail OpenLight", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                    Call<ButtonItemCollectionCms> call = HttpManager.getInstance().getService().closeLight();
-                    call.enqueue(new Callback<ButtonItemCollectionCms>() {
+                   Call<TestSendWeb> call = HttpManager.getInstance().getService().closeLight();
+                    call.enqueue(new Callback<TestSendWeb>() {
                         @Override
-                        public void onResponse(Call<ButtonItemCollectionCms> call, Response<ButtonItemCollectionCms> response) {
+                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
                             Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onFailure(Call<ButtonItemCollectionCms> call, Throwable t) {
-                            Toast.makeText(getContext(),"failled CloseLight", Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                            Toast.makeText(getContext(),"Fail CloseLight", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {

@@ -3,6 +3,8 @@ package com.example.tanawat.eleccontrol.manager;
 import android.content.Context;
 
 import com.example.tanawat.eleccontrol.manager.http.ApiService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import retrofit2.Retrofit;
@@ -26,7 +28,17 @@ public class HttpManager {
 
     private HttpManager() {
         mContext = Contextor.getInstance().getContext();
-        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("http://158.108.122.48:5000").build();
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://google.com")
+                .baseUrl("http://158.108.122.48:5000/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
         service = retrofit.create(ApiService.class);
     }
 

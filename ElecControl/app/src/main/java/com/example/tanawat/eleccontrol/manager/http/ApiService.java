@@ -1,6 +1,7 @@
 package com.example.tanawat.eleccontrol.manager.http;
 
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 
 import java.util.Objects;
 
@@ -13,11 +14,11 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
     @GET("on_light")
-    Call<ButtonItemCollectionCms> openLight();
+    Call<TestSendWeb> openLight();
     @GET("off_light")
-    Call<ButtonItemCollectionCms> closeLight();
+    Call<TestSendWeb> closeLight();
     @GET("on_air")
-    Call<ButtonItemCollectionCms> openAir();
+    Call<TestSendWeb> openAir();
     @GET("off_air")
-    Call<ButtonItemCollectionCms> closeAir();
+    Call<TestSendWeb> closeAir();
 }
