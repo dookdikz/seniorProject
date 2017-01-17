@@ -158,7 +158,7 @@ public class MainFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                            Toast.makeText(getContext(),"Fail OpenLight", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
@@ -172,7 +172,7 @@ public class MainFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                            Toast.makeText(getContext(),"Fail CloseLight", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
