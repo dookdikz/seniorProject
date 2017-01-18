@@ -36,4 +36,5 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         Intent intent = new Intent(MainActivity.this,AddCommandActivity.class);
         startActivity(intent);
     }
+
 }

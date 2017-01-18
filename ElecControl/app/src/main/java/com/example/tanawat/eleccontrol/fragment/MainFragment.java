@@ -16,8 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class MainFragment extends Fragment {
     ButtonItemManager buttonListManager;
     ListView listView;
     Button btnChangeUrl;
+    Button btnDelete;
     EditText editUrl;
     ButtonListAdapter listAdapter;
     ButtonItemCms cms;
@@ -101,7 +104,11 @@ public class MainFragment extends Fragment {
         //       in onSavedInstanceState
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-        listAdapter = new ButtonListAdapter();
+        //Button btnDelete = (Button) getView().findViewById(R.id.btnDelete);
+
+
+        listAdapter = new ButtonListAdapter(getActivity());
+//        btnDelete = (Button) getView().findViewById(R.id.btnDelete);
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
@@ -123,6 +130,7 @@ public class MainFragment extends Fragment {
         SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         String jsonRead = pref.getString("json", null);
+
         buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
         if (buttonItemCollectionCms != null) {
 
@@ -142,13 +150,13 @@ public class MainFragment extends Fragment {
 
 
         listView.setAdapter(listAdapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                Toast.makeText(getContext(), view.toString(), Toast.LENGTH_SHORT).show();
                 if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-
                    Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
                     call.enqueue(new Callback<TestSendWeb>() {
                         @Override
@@ -180,6 +188,8 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+
+
 
 
     }
@@ -218,4 +228,37 @@ public class MainFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+//private class MyListAdap extends ArrayAdapter<String>{
+//    private int layout;
+//    public MyListAdap(Context context, int resource, List<String> objects) {
+//        super(context, resource, objects);
+//        layout = resource;
+//    }
+//
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent) {
+//      ViewHolder mainViewholder = null;
+//        if(convertView==null){
+//            LayoutInflater  inflater = LayoutInflater.from(getContext());
+//            convertView = inflater.inflate(layout,parent,false);
+//            ViewHolder viewHolder = new ViewHolder();
+//            viewHolder.btnDelete = (ImageView) convertView.findViewById(R.id.btnDelete);
+//            viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(getContext(),"fdfs", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//            convertView.setTag(viewHolder);
+//        }
+//        else {
+//            mainViewholder = (ViewHolder) convertView.getTag();
+//        }
+//
+//return convertView;
+//    }
+//}
+//    public class ViewHolder{
+//        ImageView btnDelete;
+//    }
 }
