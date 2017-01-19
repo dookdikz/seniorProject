@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
@@ -22,14 +23,14 @@ import com.example.tanawat.eleccontrol.view.ButtonListItem;
 /**
  * Created by Tanawat on 7/11/2559.
  */
-public class ButtonListAdapter extends BaseAdapter  {
+public class ButtonListAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
+    Button btnDelete;
+    private Context activity;
 
-    private Context context;
-
-    public ButtonListAdapter( Context context) {
-
-        this.context = context;
+    public ButtonListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
+        this.buttonItemCollectionCms = buttonItemCollectionCms;
+        this.activity = activity;
     }
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
@@ -42,10 +43,10 @@ public class ButtonListAdapter extends BaseAdapter  {
 
     @Override
     public int getCount() {
-        if(buttonItemCollectionCms!=null){
+        if (buttonItemCollectionCms != null) {
             return buttonItemCollectionCms.getData().size();
         }
-      return 0;
+        return 0;
     }
 
     @Override
@@ -58,35 +59,52 @@ public class ButtonListAdapter extends BaseAdapter  {
         return 0;
     }
 
+    private class ViewHolder {
+        TextView tvNameCommand;
+        TextView tvNameType;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
         ButtonListItem item;
-        LayoutInflater inflater = (LayoutInflater) context.getApplicationContext()
+        LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-       if(convertView != null){
-           item = (ButtonListItem) convertView;
+        if (convertView != null) {
+            item = (ButtonListItem) convertView;
 
-       }
-        else {
-           convertView = inflater.inflate(R.layout.list_item_button,null);
-           item = new ButtonListItem(parent.getContext());
-       }
-        ButtonItemCms buttonItemCms =(ButtonItemCms) getItem(position) ;
-        if(buttonItemCms!=null) {
-            item.setTvNameText(buttonItemCms.getName());
-            item.setTvTypeText(buttonItemCms.getType());
-
+        } else {
+            convertView = inflater.inflate(R.layout.list_item_button, null);
+            holder = new ViewHolder();
+            holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
+            holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
+            convertView.setTag(holder);
+            //     item = new ButtonListItem(parent.getContext());
         }
-        Button btnDelete =(Button) convertView.findViewById(R.id.btnDelete);
+        ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
+        if (buttonItemCms != null) {
+            // item.setTvNameText(buttonItemCms.getName());
+            //  item.setTvTypeText(buttonItemCms.getType());
+            holder.tvNameCommand.setText(buttonItemCms.getName());
+            holder.tvNameType.setText(buttonItemCms.getType());
+        }
+        TextView tvTest = (TextView) convertView.findViewById(R.id.tvNameCommand);
+        tvTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("eiei", "eiei");
+            }
+        });
+        btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("eiei","eiei");
+                Toast.makeText(activity.getApplicationContext(), "fdsfsdf", Toast.LENGTH_SHORT).show();
             }
         });
 
-        return item;
+        return convertView;
     }
 
 

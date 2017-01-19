@@ -21,9 +21,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
@@ -104,11 +106,11 @@ public class MainFragment extends Fragment {
         //       in onSavedInstanceState
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-        //Button btnDelete = (Button) getView().findViewById(R.id.btnDelete);
 
 
-        listAdapter = new ButtonListAdapter(getActivity());
-//        btnDelete = (Button) getView().findViewById(R.id.btnDelete);
+
+
+
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
@@ -146,11 +148,12 @@ public class MainFragment extends Fragment {
         editor.putString("json", json);
         Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
         editor.apply();
+        listAdapter = new ButtonListAdapter(buttonItemCollectionCms,getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
 
         listView.setAdapter(listAdapter);
-
+//        btnDelete = (Button)getView().findViewById(R.id.btnDeleted);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {

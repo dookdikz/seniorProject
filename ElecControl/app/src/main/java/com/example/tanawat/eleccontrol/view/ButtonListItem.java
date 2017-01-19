@@ -20,10 +20,7 @@ import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
  */
 public class ButtonListItem extends BaseCustomViewGroup {
 
-    LinearLayout layoutCommandClick;
-    TextView tvNameCommand;
-    TextView tvTypeCommand;
-    Button btnDelete;
+
 
     public ButtonListItem(Context context) {
         super(context);
@@ -56,10 +53,7 @@ public class ButtonListItem extends BaseCustomViewGroup {
     private void initInflate() {
 
         inflate(getContext(), R.layout.list_item_button, this);
-        layoutCommandClick = (LinearLayout) findViewById(R.id.layoutCommandClick);
-        tvNameCommand = (TextView) findViewById(R.id.tvNameCommand);
-        tvTypeCommand = (TextView) findViewById(R.id.tvTypeCommand);
-        btnDelete = (Button) findViewById(R.id.btnDelete);
+
 
 
     }
@@ -113,12 +107,8 @@ public class ButtonListItem extends BaseCustomViewGroup {
         setMeasuredDimension(width, height);
     }
 
-    public void setTvNameText(String text) {
-        tvNameCommand.setText(text);
-    }
 
-    public void setTvTypeText(String text) {
-        tvTypeCommand.setText(text);
-    }
+
+
 
 }
