@@ -38,6 +38,7 @@ public class AddCommandActivity extends AppCompatActivity implements AddCommandF
         Log.d("testAdd",buttonItemCms.getName());
         intent.putExtra("cms",buttonItemCms);
         startActivity(intent);
+        finish();
 
     }
 }

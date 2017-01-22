@@ -2,6 +2,7 @@ package com.example.tanawat.eleccontrol.cms;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.List;
 
@@ -52,5 +53,10 @@ public class ButtonItemCollectionCms implements Parcelable {
 
     public void addData(ButtonItemCms cms){
         data.add(cms);
+    }
+    public void  deleteData(int position){
+
+        data.remove(position);
+        Log.d("position",String.valueOf(position));
     }
 }

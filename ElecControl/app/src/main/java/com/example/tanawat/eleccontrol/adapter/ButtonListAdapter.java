@@ -2,7 +2,10 @@ package com.example.tanawat.eleccontrol.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
+import com.google.gson.Gson;
 
 /**
  * Created by Tanawat on 7/11/2559.
@@ -65,16 +71,18 @@ public class ButtonListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ButtonListItem item;
         LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (convertView != null) {
-            item = (ButtonListItem) convertView;
+//        if (convertView != null) {
+//            item = (ButtonListItem) convertView;
+//
+//        } else {
 
-        } else {
+        if(convertView == null){
             convertView = inflater.inflate(R.layout.list_item_button, null);
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
@@ -82,27 +90,68 @@ public class ButtonListAdapter extends BaseAdapter {
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
-        ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
-        if (buttonItemCms != null) {
-            // item.setTvNameText(buttonItemCms.getName());
-            //  item.setTvTypeText(buttonItemCms.getType());
-            holder.tvNameCommand.setText(buttonItemCms.getName());
-            holder.tvNameType.setText(buttonItemCms.getType());
-        }
-        TextView tvTest = (TextView) convertView.findViewById(R.id.tvNameCommand);
-        tvTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("eiei", "eiei");
-            }
-        });
+
         btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity.getApplicationContext(), "fdsfsdf", Toast.LENGTH_SHORT).show();
+
+
+
+                AlertDialog.Builder adb=new AlertDialog.Builder(activity);
+                adb.setTitle("Delete?");
+                adb.setMessage("Are you sure you want to delete " + position);
+
+                final int positionToRemove = position;
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        String jsonRead = pref.getString("json", null);
+                        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+                        buttonItemCollectionCms.deleteData(positionToRemove);
+                        String json = new Gson().toJson(buttonItemCollectionCms);
+                        editor.putString("json", json);
+                        Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
+                        editor.apply();
+                        
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                setButtonItemCollectionCms(buttonItemCollectionCms);
+                                notifyDataSetChanged();
+                            }
+                        }, 3000);
+
+//                        notifyDataSetChanged();
+
+                    }});
+                adb.show();
+
             }
         });
+
+
+        ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
+        if (buttonItemCms != null) {
+            Log.d("testD",String.valueOf(position));
+            if(buttonItemCms.getName() !=null){
+                if(holder!=null){
+                    holder.tvNameCommand.setText(buttonItemCms.getName());
+                    holder.tvNameType.setText(buttonItemCms.getType());
+                    notifyDataSetChanged();
+                }
+
+            }
+            else{
+                Log.d("testD","name_null");
+            }
+            // item.setTvNameText(buttonItemCms.getName());
+            //  item.setTvTypeText(buttonItemCms.getType());
+
+        }
 
         return convertView;
     }

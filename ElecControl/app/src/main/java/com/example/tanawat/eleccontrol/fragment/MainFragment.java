@@ -151,8 +151,8 @@ public class MainFragment extends Fragment {
         listAdapter = new ButtonListAdapter(buttonItemCollectionCms,getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
-
         listView.setAdapter(listAdapter);
+
 //        btnDelete = (Button)getView().findViewById(R.id.btnDeleted);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -191,9 +191,13 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+        listAdapter.notifyDataSetChanged();
 
 
 
+
+    }
+    public void update(){
 
     }
 
