@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ import com.google.gson.Gson;
 public class ButtonListAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnDelete;
+
+
     private Context activity;
 
     public ButtonListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
@@ -115,17 +118,10 @@ public class ButtonListAdapter extends BaseAdapter {
                         editor.putString("json", json);
                         Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
                         editor.apply();
-                        
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                setButtonItemCollectionCms(buttonItemCollectionCms);
-                                notifyDataSetChanged();
-                            }
-                        }, 3000);
-
-//                        notifyDataSetChanged();
+                        notifyDataSetChanged();
+                        MainFragment mainFragment= new MainFragment();
+                        mainFragment.update();
+                        notifyDataSetChanged();
 
                     }});
                 adb.show();

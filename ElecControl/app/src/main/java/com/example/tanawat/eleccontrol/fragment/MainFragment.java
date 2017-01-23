@@ -53,11 +53,11 @@ public class MainFragment extends Fragment {
 
     Button btnCommand;
     ButtonItemManager buttonListManager;
-    ListView listView;
+    static ListView listView;
     Button btnChangeUrl;
     Button btnDelete;
     EditText editUrl;
-    ButtonListAdapter listAdapter;
+    static ButtonListAdapter listAdapter;
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
 
@@ -197,8 +197,9 @@ public class MainFragment extends Fragment {
 
 
     }
-    public void update(){
+    public static void update(){
 
+        listView.setAdapter(listAdapter);
     }
 
     @Override
