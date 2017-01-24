@@ -157,6 +157,7 @@ public class MainFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
                 Toast.makeText(getContext(), view.toString(), Toast.LENGTH_SHORT).show();
                 if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
@@ -200,6 +201,8 @@ public class MainFragment extends Fragment {
     public static void update(){
 
         listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
+        Log.d("testt",String.valueOf(listAdapter.getCount()));
     }
 
     @Override

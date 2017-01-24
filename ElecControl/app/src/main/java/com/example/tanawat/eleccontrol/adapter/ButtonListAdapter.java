@@ -118,7 +118,7 @@ public class ButtonListAdapter extends BaseAdapter {
                         editor.putString("json", json);
                         Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
                         editor.apply();
-                        notifyDataSetChanged();
+
                         MainFragment mainFragment= new MainFragment();
                         mainFragment.update();
                         notifyDataSetChanged();
@@ -137,7 +137,7 @@ public class ButtonListAdapter extends BaseAdapter {
                 if(holder!=null){
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
-                    notifyDataSetChanged();
+
                 }
 
             }
