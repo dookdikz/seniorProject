@@ -1,86 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="20sp"/>
-    <EditText
-        android:id="@+id/editNameCommand"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editNameCommand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <View android:id="@+id/separator"
-        android:background="#0000ff"
-        android:layout_width = "fill_parent"
+    <View
+        android:layout_width="fill_parent"
         android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_margin="10dp"
-        android:layout_centerVertical ="true"
-        android:layout_alignParentTop="true"/>
+        android:background="#0000ff" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Remote:"
-        android:textSize="30sp"/>
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose:"
-        android:textSize="20sp"
-        />
+        android:textSize="30sp" />
 
-
-
-    <Spinner
-      android:id="@+id/spinAddCommand"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:entries="@array/typeOfElectronics"/>
-
-  </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/spinChooseRemote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="On/Off:"
-            android:textSize="20sp"
-            />
-
+            android:textSize="20sp" />
 
 
         <Spinner
             android:id="@+id/onOff"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/typeOfElectronics"/>
+            android:entries="@array/onOrOff" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="#0000ff" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Switch1:"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/spinChooseSwitch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On/Off:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="#0000ff" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Switch2:"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/spinChooseSwitch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On/Off:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="#0000ff" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Curtain:"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On/Off:"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/spinCurtain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/onOrOff" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnAddCommand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Command"/>
-
-
-
-
+        android:text="Add Command" />
 
 
 </LinearLayout>
