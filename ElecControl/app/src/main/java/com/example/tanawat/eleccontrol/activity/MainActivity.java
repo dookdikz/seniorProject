@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.fragment.AddCommandFragment;
+import com.example.tanawat.eleccontrol.fragment.AddToolFragment;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
     @Override
     public void onAddButtonClicked() {
-        Intent intent = new Intent(MainActivity.this,AddCommandActivity.class);
+        Intent intent = new Intent(MainActivity.this,AddToolActivity.class);
         startActivity(intent);
 
     }

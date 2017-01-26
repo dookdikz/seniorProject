@@ -40,11 +40,7 @@ public class AddCommandActivity extends AppCompatActivity implements AddCommandF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
+
 
     @Override
     public void onAddCommandButtonClicked(ButtonItemCms buttonItemCms) {

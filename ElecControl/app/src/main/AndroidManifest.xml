@@ -18,6 +18,11 @@
         </activity>
         <activity android:name=".activity.AddCommandActivity">
           </activity>
+        <activity android:name=".activity.AddToolActivity"
+            android:label="Add Tools"
+            >
+
+        </activity>
 
 
     </application>
