@@ -1,5 +1,6 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.view.SlidingTabLayout;
@@ -55,11 +57,15 @@ public class AddToolFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
+
+
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+
         viewPager=(ViewPager) rootView.findViewById((R.id.viewPager));
         viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override

@@ -5,4 +5,14 @@
         <item>Off</item>
 
     </string-array>
+    <string-array name="chooseRemote">
+        <item>Air</item>
+        <item>Tv</item>
+
+    </string-array>
+    <string-array name="chooseSwitch">
+        <item>Switch1</item>
+        <item>Switch2</item>
+
+    </string-array>
 </resources>
