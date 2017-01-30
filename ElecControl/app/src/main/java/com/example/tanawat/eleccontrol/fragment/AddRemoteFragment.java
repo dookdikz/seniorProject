@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -34,6 +35,7 @@ public class AddRemoteFragment extends Fragment {
     private Spinner spinOnOrOff;
     EditText etNameRemote;
     String choosenRemote;
+    String choosenOnOff;
     private Button btnAddTool;
     public AddRemoteFragment() {
         super();
@@ -94,6 +96,7 @@ public class AddRemoteFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choosenRemote = chooseRemote[position];
+
             }
 
             @Override
@@ -102,6 +105,18 @@ public class AddRemoteFragment extends Fragment {
             }
         });
         final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
+        spinOnOrOff.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                choosenOnOff = onOrOff[position];
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         spinChooseRemote.setAdapter(adapterChooseRemote);
         spinOnOrOff.setAdapter(adapterOnOrOff);
         closeKeyboard(getActivity(), etNameRemote.getWindowToken());
@@ -113,6 +128,7 @@ public class AddRemoteFragment extends Fragment {
                 ButtonItemCms buttonItemCms = new ButtonItemCms();
                 buttonItemCms.setName(etNameRemote.getText().toString());
                 buttonItemCms.setType(choosenRemote);
+                buttonItemCms.setstatus(choosenOnOff);
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddToolCommandButtonClicked(buttonItemCms);
             }

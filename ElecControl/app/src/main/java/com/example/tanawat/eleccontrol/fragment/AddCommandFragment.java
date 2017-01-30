@@ -98,6 +98,7 @@ public class AddCommandFragment extends Fragment {
                 ButtonItemCms buttonItemCms = new ButtonItemCms();
                 buttonItemCms.setName(editNameCommand.getText().toString());
                 buttonItemCms.setType(typeOfAddComand);
+                buttonItemCms.setstatus("off");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddCommandButtonClicked(buttonItemCms);
             }

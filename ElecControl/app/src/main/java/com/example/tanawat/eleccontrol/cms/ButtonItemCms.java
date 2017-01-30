@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class ButtonItemCms implements Parcelable {
     private int id;
     private String name;
-    private String roomName;
+    private String status;
     private String type;
     public ButtonItemCms() {
 
@@ -18,7 +18,7 @@ public class ButtonItemCms implements Parcelable {
     protected ButtonItemCms(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        roomName = in.readString();
+        status = in.readString();
         type = in.readString();
     }
 
@@ -26,7 +26,7 @@ public class ButtonItemCms implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(roomName);
+        dest.writeString(status);
         dest.writeString(type);
     }
 
@@ -63,12 +63,12 @@ public class ButtonItemCms implements Parcelable {
         this.name = name;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public String getstatus() {
+        return status;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setstatus(String status) {
+        this.status = status;
     }
 
     public String getType() {

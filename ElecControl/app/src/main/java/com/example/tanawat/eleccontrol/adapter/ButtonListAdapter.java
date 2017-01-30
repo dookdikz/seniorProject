@@ -71,6 +71,7 @@ public class ButtonListAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView tvNameCommand;
         TextView tvNameType;
+        ImageView ivOnOff;
     }
 
     @Override
@@ -90,9 +91,11 @@ public class ButtonListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
+            holder.ivOnOff = (ImageView) convertView.findViewById(R.id.ivOnOff);
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
+
 
         btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +106,7 @@ public class ButtonListAdapter extends BaseAdapter {
 
                 AlertDialog.Builder adb=new AlertDialog.Builder(activity);
                 adb.setTitle("Delete?");
-                adb.setMessage("Are you sure you want to delete " + position);
+                adb.setMessage("Are you sure you want to delete " + buttonItemCollectionCms.getData().get(position).getName());
 
                 final int positionToRemove = position;
                 adb.setNegativeButton("Cancel", null);
@@ -111,12 +114,14 @@ public class ButtonListAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
+
                         String jsonRead = pref.getString("json", null);
                         buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+
                         buttonItemCollectionCms.deleteData(positionToRemove);
+
                         String json = new Gson().toJson(buttonItemCollectionCms);
                         editor.putString("json", json);
-                        Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
                         editor.apply();
 
                         MainFragment mainFragment= new MainFragment();
@@ -137,6 +142,13 @@ public class ButtonListAdapter extends BaseAdapter {
                 if(holder!=null){
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
+                    Log.d("testStatus",buttonItemCollectionCms.getData().get(position).getstatus().toString());
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")){
+                        holder.ivOnOff.setImageResource(R.drawable.off);
+                    }
+                    else {
+                        holder.ivOnOff.setImageResource(R.drawable.on);
+                    }
 
                 }
 

@@ -115,10 +115,7 @@ public class MainFragment extends Fragment {
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
         ButtonItemCms buttonItemCms1 = new ButtonItemCms();
-        buttonItemCms1.setId(1);
-        buttonItemCms1.setName("Control Light");
-        buttonItemCms1.setRoomName("Bed");
-        buttonItemCms1.setType("Light");
+       buttonItemCms1 = null;
 //        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
 //        buttonItemCms2.setId(2);
 //        buttonItemCms2.setName("Control Air");
@@ -131,9 +128,10 @@ public class MainFragment extends Fragment {
 
         SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        String jsonRead = pref.getString("json", null);
 
+        String jsonRead = pref.getString("json", null);
         buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+
         if (buttonItemCollectionCms != null) {
 
             if (cms != null) {
@@ -144,10 +142,7 @@ public class MainFragment extends Fragment {
         }
 
 
-        String json = new Gson().toJson(buttonItemCollectionCms);
-        editor.putString("json", json);
-        Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
-        editor.apply();
+
         listAdapter = new ButtonListAdapter(buttonItemCollectionCms,getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
@@ -157,42 +152,65 @@ public class MainFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
 
-                Toast.makeText(getContext(), view.toString(), Toast.LENGTH_SHORT).show();
-                if (buttonItemCollectionCms.getData().get(position).getName().equals("OpenLight")) {
-//                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-                   Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
-                    call.enqueue(new Callback<TestSendWeb>() {
-                        @Override
-                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                            Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
-                        }
 
-                        @Override
-                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
-//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                   Call<TestSendWeb> call = HttpManager.getInstance().getService().closeLight();
-                    call.enqueue(new Callback<TestSendWeb>() {
-                        @Override
-                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                            Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
-                        }
 
-                        @Override
-                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+                if(buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")){
+                    buttonItemCollectionCms.getData().get(position).setstatus("On");
                 }
+                else if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
+                    buttonItemCollectionCms.getData().get(position).setstatus("Off");
+                }
+
+                String json = new Gson().toJson(buttonItemCollectionCms);
+                editor.putString("json", json);
+                editor.apply();
+
+                String jsonRead = pref.getString("json", null);
+                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+                listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+                listView.setAdapter(listAdapter);
+                listAdapter.notifyDataSetChanged();
+
+//                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
+////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
+//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
+//                    call.enqueue(new Callback<TestSendWeb>() {
+//                        @Override
+//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+//                            Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
+////                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().closeLight();
+//                    call.enqueue(new Callback<TestSendWeb>() {
+//                        @Override
+//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+//                            Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         listAdapter.notifyDataSetChanged();
+        String json = new Gson().toJson(buttonItemCollectionCms);
+        editor.putString("json", json);
+        editor.apply();
 
 
 
