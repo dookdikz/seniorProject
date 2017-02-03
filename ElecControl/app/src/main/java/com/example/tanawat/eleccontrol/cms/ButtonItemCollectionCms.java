@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,18 +12,30 @@ import java.util.List;
  */
 public class ButtonItemCollectionCms implements Parcelable {
 
-    private List<ButtonItemCms> data;
+    private String name;
+    private List<ButtonItemCms> data = new ArrayList<>();
 
-    public ButtonItemCollectionCms(List<ButtonItemCms> data) {
-        this.data = data;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ButtonItemCollectionCms() {
+
+
     }
 
     protected ButtonItemCollectionCms(Parcel in) {
+        name = in.readString();
         data = in.createTypedArrayList(ButtonItemCms.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
         dest.writeTypedList(data);
     }
 

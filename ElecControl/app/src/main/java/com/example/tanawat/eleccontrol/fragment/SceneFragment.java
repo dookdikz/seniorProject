@@ -1,13 +1,11 @@
 package com.example.tanawat.eleccontrol.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,61 +14,48 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
+import com.example.tanawat.eleccontrol.adapter.SceneListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
-import com.example.tanawat.eleccontrol.cms.TestSendWeb;
-import com.example.tanawat.eleccontrol.manager.ButtonItemManager;
-import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.google.gson.Gson;
-import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
-public class MainFragment extends Fragment {
+public class SceneFragment extends Fragment {
+
+
     public interface FragmentListener {
-        void onAddButtonClicked();
+        void onAddSceneButtonClicked();
     }
 
-    Button btnCommand;
-    ButtonItemManager buttonListManager;
     static ListView listView;
-    Button btnChangeUrl;
-    Button btnDelete;
-    static TextView tvCountTool;
-    EditText editUrl;
-    static ButtonListAdapter listAdapter;
-    ButtonItemCms cms;
+    static TextView tvCountScene;
+    static SceneListAdapter listAdapter;
     ButtonItemCollectionCms buttonItemCollectionCms;
-    Button btnGoScene;
+    Button btnGoTool;
+    ListScene listScene;
+    ButtonItemCollectionCms scene;
 
-    public MainFragment() {
+    public SceneFragment() {
         super();
     }
 
-    public static MainFragment newInstance(ButtonItemCms cms) {
-        MainFragment fragment = new MainFragment();
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene ) {
+        SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
-        args.putParcelable("cms", cms);
+        args.putParcelable("scene", scene);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,8 +64,7 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
-        cms = getArguments().getParcelable("cms");
-
+        scene = getArguments().getParcelable("scene");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -88,7 +72,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_scene, container, false);
         initInstances(rootView, savedInstanceState);
         return rootView;
     }
@@ -100,87 +84,69 @@ public class MainFragment extends Fragment {
 
     }
 
-
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-
         listView = (ListView) rootView.findViewById(R.id.listView);
+        tvCountScene = (TextView) rootView.findViewById(R.id.tvCountScene);
 
-        tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
-        btnGoScene = (Button) rootView.findViewById(R.id.btnGoScene);
-        btnGoScene.setOnClickListener(new View.OnClickListener() {
+        btnGoTool = (Button) rootView.findViewById(R.id.btnGoTool);
+        btnGoTool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SceneFragment.newInstance(null)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, MainFragment.newInstance(null)).commit();
             }
         });
-//        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
-//        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
         ButtonItemCms buttonItemCms1 = new ButtonItemCms();
-//        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
+
 
         buttonItemCms1.setName("Control Air");
         buttonItemCms1.setstatus("Off");
         buttonItemCms1.setType("Air");
-//        buttonItemCms2.setId(2);
-//        buttonItemCms2.setName("Control Air");
-//        buttonItemCms2.setRoomName("Bed2");
-//        buttonItemCms2.setType("Air");
-        List<ButtonItemCms> listCms = new ArrayList<ButtonItemCms>();
-        listCms.add(buttonItemCms1);
-//        listCms.add(buttonItemCms2);
 
+        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
+        buttonItemCms2.setName("Control TV");
+        buttonItemCms2.setstatus("Off");
+        buttonItemCms2.setType("TV");
+//        List<ButtonItemCms> listCmsTest =new ArrayList<>();
+//        listCmsTest.add(buttonItemCms1);
+//        listCmsTest.add(buttonItemCms2);
+        buttonItemCollectionCms = new ButtonItemCollectionCms();
+buttonItemCollectionCms.addData(buttonItemCms1);
+        buttonItemCollectionCms.addData(buttonItemCms2);
 
-        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+        buttonItemCollectionCms.setName("Bedroom");
+        List<ButtonItemCollectionCms> listSceneTest =new ArrayList<>();
+        listSceneTest.add(buttonItemCollectionCms);
+
+        SharedPreferences pref = getContext().getSharedPreferences("listScene", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-
         String jsonRead = pref.getString("json", null);
-        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+        listScene = new Gson().fromJson(jsonRead, ListScene.class);
 
-        if (buttonItemCollectionCms != null) {
+        if (listScene != null) {
 
-            if (cms != null) {
-                buttonItemCollectionCms.addData(cms);
+            if (scene != null) {
+                listScene.addData(scene);
             }
         } else {
-            buttonItemCollectionCms = new ButtonItemCollectionCms();
+            listScene = new ListScene(listSceneTest);
         }
 
 
-        listAdapter = new ButtonListAdapter(buttonItemCollectionCms, getActivity());
-        listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
-        tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+        listAdapter = new SceneListAdapter(listScene, getActivity());
+        listAdapter.setListScene(listScene);
+        //tvCountScene.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
-
+        tvCountScene.setText("All Scene" + "(" + listAdapter.getCount() + ")");
 //        btnDelete = (Button)getView().findViewById(R.id.btnDeleted);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
 
-
-                if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
-                    buttonItemCollectionCms.getData().get(position).setstatus("On");
-                } else if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                    buttonItemCollectionCms.getData().get(position).setstatus("Off");
-                }
-
-                String json = new Gson().toJson(buttonItemCollectionCms);
-                editor.putString("json", json);
-                editor.apply();
-
-                String jsonRead = pref.getString("json", null);
-                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-                listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
-
-                Log.d("count", String.valueOf(listAdapter.getCount()));
-                listView.setAdapter(listAdapter);
-                listAdapter.notifyDataSetChanged();
 
 //                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
 ////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
@@ -216,19 +182,11 @@ public class MainFragment extends Fragment {
             }
         });
         listAdapter.notifyDataSetChanged();
-        String json = new Gson().toJson(buttonItemCollectionCms);
+        String json = new Gson().toJson(listScene);
         editor.putString("json", json);
         editor.apply();
 
 
-    }
-
-    public static void update() {
-
-        listView.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
-        tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-        Log.d("testt", String.valueOf(listAdapter.getCount()));
     }
 
     @Override
@@ -243,59 +201,18 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.menu_add_command, menu);
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionAdd) {
             FragmentListener listener = (FragmentListener) getActivity();
-            listener.onAddButtonClicked();
+            listener.onAddSceneButtonClicked();
 
 
         }
         return super.onOptionsItemSelected(item);
     }
-//private class MyListAdap extends ArrayAdapter<String>{
-//    private int layout;
-//    public MyListAdap(Context context, int resource, List<String> objects) {
-//        super(context, resource, objects);
-//        layout = resource;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//      ViewHolder mainViewholder = null;
-//        if(convertView==null){
-//            LayoutInflater  inflater = LayoutInflater.from(getContext());
-//            convertView = inflater.inflate(layout,parent,false);
-//            ViewHolder viewHolder = new ViewHolder();
-//            viewHolder.btnDelete = (ImageView) convertView.findViewById(R.id.btnDelete);
-//            viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(getContext(),"fdfs", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            convertView.setTag(viewHolder);
-//        }
-//        else {
-//            mainViewholder = (ViewHolder) convertView.getTag();
-//        }
-//
-//return convertView;
-//    }
-//}
-//    public class ViewHolder{
-//        ImageView btnDelete;
-//    }
 }

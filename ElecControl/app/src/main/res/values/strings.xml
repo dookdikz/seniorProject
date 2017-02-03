@@ -13,6 +13,5 @@
     <string-array name="chooseSwitch">
         <item>Switch1</item>
         <item>Switch2</item>
-
     </string-array>
 </resources>

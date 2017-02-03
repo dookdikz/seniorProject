@@ -32,7 +32,7 @@ public class AddRemoteFragment extends Fragment {
     }
 
     private Spinner spinChooseRemote;
-    private Spinner spinOnOrOff;
+//    private Spinner spinOnOrOff;
     EditText etNameRemote;
     String choosenRemote;
     String choosenOnOff;
@@ -86,10 +86,10 @@ public class AddRemoteFragment extends Fragment {
         //       in onSavedInstanceState
 
         spinChooseRemote = (Spinner) rootView.findViewById(R.id.spinChooseRemote);
-        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
+//        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
         etNameRemote = (EditText) rootView.findViewById(R.id.etNameRemote);
         final String[] chooseRemote = getResources().getStringArray(R.array.chooseRemote);
-        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
+//        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
         final ArrayAdapter<String> adapterChooseRemote = new ArrayAdapter<String>(rootView.getContext(),
                 android.R.layout.simple_dropdown_item_1line,chooseRemote);
         spinChooseRemote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -104,21 +104,21 @@ public class AddRemoteFragment extends Fragment {
 
             }
         });
-        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
-        spinOnOrOff.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                choosenOnOff = onOrOff[position];
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
+//        spinOnOrOff.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                choosenOnOff = onOrOff[position];
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         spinChooseRemote.setAdapter(adapterChooseRemote);
-        spinOnOrOff.setAdapter(adapterOnOrOff);
+//        spinOnOrOff.setAdapter(adapterOnOrOff);
         closeKeyboard(getActivity(), etNameRemote.getWindowToken());
         btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
         btnAddTool.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class AddRemoteFragment extends Fragment {
                 ButtonItemCms buttonItemCms = new ButtonItemCms();
                 buttonItemCms.setName(etNameRemote.getText().toString());
                 buttonItemCms.setType(choosenRemote);
-                buttonItemCms.setstatus(choosenOnOff);
+                buttonItemCms.setstatus("Off");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddToolCommandButtonClicked(buttonItemCms);
             }

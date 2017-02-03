@@ -74,15 +74,15 @@ public class AddSwitchFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
         spinChooseSwitch = (Spinner) rootView.findViewById(R.id.spinChooseSwitch);
-        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
+//        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
         etNameSwitch = (EditText) rootView.findViewById(R.id.etNameSwitch);
         final String[] chooseSwitch = getResources().getStringArray(R.array.chooseSwitch);
-        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
+//        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
         final ArrayAdapter<String> adapterChooseSwitch = new ArrayAdapter<String>(rootView.getContext(),
                 android.R.layout.simple_dropdown_item_1line,chooseSwitch);
-        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
+//        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
         spinChooseSwitch.setAdapter(adapterChooseSwitch);
-        spinOnOrOff.setAdapter(adapterOnOrOff);
+//        spinOnOrOff.setAdapter(adapterOnOrOff);
         spinChooseSwitch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -102,6 +102,7 @@ public class AddSwitchFragment extends Fragment {
                 ButtonItemCms buttonItemCms = new ButtonItemCms();
                 buttonItemCms.setName(etNameSwitch.getText().toString());
                 buttonItemCms.setType(choosenSwitch);
+                buttonItemCms.setstatus("Off");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddToolCommandButtonClicked(buttonItemCms);
             }

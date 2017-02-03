@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 public class AddCurtainFragment extends Fragment {
     private Button btnAddTool;
     EditText etNameCurtain;
+
 
     public interface FragmentListener{
         void onAddToolCommandButtonClicked(ButtonItemCms buttonItemCms);
@@ -71,15 +73,26 @@ public class AddCurtainFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
 //        spinChooseCurtain = (Spinner) rootView.findViewById(R.id.spinChooseCurtain);
-        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
+//        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
         etNameCurtain = (EditText) rootView.findViewById(R.id.etNameCurtain);
 //        final String[] chooseCurtain = getResources().getStringArray(R.array.chooseCurtain);
         final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
 //        final ArrayAdapter<String> adapterChooseCurtain = new ArrayAdapter<String>(rootView.getContext(),
 //                android.R.layout.simple_dropdown_item_1line,chooseCurtain);
-        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
+//        spinChooseCurtain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
 //        spinChooseCurtain.setAdapter(adapterChooseCurtain);
-        spinOnOrOff.setAdapter(adapterOnOrOff);
+//        spinOnOrOff.setAdapter(adapterOnOrOff);
         btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
         btnAddTool.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +100,8 @@ public class AddCurtainFragment extends Fragment {
 
                 ButtonItemCms buttonItemCms = new ButtonItemCms();
                 buttonItemCms.setName(etNameCurtain.getText().toString());
-//                buttonItemCms.setType(choosenSwitch);
+                buttonItemCms.setType("Curtain");
+                buttonItemCms.setstatus("Off");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddToolCommandButtonClicked(buttonItemCms);
             }
