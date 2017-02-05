@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class AddSceneFragment extends Fragment {
     static TextView tvCountTool;
     static AddSceneAdapter listAdapter;
     ButtonItemCollectionCms buttonItemCollectionCms;
+    EditText etNameScene;
     CheckBox cbAddScene;
     ListScene listScene;
 
@@ -81,7 +83,7 @@ public class AddSceneFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
         listView = (ListView) rootView.findViewById(R.id.listView);
-
+etNameScene =(EditText) rootView.findViewById(R.id.etNameScene);
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
         cbAddScene = (CheckBox) rootView.findViewById(R.id.cbAddScene);
         SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
@@ -126,7 +128,8 @@ public class AddSceneFragment extends Fragment {
                         chooseTool.addData(buttonItemCollectionCms.getData().get(i));
                     }
             }
-           chooseTool.setName("room"+buttonItemCollectionCms.getData().size());
+            Log.d("etName",etNameScene.getText().toString());
+           chooseTool.setName(etNameScene.getText().toString());
             FragmentListener listener = (FragmentListener) getActivity();
             listener.onAddSceneButtonClicked(chooseTool);
         }

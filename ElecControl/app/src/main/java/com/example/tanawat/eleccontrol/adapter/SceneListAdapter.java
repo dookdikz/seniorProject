@@ -20,6 +20,7 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
+import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 import com.google.gson.Gson;
 
@@ -125,8 +126,8 @@ private class ViewHolder{
                         editor.putString("json", json);
                         editor.apply();
 
-                        MainFragment mainFragment= new MainFragment();
-                        mainFragment.update();
+                        SceneFragment sceneFragment = new SceneFragment();
+                        sceneFragment.update();
                         notifyDataSetChanged();
 
                     }});

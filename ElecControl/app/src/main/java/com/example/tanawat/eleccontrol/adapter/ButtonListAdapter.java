@@ -103,8 +103,7 @@ public class ButtonListAdapter extends BaseAdapter {
             public void onClick(View v) {
 
 
-
-                AlertDialog.Builder adb=new AlertDialog.Builder(activity);
+                AlertDialog.Builder adb = new AlertDialog.Builder(activity);
                 adb.setTitle("Delete?");
                 adb.setMessage("Are you sure you want to delete " + buttonItemCollectionCms.getData().get(position).getName());
 
@@ -119,16 +118,17 @@ public class ButtonListAdapter extends BaseAdapter {
                         buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 
                         buttonItemCollectionCms.deleteData(positionToRemove);
-setButtonItemCollectionCms(buttonItemCollectionCms);
+                        setButtonItemCollectionCms(buttonItemCollectionCms);
                         String json = new Gson().toJson(buttonItemCollectionCms);
                         editor.putString("json", json);
                         editor.apply();
 
-                        MainFragment mainFragment= new MainFragment();
+                        MainFragment mainFragment = new MainFragment();
                         mainFragment.update();
                         notifyDataSetChanged();
 
-                    }});
+                    }
+                });
                 adb.show();
 
             }

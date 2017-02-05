@@ -91,14 +91,10 @@ public class AddSceneAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
-
-
-
-
-
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
+
         final ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
         if (buttonItemCms != null) {
             if(buttonItemCms.getName() !=null){

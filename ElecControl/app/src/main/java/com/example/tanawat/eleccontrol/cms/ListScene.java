@@ -51,6 +51,6 @@ public class ListScene implements Parcelable {
     }
 
     public void deleteData(int position) {
-
+            data.remove(position);
     }
 }

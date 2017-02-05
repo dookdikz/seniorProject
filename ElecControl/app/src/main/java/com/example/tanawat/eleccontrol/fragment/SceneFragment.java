@@ -188,6 +188,14 @@ buttonItemCollectionCms.addData(buttonItemCms1);
 
 
     }
+    public static void update() {
+
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
+        tvCountScene.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
