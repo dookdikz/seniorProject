@@ -1,13 +1,22 @@
 <resources>
     <string name="app_name">ElecControl</string>
     <string-array name="onOrOff">
-        <item>On</item>
         <item>Off</item>
+        <item>On</item>
 
     </string-array>
     <string-array name="chooseRemote">
         <item>Air</item>
         <item>Tv</item>
+    </string-array>
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
 
     </string-array>
     <string-array name="chooseSwitch">

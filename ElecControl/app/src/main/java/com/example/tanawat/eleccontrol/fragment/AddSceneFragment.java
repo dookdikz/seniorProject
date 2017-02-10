@@ -91,7 +91,7 @@ etNameScene =(EditText) rootView.findViewById(R.id.etNameScene);
 
         String jsonRead = pref.getString("json", null);
         buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-        Log.d("test",buttonItemCollectionCms.getData().get(0).getName());
+
 
 
 
@@ -121,6 +121,7 @@ etNameScene =(EditText) rootView.findViewById(R.id.etNameScene);
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.actionNext){
+
             ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
             ArrayList<Boolean> checkAdd = listAdapter.getCheckAdd() ;
             for(int i=0;i<buttonItemCollectionCms.getData().size();i++){

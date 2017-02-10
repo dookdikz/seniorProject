@@ -178,6 +178,8 @@ public class MainFragment extends Fragment {
                 buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
+                Toast.makeText(getContext(),buttonItemCollectionCms.getData().get(position).getName()+" "+buttonItemCollectionCms.getData().get(position).getstatus(),Toast.LENGTH_SHORT).show();
+
                 Log.d("count", String.valueOf(listAdapter.getCount()));
                 listView.setAdapter(listAdapter);
                 listAdapter.notifyDataSetChanged();

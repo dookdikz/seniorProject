@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
@@ -147,6 +148,9 @@ buttonItemCollectionCms.addData(buttonItemCms1);
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                for(int i=0;i<listScene.getData().get(position).getData().size();i++){
+                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus(),Toast.LENGTH_SHORT).show();
+                }
 
 //                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
 ////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
