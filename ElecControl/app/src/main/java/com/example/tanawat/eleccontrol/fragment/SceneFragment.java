@@ -112,9 +112,9 @@ public class SceneFragment extends Fragment {
         buttonItemCms2.setName("Control TV");
         buttonItemCms2.setstatus("Off");
         buttonItemCms2.setType("TV");
-//        List<ButtonItemCms> listCmsTest =new ArrayList<>();
-//        listCmsTest.add(buttonItemCms1);
-//        listCmsTest.add(buttonItemCms2);
+        List<ButtonItemCms> listCmsTest =new ArrayList<>();
+        listCmsTest.add(buttonItemCms1);
+        listCmsTest.add(buttonItemCms2);
         buttonItemCollectionCms = new ButtonItemCollectionCms();
 buttonItemCollectionCms.addData(buttonItemCms1);
         buttonItemCollectionCms.addData(buttonItemCms2);
@@ -128,14 +128,24 @@ buttonItemCollectionCms.addData(buttonItemCms1);
         String jsonRead = pref.getString("json", null);
         listScene = new Gson().fromJson(jsonRead, ListScene.class);
 
-        if (listScene != null) {
+        if (listScene != null ) {
 
             if (scene != null) {
+
                 listScene.addData(scene);
             }
         } else {
-            listScene = new ListScene(listSceneTest);
+            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editorKey = prefKey.edit();
+            int id=1;
+            String json = new Gson().toJson(id);
+            editorKey.putString("json", json);
+            editorKey.apply();
+            listScene = new ListScene();
+
+
         }
+
 
 
         listAdapter = new SceneListAdapter(listScene, getActivity());
@@ -149,8 +159,10 @@ buttonItemCollectionCms.addData(buttonItemCms1);
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 for(int i=0;i<listScene.getData().get(position).getData().size();i++){
-                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus()+"+"+listScene.getData().get(position).getName()+"+"+String.valueOf(listScene.getData().get(position).getId()),Toast.LENGTH_SHORT).show();
+
                 }
+
 
 //                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
 ////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();

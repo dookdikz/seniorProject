@@ -129,9 +129,20 @@ etNameScene =(EditText) rootView.findViewById(R.id.etNameScene);
                         chooseTool.addData(buttonItemCollectionCms.getData().get(i));
                     }
             }
-            Log.d("etName",etNameScene.getText().toString());
+            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editorKey = prefKey.edit();
+            String jsonRead = prefKey.getString("json",null);
+            int id = new Gson().fromJson(jsonRead,Integer.class);
+
+            id = id +1;
+            chooseTool.setId(id);
+
            chooseTool.setName(etNameScene.getText().toString());
             FragmentListener listener = (FragmentListener) getActivity();
+
+            String json = new Gson().toJson(String.valueOf(id));
+            editorKey.putString("json", json);
+            editorKey.apply();
             listener.onAddSceneButtonClicked(chooseTool);
         }
         return super.onOptionsItemSelected(item);

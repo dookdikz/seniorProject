@@ -48,7 +48,10 @@ public class SceneListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return listScene.getData().size();
+        if(listScene != null){
+            return listScene.getData().size();
+        }
+        return 0;
     }
 
     @Override

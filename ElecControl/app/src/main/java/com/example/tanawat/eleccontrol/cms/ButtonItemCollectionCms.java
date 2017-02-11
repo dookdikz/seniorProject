@@ -13,6 +13,16 @@ import java.util.List;
 public class ButtonItemCollectionCms implements Parcelable {
 
     private String name;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private List<ButtonItemCms> data = new ArrayList<>();
 
     public String getName() {
@@ -31,12 +41,14 @@ public class ButtonItemCollectionCms implements Parcelable {
     protected ButtonItemCollectionCms(Parcel in) {
         name = in.readString();
         data = in.createTypedArrayList(ButtonItemCms.CREATOR);
+        id = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeTypedList(data);
+        dest.writeInt(id);
     }
 
     @Override
@@ -70,6 +82,6 @@ public class ButtonItemCollectionCms implements Parcelable {
     public void  deleteData(int position){
 
         data.remove(position);
-        Log.d("position",String.valueOf(position));
+
     }
 }

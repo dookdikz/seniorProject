@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
@@ -32,14 +33,14 @@ public class AddSceneActivity extends AppCompatActivity implements AddSceneFragm
 
     @Override
     public void onAddSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms) {
-//        Intent intent = new Intent(AddSceneActivity.this, MainActivity.class);
-//        Log.d("testScene",buttonItemCollectionCms.getName());
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.putExtra("scene", buttonItemCollectionCms);
-//        intent.putExtra("activity","addSceneActivity");
-//        startActivity(intent);
-                Intent intent = new Intent(AddSceneActivity.this, SetTimeOrSensor.class);
-                startActivity(intent);
+        Intent intent = new Intent(AddSceneActivity.this, MainActivity.class);
+       
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("scene", buttonItemCollectionCms);
+        intent.putExtra("activity","addSceneActivity");
+        startActivity(intent);
+//                Intent intent = new Intent(AddSceneActivity.this, SetTimeOrSensor.class);
+//                startActivity(intent);
 
     }
 }

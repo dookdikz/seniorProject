@@ -3,16 +3,21 @@ package com.example.tanawat.eleccontrol.cms;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Tanawat on 31/1/2560.
  */
 public class ListScene implements Parcelable {
-    private List<ButtonItemCollectionCms> data;
+    private List<ButtonItemCollectionCms> data = new ArrayList<>();
 
-    public ListScene(List<ButtonItemCollectionCms> data) {
+    public void setData(List<ButtonItemCollectionCms> data) {
         this.data = data;
+    }
+
+    public ListScene() {
+
     }
 
     protected ListScene(Parcel in) {
