@@ -11,18 +11,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvShowSetTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="   " />
+        android:text="None" />
 
     <Button
-        android:id="@+id/startSetDialog"
+        android:id="@+id/startSetTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Set Time" />
     <Button
-        android:id="@+id/cancelAlarm"
+        android:id="@+id/btnCancelAlarm"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Cancel Time" />

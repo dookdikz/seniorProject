@@ -32,9 +32,7 @@ import java.util.ArrayList;
  * Created by nuuneoi on 11/16/2014.
  */
 public class AddSceneFragment extends Fragment {
-    public interface FragmentListener{
-        void onAddSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms);
-    }
+
     static ListView listView;
     static TextView tvCountTool;
     static AddSceneAdapter listAdapter;
@@ -138,12 +136,14 @@ etNameScene =(EditText) rootView.findViewById(R.id.etNameScene);
             chooseTool.setId(id);
 
            chooseTool.setName(etNameScene.getText().toString());
-            FragmentListener listener = (FragmentListener) getActivity();
+
 
             String json = new Gson().toJson(String.valueOf(id));
             editorKey.putString("json", json);
             editorKey.apply();
-            listener.onAddSceneButtonClicked(chooseTool);
+           getFragmentManager().beginTransaction().replace(R.id.contentContainer,SetTimeOrSensorFragment.newInstance(chooseTool)).commit();
+
+
         }
         return super.onOptionsItemSelected(item);
     }

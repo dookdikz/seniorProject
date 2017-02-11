@@ -9,11 +9,12 @@ import android.util.Log;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.fragment.AddSceneFragment;
+import com.example.tanawat.eleccontrol.fragment.SetTimeOrSensorFragment;
 
 /**
  * Created by Tanawat on 2/2/2560.
  */
-public class AddSceneActivity extends AppCompatActivity implements AddSceneFragment.FragmentListener {
+public class AddSceneActivity extends AppCompatActivity implements SetTimeOrSensorFragment.FragmentListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -34,7 +35,7 @@ public class AddSceneActivity extends AppCompatActivity implements AddSceneFragm
     @Override
     public void onAddSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms) {
         Intent intent = new Intent(AddSceneActivity.this, MainActivity.class);
-       
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("scene", buttonItemCollectionCms);
         intent.putExtra("activity","addSceneActivity");

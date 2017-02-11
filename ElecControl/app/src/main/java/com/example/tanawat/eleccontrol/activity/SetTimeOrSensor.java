@@ -33,14 +33,10 @@ import java.util.Calendar;
  */
 public class SetTimeOrSensor extends AppCompatActivity {
 
-    TimePicker myTimePicker;
+
     Button buttonstartSetDialog;
-    private ListView listAlarm;
-    public static ArrayList<String> listValue;
 
-    TimePickerDialog timePickerDialog;
 
-    final static int RQS_1 = 1;
 
     /** Called when the activity is first created. */
     @Override
@@ -50,7 +46,7 @@ public class SetTimeOrSensor extends AppCompatActivity {
 
 
 
-        buttonstartSetDialog = (Button)findViewById(R.id.startSetDialog);
+        buttonstartSetDialog = (Button)findViewById(R.id.startSetTime);
         buttonstartSetDialog.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -70,48 +66,14 @@ public class SetTimeOrSensor extends AppCompatActivity {
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = DateDialogFragment.newInstance(2);
-        newFragment.show(ft, "dialog");
+//        DialogFragment newFragment = DateDialogFragment.newInstance(2);
+//        newFragment.show(ft, "dialog");
 
 
     }
 
-    class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        int callCount = 0;
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
 
 
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-            if(callCount==0){
-                // Do something with the time chosen by the user
-                Calendar cal = Calendar.getInstance();
-
-                cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                cal.set(Calendar.MINUTE, minute);
-
-                setAlarm(cal);
-            }
-            callCount++;
-        }
-    }
-
-    public void setAlarm(Calendar targetCal){
-
-
-    }
 
     @Override
     protected void onResume() {

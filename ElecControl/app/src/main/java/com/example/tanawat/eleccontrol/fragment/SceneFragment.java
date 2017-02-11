@@ -65,6 +65,7 @@ public class SceneFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
+
         scene = getArguments().getParcelable("scene");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -159,7 +160,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 for(int i=0;i<listScene.getData().get(position).getData().size();i++){
-                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus()+"+"+listScene.getData().get(position).getName()+"+"+String.valueOf(listScene.getData().get(position).getId()),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus()+"+"+listScene.getData().get(position).getName()+"+"+String.valueOf(listScene.getData().get(position).getId()+","+listScene.getData().get(position).getTime()),Toast.LENGTH_SHORT).show();
 
                 }
 

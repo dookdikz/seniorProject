@@ -1,7 +1,7 @@
 package com.example.tanawat.eleccontrol.fragment;
 
 import android.app.AlarmManager;
-import android.app.DialogFragment;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -177,15 +178,12 @@ public class DateDialogFragment extends DialogFragment {
 
 
                 calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-                Log.d("Friday", String.valueOf(dayOfWeek + "+" + String.valueOf(Calendar.FRIDAY)));
+
                 calendar.set(Calendar.HOUR_OF_DAY, tpSelectedTime.getCurrentHour());
                 calendar.set(Calendar.MINUTE, tpSelectedTime.getCurrentMinute());
                 final int _id = 5;
-                Log.d("timeMill", String.valueOf(calendar.getTimeInMillis() + "+" + String.valueOf(_id)));
-                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                SetTimeOrSensorFragment setTimeOrSensorFragment =new SetTimeOrSensorFragment();
+                setTimeOrSensorFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
                 getDialog().dismiss();
 
             }

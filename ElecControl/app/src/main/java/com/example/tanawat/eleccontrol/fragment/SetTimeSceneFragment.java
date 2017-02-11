@@ -69,7 +69,7 @@ public class SetTimeSceneFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        buttonstartSetDialog = (Button) rootView.findViewById(R.id.startSetDialog);
+        buttonstartSetDialog = (Button) rootView.findViewById(R.id.startSetTime);
         buttonstartSetDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
