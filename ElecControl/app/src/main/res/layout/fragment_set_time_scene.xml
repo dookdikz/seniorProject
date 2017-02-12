@@ -14,18 +14,28 @@
         android:id="@+id/tvShowSetTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="25dp"
         android:text="None" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <Button
         android:id="@+id/startSetTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Set Time" />
+        android:text="Set Time"
+        android:layout_weight="1"/>
     <Button
         android:id="@+id/btnCancelAlarm"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Cancel Time" />
+        android:text="Cancel Time"
+        android:layout_weight="1"/>
+</LinearLayout>
+
 
 
 </LinearLayout>

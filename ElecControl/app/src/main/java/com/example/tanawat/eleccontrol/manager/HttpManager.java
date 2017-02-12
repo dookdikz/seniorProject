@@ -1,6 +1,8 @@
 package com.example.tanawat.eleccontrol.manager;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.manager.http.ApiService;
 import com.google.gson.Gson;
@@ -14,8 +16,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by nuuneoi on 11/16/2014.
  */
 public class HttpManager {
+String url = "http://158.108.122.48:5000/";
 
-    private static HttpManager instance;
+    public void setUrl(String url) {
+        this.url = url;
+        Log.d("setUrl",url);
+    }
+
+    public static HttpManager instance;
 
     public static HttpManager getInstance() {
         if (instance == null)
@@ -26,7 +34,7 @@ public class HttpManager {
     private Context mContext;
     private ApiService service;
 
-    private HttpManager() {
+    public HttpManager() {
         mContext = Contextor.getInstance().getContext();
 
         Gson gson = new GsonBuilder()
@@ -35,7 +43,7 @@ public class HttpManager {
 
         Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("http://google.com")
-                .baseUrl("http://158.108.122.48:5000/")
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

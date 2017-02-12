@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
@@ -71,6 +73,7 @@ public class MainFragment extends Fragment {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putParcelable("cms", cms);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,7 +83,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         cms = getArguments().getParcelable("cms");
-
+        getActivity().setTitle("Tool");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -147,6 +150,12 @@ public class MainFragment extends Fragment {
                 buttonItemCollectionCms.addData(cms);
             }
         } else {
+            SharedPreferences prefKey = getContext().getSharedPreferences("keyTool", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editorKey = prefKey.edit();
+            int id=1;
+            String json = new Gson().toJson(id);
+            editorKey.putString("json", json);
+            editorKey.apply();
             buttonItemCollectionCms = new ButtonItemCollectionCms();
         }
 
@@ -178,7 +187,7 @@ public class MainFragment extends Fragment {
                 buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
-                Toast.makeText(getContext(),buttonItemCollectionCms.getData().get(position).getName()+" "+buttonItemCollectionCms.getData().get(position).getstatus(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),buttonItemCollectionCms.getData().get(position).getName()+" "+buttonItemCollectionCms.getData().get(position).getstatus()+" "+buttonItemCollectionCms.getData().get(position).getId(),Toast.LENGTH_SHORT).show();
 
                 Log.d("count", String.valueOf(listAdapter.getCount()));
                 listView.setAdapter(listAdapter);
@@ -230,7 +239,7 @@ public class MainFragment extends Fragment {
         listView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-        Log.d("testt", String.valueOf(listAdapter.getCount()));
+
     }
 
     @Override
@@ -264,6 +273,18 @@ public class MainFragment extends Fragment {
             listener.onAddButtonClicked();
 
 
+        }
+        else if (item.getItemId() == R.id.actionSetting){
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            // Create and show the dialog.
+            DialogFragment newFragment = SettingDialogFragment.newInstance(2);
+            newFragment.show(ft, "dialog");
         }
         return super.onOptionsItemSelected(item);
     }

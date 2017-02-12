@@ -13,12 +13,19 @@
             android:id="@+id/btnGoTool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tool"/>
+            android:text="Tool"
+            android:layout_weight="1"
+
+            />
+
         <Button
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
             android:id="@+id/btnGoScene"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scene"/>
+            android:text="Scene" />
     </LinearLayout>
     <TextView
         android:id="@+id/tvCountScene"

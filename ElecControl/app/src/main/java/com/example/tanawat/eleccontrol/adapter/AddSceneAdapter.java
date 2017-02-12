@@ -5,14 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -27,14 +23,22 @@ import java.util.ArrayList;
 public class AddSceneAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
     Context activity;
-   ArrayList<Boolean> checkAdd = new ArrayList<>();
-    private Spinner spinAddCommand;
+
+    ArrayList<Boolean> checkAdd = new ArrayList<>();
+    ArrayList<Boolean> checkOnOrOff = new ArrayList<>();
+//    private Spinner spinAddCommand;
+
+
+    public ArrayList<Boolean> getCheckOnOrOff() {
+        return checkOnOrOff;
+    }
 
     public ArrayList<Boolean> getCheckAdd() {
         return checkAdd;
     }
 
     CheckBox cbAddScene;
+    CheckBox ivOnOrOff;
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
         return buttonItemCollectionCms;
@@ -67,6 +71,7 @@ public class AddSceneAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
+
     private class ViewHolder {
         TextView tvNameCommand;
         TextView tvNameType;
@@ -78,6 +83,7 @@ public class AddSceneAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ButtonListItem item;
+
         LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -86,7 +92,8 @@ public class AddSceneAdapter extends BaseAdapter {
 //
 //        } else {
         checkAdd.add(false);
-        if(convertView == null){
+        checkOnOrOff.add(false);
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_add_scene, null);
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
@@ -97,8 +104,8 @@ public class AddSceneAdapter extends BaseAdapter {
 
         final ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
         if (buttonItemCms != null) {
-            if(buttonItemCms.getName() !=null){
-                if(holder!=null){
+            if (buttonItemCms.getName() != null) {
+                if (holder != null) {
 
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
@@ -107,48 +114,46 @@ public class AddSceneAdapter extends BaseAdapter {
                 }
 
             }
-            spinAddCommand = (Spinner) convertView.findViewById(R.id.spinOnOrOff);
-            final String[] onOrOff = convertView.getResources().getStringArray(R.array.onOrOff);
-            final ArrayAdapter<String> adapterType = new ArrayAdapter<String>(convertView.getContext(),
-                    android.R.layout.simple_dropdown_item_1line,onOrOff);
-            spinAddCommand.setAdapter(adapterType);
-            spinAddCommand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if( buttonItemCms.getstatus().equals("On")){
-                    buttonItemCms.setstatus("Off");
-
-                }
-                else if(buttonItemCms.getstatus().equals("Off")){
-                   buttonItemCms.setstatus("On");
-
-                }
-                Log.d("spin",buttonItemCms.getstatus());
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-            });
             // item.setTvNameText(buttonItemCms.getName());
             //  item.setTvTypeText(buttonItemCms.getType());
 
 
         }
+
+
+        ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff) ;
+        ivOnOrOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkOnOrOff.get(position) == true) {
+                    checkOnOrOff.set(position, false);
+                } else {
+                    checkOnOrOff.set(position, true);
+                }
+
+//                Log.d("position", String.valueOf(position));
+//                if(ivOnOrOff.isChecked()){
+//
+//
+//                    buttonItemCms.setstatus("Off");
+//                }
+//                else if(!ivOnOrOff.isChecked()){
+//
+//                    buttonItemCms.setstatus("On");
+//                }
+//
+//                Log.d("position", buttonItemCms.getName()+" "+buttonItemCms.getstatus());
+            }
+        });
         cbAddScene = (CheckBox) convertView.findViewById(R.id.cbAddScene);
         cbAddScene.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("position", String.valueOf(position));
-                if(checkAdd.get(position)==true){
+
+                if (checkAdd.get(position) == true) {
                     checkAdd.set(position, false);
-                }
-                else{
+                } else {
                     checkAdd.set(position, true);
                 }
 
@@ -158,7 +163,6 @@ public class AddSceneAdapter extends BaseAdapter {
 
 
         return convertView;
-
 
 
     }

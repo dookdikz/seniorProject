@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,7 +67,7 @@ public class SceneFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
-
+getActivity().setTitle("Scene");
         scene = getArguments().getParcelable("scene");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -75,6 +77,7 @@ public class SceneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_scene, container, false);
+
         initInstances(rootView, savedInstanceState);
         return rootView;
     }
@@ -158,11 +161,27 @@ buttonItemCollectionCms.addData(buttonItemCms1);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
+                ButtonItemCollectionCms allTool ;
+                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                String jsonRead = pref.getString("json", null);
+                allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
                 for(int i=0;i<listScene.getData().get(position).getData().size();i++){
                     Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus()+"+"+listScene.getData().get(position).getName()+"+"+String.valueOf(listScene.getData().get(position).getId()+","+listScene.getData().get(position).getTime()),Toast.LENGTH_SHORT).show();
+                    int idToolInScene = listScene.getData().get(position).getData().get(i).getId();
+                    if(allTool!=null){
+                        for(int j=0;j<allTool.getData().size();j++){
+                            int idTool = allTool.getData().get(j).getId();
+                            if(idTool == idToolInScene){
+                                allTool.getData().get(j).setstatus(listScene.getData().get(position).getData().get(i).getstatus());
+                            }
+                        }
+                    }
 
                 }
+                String json = new Gson().toJson(allTool);
+                editor.putString("json", json);
+                editor.apply();
 
 
 //                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
@@ -237,6 +256,18 @@ buttonItemCollectionCms.addData(buttonItemCms1);
             listener.onAddSceneButtonClicked();
 
 
+        }
+        else if (item.getItemId() == R.id.actionSetting){
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            // Create and show the dialog.
+            DialogFragment newFragment = SettingDialogFragment.newInstance(2);
+            newFragment.show(ft, "dialog");
         }
         return super.onOptionsItemSelected(item);
     }

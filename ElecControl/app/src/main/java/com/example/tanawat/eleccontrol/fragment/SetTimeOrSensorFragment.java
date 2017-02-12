@@ -151,13 +151,22 @@ calendar = Calendar.getInstance();
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.actionNext){
-            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), buttonItemCollectionCms.getId(), intent, 0);
-            AlarmManager alarmManager = (AlarmManager)getContext().getSystemService(getContext().ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            buttonItemCollectionCms.setTime(time);
-            FragmentListener listener = (FragmentListener) getActivity();
-            listener.onAddSceneButtonClicked(buttonItemCollectionCms);
+            if(calendar!=null){
+                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), buttonItemCollectionCms.getId(), intent, 0);
+                AlarmManager alarmManager = (AlarmManager)getContext().getSystemService(getContext().ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                buttonItemCollectionCms.setTime(time);
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onAddSceneButtonClicked(buttonItemCollectionCms);
+
+            }
+            else{
+                buttonItemCollectionCms.setTime(time);
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onAddSceneButtonClicked(buttonItemCollectionCms);
+            }
+
 
         }
         return super.onOptionsItemSelected(item);

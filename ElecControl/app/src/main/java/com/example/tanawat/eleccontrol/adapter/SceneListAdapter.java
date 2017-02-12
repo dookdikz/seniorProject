@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 public class SceneListAdapter extends BaseAdapter {
     ListScene listScene ;
     Button btnDelete;
+    ImageView ivTimeSet;
     private Context activity;
 
 
@@ -65,6 +66,7 @@ public class SceneListAdapter extends BaseAdapter {
     }
 private class ViewHolder{
     TextView tvNameScene;
+
 }
 
     @Override
@@ -96,6 +98,7 @@ private class ViewHolder{
             convertView = inflater.inflate(R.layout.list_item_scene, null);
             holder = new ViewHolder();
             holder.tvNameScene = (TextView) convertView.findViewById(R.id.tvNameScene);
+
 
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
@@ -141,12 +144,21 @@ private class ViewHolder{
 
 
 
+        ivTimeSet = (ImageView) convertView.findViewById(R.id.ivTimeSet);
         ButtonItemCollectionCms buttonItemCollectionCms = (ButtonItemCollectionCms) getItem(position);
+        if(buttonItemCollectionCms.getTime().equals("None")){
+            ivTimeSet.setImageResource(R.drawable.time_off);
+        }
+        else {
+            ivTimeSet.setImageResource(R.drawable.time_on);
+        }
         if (buttonItemCollectionCms != null) {
             Log.d("testD",String.valueOf(position));
             if(buttonItemCollectionCms.getName() !=null){
                 if(holder!=null){
                     holder.tvNameScene.setText(buttonItemCollectionCms.getName());
+
+
 
                 }
 
