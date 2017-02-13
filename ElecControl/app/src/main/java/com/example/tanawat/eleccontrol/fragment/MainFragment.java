@@ -1,9 +1,12 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.activity.CrawlAlarm;
 import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -173,6 +177,162 @@ public class MainFragment extends Fragment {
                 SharedPreferences.Editor editor = pref.edit();
 
 
+                if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
+//                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeAir();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
+//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openTv();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeTv();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1")) {
+//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch1();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch1();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
+//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch2();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch2();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+                else if (buttonItemCollectionCms.getData().get(position).getType().equals("Curtain")) {
+//                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
+                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openCurtain();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeCurtain();
+                        call.enqueue(new Callback<TestSendWeb>() {
+                            @Override
+                            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+                else {
+                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+                }
                 if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
                     buttonItemCollectionCms.getData().get(position).setstatus("On");
                 } else if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
@@ -193,37 +353,7 @@ public class MainFragment extends Fragment {
                 listView.setAdapter(listAdapter);
                 listAdapter.notifyDataSetChanged();
 
-//                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
-////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
-//                    call.enqueue(new Callback<TestSendWeb>() {
-//                        @Override
-//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-//                            Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
-////                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().closeLight();
-//                    call.enqueue(new Callback<TestSendWeb>() {
-//                        @Override
-//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-//                            Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else {
-//                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
-//                }
+
             }
         });
         listAdapter.notifyDataSetChanged();
@@ -231,6 +361,20 @@ public class MainFragment extends Fragment {
         editor.putString("json", json);
         editor.apply();
 
+        final AlarmManager am=(AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent i = new Intent(getContext(), CrawlAlarm.class);
+        final PendingIntent pi = PendingIntent.getBroadcast(getContext(), 0, i, 0);
+        am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 5, pi); // Millisec * Second * Minute
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                am.cancel(pi);
+            }
+
+        }, 60 * 1000);
 
     }
 

@@ -16,11 +16,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by nuuneoi on 11/16/2014.
  */
 public class HttpManager {
-String url = "http://158.108.122.48:5000/";
+static String url = "http://158.108.122.48:5000/";
 
-    public void setUrl(String url) {
-        this.url = url;
-        Log.d("setUrl",url);
+    public static String getUrl() {
+        return url;
+    }
+
+    public static void setUrl(String url) {
+        HttpManager.url = url;
     }
 
     public static HttpManager instance;

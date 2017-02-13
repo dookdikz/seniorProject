@@ -113,7 +113,8 @@ public class SettingDialogFragment extends DialogFragment {
         //       in onSavedInstanceState
         etSetUrl = (EditText) rootView.findViewById(R.id.etSetUrl);
         btnSetUrl=(Button) rootView.findViewById(R.id.btnSetUrl);
-
+        HttpManager httpManager = new HttpManager();
+etSetUrl.setText(httpManager.getUrl());
         btnSetUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
