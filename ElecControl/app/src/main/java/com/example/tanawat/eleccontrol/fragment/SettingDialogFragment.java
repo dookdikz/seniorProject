@@ -123,6 +123,7 @@ public class SettingDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 MainFragment.setUrl(etSetUrl.getText().toString());
+                SceneFragment.setUrl(etSetUrl.getText().toString());
                 getDialog().dismiss();
 
             }

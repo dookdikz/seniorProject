@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by nuuneoi on 11/16/2014.
  */
 public class HttpManager {
-static public String url ;
+static public String url = "http://158.108.122.70:5000/" ;
 
     public static String getUrl() {
         return url;

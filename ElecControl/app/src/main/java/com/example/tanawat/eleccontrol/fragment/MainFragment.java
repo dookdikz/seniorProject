@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnGoScene;
-    static String url;
+    static String url = "http://158.108.122.70:5000/";
 
     public MainFragment() {
         super();
@@ -180,11 +180,11 @@ public class MainFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-
+                HttpManager.setUrl(url);
                 if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-                    HttpManager.setUrl(url);
-                 
+
+
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
 
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
