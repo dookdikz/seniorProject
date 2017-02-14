@@ -47,7 +47,7 @@ public class SetTimeOrSensorFragment extends Fragment {
     ButtonItemCollectionCms buttonItemCollectionCms;
     static TextView tvSetTime;
     static String time = "None";
-    static Calendar calendar;
+    static Calendar calendar ;
     public SetTimeOrSensorFragment() {
         super();
     }
@@ -57,6 +57,9 @@ public class SetTimeOrSensorFragment extends Fragment {
         Bundle args = new Bundle();
         args.putParcelable("newScene", buttonItemCollectionCms);
         fragment.setArguments(args);
+
+
+
         return fragment;
     }
 
@@ -66,6 +69,8 @@ public class SetTimeOrSensorFragment extends Fragment {
         init(savedInstanceState);
         setHasOptionsMenu(true);
         buttonItemCollectionCms = getArguments().getParcelable("newScene");
+time ="None";
+
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -88,6 +93,7 @@ public class SetTimeOrSensorFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+
         buttonstartSetTime = (Button) rootView.findViewById(R.id.startSetTime);
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         buttonstartSetTime.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +108,8 @@ public class SetTimeOrSensorFragment extends Fragment {
         buttonstartCancelTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.clear();
+
+
                 tvSetTime.setText("None");
             }
         });
@@ -151,7 +158,8 @@ calendar = Calendar.getInstance();
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.actionNext){
-            if(calendar!=null){
+            if(!tvSetTime.getText().equals("None")){
+                Log.d("clearCalendar1","eiei");
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
                 intent.putExtra("sceneAlarm",buttonItemCollectionCms);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), buttonItemCollectionCms.getId(), intent, 0);
@@ -161,8 +169,10 @@ calendar = Calendar.getInstance();
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddSceneButtonClicked(buttonItemCollectionCms);
 
+
             }
             else{
+                Log.d("clearCalendar2","eiei");
                 buttonItemCollectionCms.setTime(time);
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddSceneButtonClicked(buttonItemCollectionCms);

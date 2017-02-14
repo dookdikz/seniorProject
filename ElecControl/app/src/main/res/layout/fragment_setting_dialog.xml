@@ -31,7 +31,8 @@
         android:id="@+id/etSetUrl"
         android:textSize="25dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="http://158.108.122.70:5000/"/>
     </LinearLayout>
 </LinearLayout>
     <Button

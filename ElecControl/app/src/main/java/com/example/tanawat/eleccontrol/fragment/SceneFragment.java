@@ -119,6 +119,8 @@ getActivity().setTitle("Scene");
         List<ButtonItemCms> listCmsTest =new ArrayList<>();
         listCmsTest.add(buttonItemCms1);
         listCmsTest.add(buttonItemCms2);
+
+
         buttonItemCollectionCms = new ButtonItemCollectionCms();
 buttonItemCollectionCms.addData(buttonItemCms1);
         buttonItemCollectionCms.addData(buttonItemCms2);

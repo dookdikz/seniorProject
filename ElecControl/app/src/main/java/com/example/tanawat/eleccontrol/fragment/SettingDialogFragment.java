@@ -1,5 +1,7 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 
@@ -113,13 +116,13 @@ public class SettingDialogFragment extends DialogFragment {
         //       in onSavedInstanceState
         etSetUrl = (EditText) rootView.findViewById(R.id.etSetUrl);
         btnSetUrl=(Button) rootView.findViewById(R.id.btnSetUrl);
-        HttpManager httpManager = new HttpManager();
-etSetUrl.setText(httpManager.getUrl());
+
+
+
         btnSetUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpManager http = new HttpManager();
-                http.setUrl(etSetUrl.getText().toString());
+                MainFragment.setUrl(etSetUrl.getText().toString());
                 getDialog().dismiss();
 
             }

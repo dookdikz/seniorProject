@@ -64,7 +64,6 @@ public class ShowEvent extends Activity implements OnClickListener {
         for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
 
 
-
             buttonItemCms = buttonItemCollectionCms.getData().get(i);
 
             if (buttonItemCms.getType().equals("Air")) {
@@ -218,19 +217,17 @@ public class ShowEvent extends Activity implements OnClickListener {
             }
 
 
-
-
         }
         SharedPreferences pref = getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         String jsonRead = pref.getString("json", null);
         allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-        for(int i=0;i<buttonItemCollectionCms.getData().size();i++){
+        for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
             int idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
-            if(allTool!=null){
-                for(int j=0;j<allTool.getData().size();j++){
+            if (allTool != null) {
+                for (int j = 0; j < allTool.getData().size(); j++) {
                     int idTool = allTool.getData().get(j).getId();
-                    if(idTool == idToolInScene){
+                    if (idTool == idToolInScene) {
                         allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
                     }
                 }

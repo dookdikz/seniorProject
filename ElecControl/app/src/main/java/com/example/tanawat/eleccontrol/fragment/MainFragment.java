@@ -68,6 +68,7 @@ public class MainFragment extends Fragment {
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnGoScene;
+    static String url;
 
     public MainFragment() {
         super();
@@ -80,6 +81,10 @@ public class MainFragment extends Fragment {
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static void setUrl(String url) {
+        MainFragment.url = url;
     }
 
     @Override
@@ -156,7 +161,7 @@ public class MainFragment extends Fragment {
         } else {
             SharedPreferences prefKey = getContext().getSharedPreferences("keyTool", Context.MODE_PRIVATE);
             SharedPreferences.Editor editorKey = prefKey.edit();
-            int id=1;
+            int id = 1;
             String json = new Gson().toJson(id);
             editorKey.putString("json", json);
             editorKey.apply();
@@ -176,15 +181,17 @@ public class MainFragment extends Fragment {
                 SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
 
-
                 if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                    HttpManager.setUrl(url);
+                 
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
+
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -192,13 +199,12 @@ public class MainFragment extends Fragment {
                                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().closeAir();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -210,12 +216,12 @@ public class MainFragment extends Fragment {
 
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openTv();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -223,13 +229,12 @@ public class MainFragment extends Fragment {
                                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().closeTv();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -240,12 +245,12 @@ public class MainFragment extends Fragment {
                     }
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch1();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -253,13 +258,12 @@ public class MainFragment extends Fragment {
                                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch1();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -270,12 +274,12 @@ public class MainFragment extends Fragment {
                     }
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch2();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -283,13 +287,12 @@ public class MainFragment extends Fragment {
                                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch2();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -298,15 +301,14 @@ public class MainFragment extends Fragment {
                             }
                         });
                     }
-                }
-                else if (buttonItemCollectionCms.getData().get(position).getType().equals("Curtain")) {
+                } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Curtain")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("On")){
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().openCurtain();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -314,13 +316,12 @@ public class MainFragment extends Fragment {
                                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Call<TestSendWeb> call = HttpManager.getInstance().getService().closeCurtain();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-                                Toast.makeText(getContext(), "Suscess + " +buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Suscess + " + buttonItemCollectionCms.getData().get(position).getName(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -329,8 +330,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
                 if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
@@ -347,7 +347,7 @@ public class MainFragment extends Fragment {
                 buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
-                Toast.makeText(getContext(),buttonItemCollectionCms.getData().get(position).getName()+" "+buttonItemCollectionCms.getData().get(position).getstatus()+" "+buttonItemCollectionCms.getData().get(position).getId(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), buttonItemCollectionCms.getData().get(position).getName() + " " + buttonItemCollectionCms.getData().get(position).getstatus() + " " + buttonItemCollectionCms.getData().get(position).getId(), Toast.LENGTH_SHORT).show();
 
                 Log.d("count", String.valueOf(listAdapter.getCount()));
                 listView.setAdapter(listAdapter);
@@ -361,20 +361,20 @@ public class MainFragment extends Fragment {
         editor.putString("json", json);
         editor.apply();
 
-        final AlarmManager am=(AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(getContext(), CrawlAlarm.class);
-        final PendingIntent pi = PendingIntent.getBroadcast(getContext(), 0, i, 0);
-        am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 5, pi); // Millisec * Second * Minute
-
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                am.cancel(pi);
-            }
-
-        }, 60 * 1000);
+//        final AlarmManager am=(AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+//        Intent i = new Intent(getContext(), CrawlAlarm.class);
+//        final PendingIntent pi = PendingIntent.getBroadcast(getContext(), 0, i, 0);
+//        am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 5, pi); // Millisec * Second * Minute
+//
+//        Handler mHandler = new Handler();
+//        mHandler.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                am.cancel(pi);
+//            }
+//
+//        }, 60 * 1000);
 
     }
 
@@ -417,8 +417,7 @@ public class MainFragment extends Fragment {
             listener.onAddButtonClicked();
 
 
-        }
-        else if (item.getItemId() == R.id.actionSetting){
+        } else if (item.getItemId() == R.id.actionSetting) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             Fragment prev = getFragmentManager().findFragmentByTag("dialog");
             if (prev != null) {
