@@ -187,7 +187,7 @@ public class MainFragment extends Fragment {
 
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
 
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeAir();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -200,7 +200,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     } else {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeAir();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -217,7 +217,7 @@ public class MainFragment extends Fragment {
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openTv();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeTv();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -230,7 +230,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     } else {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeTv();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openTv();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -246,7 +246,7 @@ public class MainFragment extends Fragment {
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch1();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch1();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -259,7 +259,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     } else {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch1();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch1();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -275,7 +275,7 @@ public class MainFragment extends Fragment {
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch2();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch2();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -288,7 +288,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     } else {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch2();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch2();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -304,7 +304,7 @@ public class MainFragment extends Fragment {
                 } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Curtain")) {
 //                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
                     if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openCurtain();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeCurtain();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
@@ -317,7 +317,7 @@ public class MainFragment extends Fragment {
                             }
                         });
                     } else {
-                        Call<TestSendWeb> call = HttpManager.getInstance().getService().closeCurtain();
+                        Call<TestSendWeb> call = HttpManager.getInstance().getService().openCurtain();
                         call.enqueue(new Callback<TestSendWeb>() {
                             @Override
                             public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
