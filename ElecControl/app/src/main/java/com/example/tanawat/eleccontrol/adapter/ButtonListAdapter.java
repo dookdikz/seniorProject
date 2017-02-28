@@ -25,6 +25,11 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 /**
@@ -78,6 +83,7 @@ public class ButtonListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ButtonListItem item;
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -96,7 +102,20 @@ public class ButtonListAdapter extends BaseAdapter {
             //     item = new ButtonListItem(parent.getContext());
         }
 
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                setButtonItemCollectionCms(buttonItemCollectionCms);
+                Log.d("checkkk","ye");
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,17 +130,20 @@ public class ButtonListAdapter extends BaseAdapter {
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
+//                        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = pref.edit();
 
-                        String jsonRead = pref.getString("json", null);
-                        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+//                        String jsonRead = pref.getString("json", null);
+
+//                        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+                        Log.d("checkkk",String.valueOf(buttonItemCollectionCms.getData().size()));
 
                         buttonItemCollectionCms.deleteData(positionToRemove);
-                        setButtonItemCollectionCms(buttonItemCollectionCms);
-                        String json = new Gson().toJson(buttonItemCollectionCms);
-                        editor.putString("json", json);
-                        editor.apply();
+                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+//                        setButtonItemCollectionCms(buttonItemCollectionCms);
+//                        String json = new Gson().toJson(buttonItemCollectionCms);
+//                        editor.putString("json", json);
+//                        editor.apply();
 
                         MainFragment mainFragment = new MainFragment();
                         mainFragment.update();

@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Tanawat on 7/11/2559.
  */
 public class ButtonItemCms implements Parcelable {
-    private int id;
+    private String id;
     private String name;
     private String status;
     private String type;
@@ -16,7 +16,7 @@ public class ButtonItemCms implements Parcelable {
     }
 
     protected ButtonItemCms(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         name = in.readString();
         status = in.readString();
         type = in.readString();
@@ -24,7 +24,7 @@ public class ButtonItemCms implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(status);
         dest.writeString(type);
@@ -47,11 +47,11 @@ public class ButtonItemCms implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

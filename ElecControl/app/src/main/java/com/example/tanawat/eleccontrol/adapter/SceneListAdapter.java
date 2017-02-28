@@ -22,6 +22,11 @@ import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 /**
@@ -73,6 +78,7 @@ private class ViewHolder{
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ButtonListItem item;
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -104,7 +110,18 @@ private class ViewHolder{
             //     item = new ButtonListItem(parent.getContext());
         }
 
+        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listScene = dataSnapshot.getValue(ListScene.class);
+                setListScene(listScene);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,17 +137,19 @@ private class ViewHolder{
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("listScene", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
+//                        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("listScene", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = pref.edit();
+//
+//                        String jsonRead = pref.getString("json", null);
+//                        listScene = new Gson().fromJson(jsonRead, ListScene.class);
 
-                        String jsonRead = pref.getString("json", null);
-                        listScene = new Gson().fromJson(jsonRead, ListScene.class);
 
                         listScene.deleteData(positionToRemove);
+                        mRootRef.child("listScene").setValue(listScene);
 
-                        String json = new Gson().toJson(listScene);
-                        editor.putString("json", json);
-                        editor.apply();
+//                        String json = new Gson().toJson(listScene);
+//                        editor.putString("json", json);
+//                        editor.apply();
 
                         SceneFragment sceneFragment = new SceneFragment();
                         sceneFragment.update();

@@ -16,18 +16,20 @@ import com.example.tanawat.eleccontrol.fragment.AddCurtainFragment;
 import com.example.tanawat.eleccontrol.fragment.AddRemoteFragment;
 import com.example.tanawat.eleccontrol.fragment.AddSwitchFragment;
 import com.example.tanawat.eleccontrol.fragment.AddToolFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 /**
  * Created by Tanawat on 26/1/2560.
  */
-public class AddToolActivity extends AppCompatActivity implements AddRemoteFragment.FragmentListener,AddSwitchFragment.FragmentListener,AddCurtainFragment.FragmentListener {
+public class AddToolActivity extends AppCompatActivity implements AddRemoteFragment.FragmentListener, AddSwitchFragment.FragmentListener, AddCurtainFragment.FragmentListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tool);
         initInstance();
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, AddToolFragment.newInstance()).commit();
         }
     }
@@ -40,24 +42,28 @@ public class AddToolActivity extends AppCompatActivity implements AddRemoteFragm
 
     @Override
     public void onAddToolCommandButtonClicked(ButtonItemCms buttonItemCms) {
+        DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         Intent intent = new Intent(AddToolActivity.this, MainActivity.class);
-        Log.d("testAdd", buttonItemCms.getName());
-        SharedPreferences prefKey = getApplicationContext().getSharedPreferences("keyTool", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorKey = prefKey.edit();
-        String jsonRead = prefKey.getString("json",null);
-        int id = new Gson().fromJson(jsonRead,Integer.class);
-
-        id = id +1;
-       buttonItemCms.setId(id);
-
-
-        String json = new Gson().toJson(String.valueOf(id));
-        editorKey.putString("json", json);
-        editorKey.apply();
+        String key = mRootRef.push().getKey();
+        buttonItemCms.setId(key);
+//        SharedPreferences prefKey = getApplicationContext().getSharedPreferences("keyTool", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editorKey = prefKey.edit();
+//        String jsonRead = prefKey.getString("json", null);
+//        int id = new Gson().fromJson(jsonRead, Integer.class);
+//
+//        id = id + 1;
+//        buttonItemCms.setId(id);
+//
+//
+//        String json = new Gson().toJson(String.valueOf(id));
+//        editorKey.putString("json", json);
+//        editorKey.apply();
+        Log.d("eiei","eiei");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("cms", buttonItemCms);
         startActivity(intent);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

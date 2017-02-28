@@ -223,11 +223,11 @@ public class ShowEvent extends Activity implements OnClickListener {
         String jsonRead = pref.getString("json", null);
         allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
         for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-            int idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+            String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
             if (allTool != null) {
                 for (int j = 0; j < allTool.getData().size(); j++) {
-                    int idTool = allTool.getData().get(j).getId();
-                    if (idTool == idToolInScene) {
+                    String idTool = allTool.getData().get(j).getId();
+                    if (idTool.equals(idToolInScene)) {
                         allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
                     }
                 }

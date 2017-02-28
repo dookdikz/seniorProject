@@ -3,6 +3,7 @@ package com.example.tanawat.eleccontrol.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -29,6 +30,11 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -58,6 +64,8 @@ public class SceneFragment extends Fragment {
     ButtonItemCollectionCms scene;
     static String url;
     ButtonItemCms toolInScene;
+    ButtonItemCollectionCms allTool;
+
     public static void setUrl(String url) {
         SceneFragment.url = url;
     }
@@ -66,7 +74,7 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    public static SceneFragment newInstance(ButtonItemCollectionCms scene ) {
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene) {
         SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
         args.putParcelable("scene", scene);
@@ -78,7 +86,7 @@ public class SceneFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
-getActivity().setTitle("Scene");
+        getActivity().setTitle("Scene");
         scene = getArguments().getParcelable("scene");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -105,6 +113,7 @@ getActivity().setTitle("Scene");
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) rootView.findViewById(R.id.listView);
         tvCountScene = (TextView) rootView.findViewById(R.id.tvCountScene);
 
@@ -119,64 +128,108 @@ getActivity().setTitle("Scene");
         ButtonItemCms buttonItemCms1 = new ButtonItemCms();
 
 
-        buttonItemCms1.setName("Control Air");
-        buttonItemCms1.setstatus("Off");
-        buttonItemCms1.setType("Air");
+//        buttonItemCms1.setName("Control Air");
+//        buttonItemCms1.setstatus("Off");
+//        buttonItemCms1.setType("Air");
+//
+//        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
+//        buttonItemCms2.setName("Control TV");
+//        buttonItemCms2.setstatus("Off");
+//        buttonItemCms2.setType("TV");
+//        List<ButtonItemCms> listCmsTest = new ArrayList<>();
+//        listCmsTest.add(buttonItemCms1);
+//        listCmsTest.add(buttonItemCms2);
 
-        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
-        buttonItemCms2.setName("Control TV");
-        buttonItemCms2.setstatus("Off");
-        buttonItemCms2.setType("TV");
-        List<ButtonItemCms> listCmsTest =new ArrayList<>();
-        listCmsTest.add(buttonItemCms1);
-        listCmsTest.add(buttonItemCms2);
+
+//        buttonItemCollectionCms = new ButtonItemCollectionCms();
+//        buttonItemCollectionCms.addData(buttonItemCms1);
+//        buttonItemCollectionCms.addData(buttonItemCms2);
+
+//        buttonItemCollectionCms.setName("Bedroom");
+//        List<ButtonItemCollectionCms> listSceneTest = new ArrayList<>();
+//        listSceneTest.add(buttonItemCollectionCms);
+
+        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    listScene = dataSnapshot.getValue(ListScene.class);
+
+                }
+                listAdapter = new SceneListAdapter(listScene, getActivity());
+                listAdapter.setListScene(listScene);
+                tvCountScene.setText("All Scene" + "(" + listAdapter.getCount() + ")");
+                listView.setAdapter(listAdapter);
 
 
-        buttonItemCollectionCms = new ButtonItemCollectionCms();
-buttonItemCollectionCms.addData(buttonItemCms1);
-        buttonItemCollectionCms.addData(buttonItemCms2);
 
-        buttonItemCollectionCms.setName("Bedroom");
-        List<ButtonItemCollectionCms> listSceneTest =new ArrayList<>();
-        listSceneTest.add(buttonItemCollectionCms);
-
-        SharedPreferences pref = getContext().getSharedPreferences("listScene", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        String jsonRead = pref.getString("json", null);
-        listScene = new Gson().fromJson(jsonRead, ListScene.class);
-
-        if (listScene != null ) {
-
-            if (scene != null) {
-
-                listScene.addData(scene);
             }
-        } else {
-            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editorKey = prefKey.edit();
-            int id=1;
-            String json = new Gson().toJson(id);
-            editorKey.putString("json", json);
-            editorKey.apply();
-            listScene = new ListScene();
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        }
+            }
+        });
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//        SharedPreferences pref = getContext().getSharedPreferences("listScene", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        String jsonRead = pref.getString("json", null);
+//        listScene = new Gson().fromJson(jsonRead, ListScene.class);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (listScene != null) {
+
+                    if (scene != null) {
+                        Log.d("eiei", "eieiei");
+                        listScene.addData(scene);
+                        mRootRef.child("listScene").setValue(listScene);
+                    }
+                } else {
+//            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editorKey = prefKey.edit();
+//            int id = 1;
+//            String json = new Gson().toJson(id);
+//            editorKey.putString("json", json);
+//            editorKey.apply();
+                    listScene = new ListScene();
+                    if (scene != null) {
+                        Log.d("eiei", "eieiei");
+                        listScene.addData(scene);
+                        mRootRef.child("listScene").setValue(listScene);
+
+                    }
+                }
+            }
+        }, 2000);
 
 
         listAdapter = new SceneListAdapter(listScene, getActivity());
         listAdapter.setListScene(listScene);
         //tvCountScene.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-        listView.setAdapter(listAdapter);
         tvCountScene.setText("All Scene" + "(" + listAdapter.getCount() + ")");
-//        btnDelete = (Button)getView().findViewById(R.id.btnDeleted);
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 HttpManager.setUrl(url);
-                for(int i=0;i<listScene.getData().get(position).getData().size();i++){
-                    Log.d("checkI","eiei");
+                for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
+                    Log.d("checkI", "eiei");
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
@@ -192,7 +245,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
 
                                 @Override
                                 public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                                    if(t!=null && call!=null){
+                                    if (t != null && call != null) {
                                         Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                                     }
 
@@ -208,7 +261,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
 
                                 @Override
                                 public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                                    if(t!=null){
+                                    if (t != null) {
                                         Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -227,7 +280,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
 
                                 @Override
                                 public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                                    if(t!=null){
+                                    if (t != null) {
                                         Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -242,7 +295,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
 
                                 @Override
                                 public void onFailure(Call<TestSendWeb> call, Throwable t) {
-                                    if(t!=null){
+                                    if (t != null) {
                                         Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -339,69 +392,46 @@ buttonItemCollectionCms.addData(buttonItemCms1);
                         Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                     }
                 }
-                ButtonItemCollectionCms allTool ;
-                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                String jsonRead = pref.getString("json", null);
-                allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-                for(int i=0;i<listScene.getData().get(position).getData().size();i++){
-                    Toast.makeText(getContext(),listScene.getData().get(position).getData().get(i).getName()+" "+listScene.getData().get(position).getData().get(i).getstatus()+"+"+listScene.getData().get(position).getName()+"+"+String.valueOf(listScene.getData().get(position).getId()+","+listScene.getData().get(position).getTime()),Toast.LENGTH_SHORT).show();
-                    int idToolInScene = listScene.getData().get(position).getData().get(i).getId();
-                    if(allTool!=null){
-                        for(int j=0;j<allTool.getData().size();j++){
-                            int idTool = allTool.getData().get(j).getId();
-                            if(idTool == idToolInScene){
+
+////                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+////                SharedPreferences.Editor editor = pref.edit();
+////                String jsonRead = pref.getString("json", null);
+////                allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+//
+                for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
+                    Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
+                    String idToolInScene = listScene.getData().get(position).getData().get(i).getId();
+                    if (allTool != null) {
+                        for (int j = 0; j < allTool.getData().size(); j++) {
+                            String idTool = allTool.getData().get(j).getId();
+                            if (idTool.equals(idToolInScene)) {
                                 allTool.getData().get(j).setstatus(listScene.getData().get(position).getData().get(i).getstatus());
                             }
                         }
                     }
 
                 }
-                String json = new Gson().toJson(allTool);
-                editor.putString("json", json);
-                editor.apply();
-
-
-//                if (buttonItemCollectionCms.getData().get(position).getName().equals("Control Light")) {
-////                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
-//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().openLight();
-//                    call.enqueue(new Callback<TestSendWeb>() {
-//                        @Override
-//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-//                            Toast.makeText(getContext(),"Suscess OpenLight", Toast.LENGTH_SHORT).show();
-//                        }
+////                String json = new Gson().toJson(allTool);
+////                editor.putString("json", json);
+////                editor.apply();
 //
-//                        @Override
-//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else if (buttonItemCollectionCms.getData().get(position).getName().equals("CloseLight")) {
-////                    Toast.makeText(getContext(), "Close", Toast.LENGTH_SHORT).show();
-//                   Call<TestSendWeb> call = HttpManager.getInstance().getService().closeLight();
-//                    call.enqueue(new Callback<TestSendWeb>() {
-//                        @Override
-//                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-//                            Toast.makeText(getContext(),"Suscess CloseLight", Toast.LENGTH_SHORT).show();
-//                        }
 //
-//                        @Override
-//                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
-//                            Toast.makeText(getContext(),t.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else {
-//                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
-//                }
+
+                mRootRef.child("listTool").setValue(allTool);
+
             }
+
         });
+
+
         listAdapter.notifyDataSetChanged();
-        String json = new Gson().toJson(listScene);
-        editor.putString("json", json);
-        editor.apply();
+//        String json = new Gson().toJson(listScene);
+//        editor.putString("json", json);
+//        editor.apply();
 
 
     }
+
     public static void update() {
 
         listView.setAdapter(listAdapter);
@@ -434,8 +464,7 @@ buttonItemCollectionCms.addData(buttonItemCms1);
             listener.onAddSceneButtonClicked();
 
 
-        }
-        else if (item.getItemId() == R.id.actionSetting){
+        } else if (item.getItemId() == R.id.actionSetting) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             Fragment prev = getFragmentManager().findFragmentByTag("dialog");
             if (prev != null) {

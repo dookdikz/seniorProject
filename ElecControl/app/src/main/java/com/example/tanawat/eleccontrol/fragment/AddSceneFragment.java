@@ -29,6 +29,11 @@ import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -87,17 +92,32 @@ public class AddSceneFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) rootView.findViewById(R.id.listView);
         etNameScene = (EditText) rootView.findViewById(R.id.etNameScene);
 
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
         cbAddScene = (CheckBox) rootView.findViewById(R.id.cbAddScene);
-        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+//        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
 
-        String jsonRead = pref.getString("json", null);
-        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+//        String jsonRead = pref.getString("json", null);
+//        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                listAdapter = new AddSceneAdapter(buttonItemCollectionCms, getActivity());
+                listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+                tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+                listView.setAdapter(listAdapter);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         listAdapter = new AddSceneAdapter(buttonItemCollectionCms, getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
@@ -155,20 +175,24 @@ public class AddSceneFragment extends Fragment {
                 }
             }
 
-            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editorKey = prefKey.edit();
-            String jsonRead = prefKey.getString("json", null);
-            int id = new Gson().fromJson(jsonRead, Integer.class);
+//            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editorKey = prefKey.edit();
+//            String jsonRead = prefKey.getString("json", null);
+//            int id = new Gson().fromJson(jsonRead, Integer.class);
+//
+//            id = id + 1;
+//            chooseTool.setId(id);
+            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+            String key = mRootRef.push().getKey();
+            chooseTool.setId(key);
 
-            id = id + 1;
-            chooseTool.setId(id);
 
             chooseTool.setName(etNameScene.getText().toString());
 
 
-            String json = new Gson().toJson(String.valueOf(id));
-            editorKey.putString("json", json);
-            editorKey.apply();
+//            String json = new Gson().toJson(String.valueOf(id));
+//            editorKey.putString("json", json);
+//            editorKey.apply();
             getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetTimeOrSensorFragment.newInstance(chooseTool)).commit();
 
 

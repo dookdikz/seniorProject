@@ -162,7 +162,7 @@ calendar = Calendar.getInstance();
                 Log.d("clearCalendar1","eiei");
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
                 intent.putExtra("sceneAlarm",buttonItemCollectionCms);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), buttonItemCollectionCms.getId(), intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Integer.parseInt(buttonItemCollectionCms.getId()), intent, 0);
                 AlarmManager alarmManager = (AlarmManager)getContext().getSystemService(getContext().ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 buttonItemCollectionCms.setTime(time);

@@ -38,11 +38,19 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.ButtonItemManager;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,9 +75,19 @@ public class MainFragment extends Fragment {
     static ButtonListAdapter listAdapter;
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
+
+
+
     Button btnGoScene;
     static String url = "http://158.108.122.70:5000/";
+    public ButtonItemCollectionCms getButtonItemCollectionCms() {
+        return buttonItemCollectionCms;
+    }
 
+    public void setButtonItemCollectionCms(ButtonItemCollectionCms buttonItemCollectionCms) {
+        this.buttonItemCollectionCms = buttonItemCollectionCms;
+
+    }
     public MainFragment() {
         super();
     }
@@ -118,7 +136,7 @@ public class MainFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) rootView.findViewById(R.id.listView);
 
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
@@ -132,7 +150,7 @@ public class MainFragment extends Fragment {
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
-        ButtonItemCms buttonItemCms1 = new ButtonItemCms();
+        final ButtonItemCms buttonItemCms1 = new ButtonItemCms();
 //        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
 
         buttonItemCms1.setName("Control Air");
@@ -147,26 +165,67 @@ public class MainFragment extends Fragment {
 //        listCms.add(buttonItemCms2);
 
 
-        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+//        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//
+//        String jsonRead = pref.getString("json", null);
+//        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 
-        String jsonRead = pref.getString("json", null);
-        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                     buttonItemCollectionCms= dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                }
 
-        if (buttonItemCollectionCms != null) {
 
-            if (cms != null) {
-                buttonItemCollectionCms.addData(cms);
+//                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+//                    Log.d("aa", childSnapshot.getRef().toString());
+//
+//
+//
+//
+//                }
+
+
+                listAdapter = new ButtonListAdapter(buttonItemCollectionCms, getActivity());
+                listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+                tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+                listView.setAdapter(listAdapter);
+
             }
-        } else {
-            SharedPreferences prefKey = getContext().getSharedPreferences("keyTool", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editorKey = prefKey.edit();
-            int id = 1;
-            String json = new Gson().toJson(id);
-            editorKey.putString("json", json);
-            editorKey.apply();
-            buttonItemCollectionCms = new ButtonItemCollectionCms();
-        }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+
+                if (buttonItemCollectionCms != null) {
+
+                    if (cms != null) {
+
+                        buttonItemCollectionCms.addData(cms);
+                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                    }
+                } else {
+
+                    buttonItemCollectionCms = new ButtonItemCollectionCms();
+                    if (cms != null) {
+
+                        buttonItemCollectionCms.addData(cms);
+                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                    }
+                }
+            }
+        }, 2000);
+//        Log.d("aaa", getButtonItemCollectionCms().getData().get(0).getName());
+
 
 
         listAdapter = new ButtonListAdapter(buttonItemCollectionCms, getActivity());
@@ -178,8 +237,12 @@ public class MainFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
+
+
+
+//
+//                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = pref.edit();
                 HttpManager.setUrl(url);
                 if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();
@@ -339,12 +402,13 @@ public class MainFragment extends Fragment {
                     buttonItemCollectionCms.getData().get(position).setstatus("Off");
                 }
 
-                String json = new Gson().toJson(buttonItemCollectionCms);
-                editor.putString("json", json);
-                editor.apply();
-
-                String jsonRead = pref.getString("json", null);
-                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+//                String json = new Gson().toJson(buttonItemCollectionCms);
+//                editor.putString("json", json);
+//                editor.apply();
+//
+//                String jsonRead = pref.getString("json", null);
+//                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+                mRootRef.child("listTool").setValue(buttonItemCollectionCms);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
                 Toast.makeText(getContext(), buttonItemCollectionCms.getData().get(position).getName() + " " + buttonItemCollectionCms.getData().get(position).getstatus() + " " + buttonItemCollectionCms.getData().get(position).getId(), Toast.LENGTH_SHORT).show();
@@ -357,9 +421,9 @@ public class MainFragment extends Fragment {
             }
         });
         listAdapter.notifyDataSetChanged();
-        String json = new Gson().toJson(buttonItemCollectionCms);
-        editor.putString("json", json);
-        editor.apply();
+//        String json = new Gson().toJson(buttonItemCollectionCms);
+//        editor.putString("json", json);
+//        editor.apply();
 
 //        final AlarmManager am=(AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 //        Intent i = new Intent(getContext(), CrawlAlarm.class);
