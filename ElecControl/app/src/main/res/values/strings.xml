@@ -23,4 +23,6 @@
         <item>Switch1</item>
         <item>Switch2</item>
     </string-array>
+    <string name="open_drawer">Open Menu</string>
+    <string name="close_drawer">Close Menu</string>
 </resources>

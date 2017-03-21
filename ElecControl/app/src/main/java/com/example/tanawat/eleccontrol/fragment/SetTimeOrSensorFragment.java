@@ -31,6 +31,11 @@ import android.widget.TextView;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 
@@ -39,15 +44,18 @@ import com.google.gson.Gson;
  */
 public class SetTimeOrSensorFragment extends Fragment {
 
-    public interface FragmentListener{
+    public interface FragmentListener {
         void onAddSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms);
     }
+
     static Button buttonstartSetTime;
     static Button buttonstartCancelTime;
     ButtonItemCollectionCms buttonItemCollectionCms;
     static TextView tvSetTime;
     static String time = "None";
-    static Calendar calendar ;
+    static Calendar calendar;
+    static int id;
+
     public SetTimeOrSensorFragment() {
         super();
     }
@@ -59,7 +67,6 @@ public class SetTimeOrSensorFragment extends Fragment {
         fragment.setArguments(args);
 
 
-
         return fragment;
     }
 
@@ -69,7 +76,7 @@ public class SetTimeOrSensorFragment extends Fragment {
         init(savedInstanceState);
         setHasOptionsMenu(true);
         buttonItemCollectionCms = getArguments().getParcelable("newScene");
-time ="None";
+        time = "None";
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -93,7 +100,20 @@ time ="None";
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
+        mRootRef.child("numId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                id = dataSnapshot.getValue(Integer.class) + 1;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         buttonstartSetTime = (Button) rootView.findViewById(R.id.startSetTime);
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         buttonstartSetTime.setOnClickListener(new View.OnClickListener() {
@@ -142,14 +162,17 @@ time ="None";
     }
 
     public void setTime(String strDay, int day, int hour, int minute) {
-calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
+
         calendar.set(calendar.DAY_OF_WEEK, day);
-        calendar.set(calendar.HOUR_OF_DAY, hour);
+        calendar.set(calendar.HOUR, hour);
         calendar.set(calendar.MINUTE, minute);
+        calendar.set(calendar.SECOND, 0);
         time = strDay + ":" + String.valueOf(hour) + ":" + String.valueOf(minute);
 
         tvSetTime.setText(time);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_add_scene, menu);
@@ -157,26 +180,32 @@ calendar = Calendar.getInstance();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.actionNext){
-            if(!tvSetTime.getText().equals("None")){
-                Log.d("clearCalendar1","eiei");
+        if (item.getItemId() == R.id.actionNext) {
+            if (!tvSetTime.getText().equals("None")) {
+                Log.d("clearCalendar1", "eiei");
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-                intent.putExtra("sceneAlarm",buttonItemCollectionCms);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Integer.parseInt(buttonItemCollectionCms.getId()), intent, 0);
-                AlarmManager alarmManager = (AlarmManager)getContext().getSystemService(getContext().ALARM_SERVICE);
+                intent.putExtra("sceneAlarm", buttonItemCollectionCms);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                buttonItemCollectionCms.setNumId(id);
                 buttonItemCollectionCms.setTime(time);
+                buttonItemCollectionCms.setCheckTime("On");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddSceneButtonClicked(buttonItemCollectionCms);
 
 
-            }
-            else{
-                Log.d("clearCalendar2","eiei");
+
+            } else {
+                Log.d("clearCalendar2", "eiei");
                 buttonItemCollectionCms.setTime(time);
+                buttonItemCollectionCms.setNumId(id);
+                buttonItemCollectionCms.setCheckTime("Off");
                 FragmentListener listener = (FragmentListener) getActivity();
                 listener.onAddSceneButtonClicked(buttonItemCollectionCms);
             }
+            final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+            mRootRef.child("numId").setValue(id);
 
 
         }

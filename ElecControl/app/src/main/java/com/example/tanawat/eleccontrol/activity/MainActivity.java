@@ -1,6 +1,8 @@
 package com.example.tanawat.eleccontrol.activity;
 
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,18 +22,21 @@ import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener, SceneFragment.FragmentListener {
     Button btnGoScene;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButtonItemCms cms = getIntent().getParcelableExtra("cms");
         ButtonItemCollectionCms scene = getIntent().getParcelableExtra("scene");
 
-
+        initInstance();
         if (savedInstanceState == null) {
 
-
+            startService(new Intent(this, MyService.class));
             if (getIntent().getStringExtra("activity") != null) {
                 if (getIntent().getStringExtra("activity").equals("addSceneActivity")) {
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene)).commit();
@@ -43,6 +48,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                 getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms)).commit();
             }
         }
+    }
+
+    private void initInstance() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.open_drawer,R.string.close_drawer);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

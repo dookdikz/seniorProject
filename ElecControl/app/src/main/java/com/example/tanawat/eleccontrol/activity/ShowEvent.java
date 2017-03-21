@@ -9,6 +9,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
@@ -22,8 +23,14 @@ import android.widget.Toast;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -39,6 +46,7 @@ public class ShowEvent extends Activity implements OnClickListener {
     Ringtone r;
     ButtonItemCollectionCms buttonItemCollectionCms;
     ButtonItemCollectionCms allTool;
+    ListScene allScene;
     ButtonItemCms buttonItemCms;
     TextView tvAlarm;
     Button btnStop;
@@ -48,7 +56,7 @@ public class ShowEvent extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         buttonItemCollectionCms = getIntent().getParcelableExtra("sceneAlarm");
-
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         Log.i("ShowEvent", "onCreate() in DismissLock");
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
@@ -218,25 +226,65 @@ public class ShowEvent extends Activity implements OnClickListener {
 
 
         }
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        String jsonRead = pref.getString("json", null);
-        allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-        for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-            String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
-            if (allTool != null) {
-                for (int j = 0; j < allTool.getData().size(); j++) {
-                    String idTool = allTool.getData().get(j).getId();
-                    if (idTool.equals(idToolInScene)) {
-                        allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
-                    }
-                }
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        String jsonRead = pref.getString("json", null);
+//        allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
             }
 
-        }
-        String json = new Gson().toJson(allTool);
-        editor.putString("json", json);
-        editor.apply();
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allScene = dataSnapshot.getValue(ListScene.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+                    if (allTool != null) {
+                        for (int j = 0; j < allTool.getData().size(); j++) {
+                            String idTool = allTool.getData().get(j).getId();
+                            if (idTool.equals(idToolInScene)) {
+                                allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
+                            }
+                        }
+                    }
+
+                }
+                mRootRef.child("listTool").setValue(allTool);
+
+                for(int i=0;i<allScene.getData().size();i++){
+                    String idScene= buttonItemCollectionCms.getId();
+                    if(idScene.equals(allScene.getData().get(i).getId())){
+                        allScene.getData().get(i).setCheckTime("Off");
+                    }
+                }
+                mRootRef.child("listScene").setValue(allScene);
+
+            }
+        }, 2000);
+
+
+//        String json = new Gson().toJson(allTool);
+//        editor.putString("json", json);
+//        editor.apply();
         btnStop = (Button) findViewById(R.id.btnStop);
         btnStop.setOnClickListener(this);
 

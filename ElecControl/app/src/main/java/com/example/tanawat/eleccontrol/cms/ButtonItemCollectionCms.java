@@ -15,6 +15,24 @@ public class ButtonItemCollectionCms implements Parcelable {
     private String name;
     private String id;
     private String time;
+    private int numId;
+    private String checkTime;
+
+    public String getCheckTime() {
+        return checkTime;
+    }
+
+    public void setCheckTime(String checkTime) {
+        this.checkTime = checkTime;
+    }
+
+    public int getNumId() {
+        return numId;
+    }
+
+    public void setNumId(int numId) {
+        this.numId = numId;
+    }
 
     public String getId() {
         return id;
@@ -52,6 +70,8 @@ public class ButtonItemCollectionCms implements Parcelable {
         data = in.createTypedArrayList(ButtonItemCms.CREATOR);
         id = in.readString();
         time = in.readString();
+        numId = in.readInt();
+        checkTime = in.readString();
     }
 
     @Override
@@ -60,6 +80,8 @@ public class ButtonItemCollectionCms implements Parcelable {
         dest.writeTypedList(data);
         dest.writeString(id);
         dest.writeString(time);
+        dest.writeInt(numId);
+        dest.writeString(checkTime);
     }
 
     @Override

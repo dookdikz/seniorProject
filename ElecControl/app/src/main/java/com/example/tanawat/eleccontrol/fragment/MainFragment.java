@@ -111,8 +111,14 @@ public class MainFragment extends Fragment {
         init(savedInstanceState);
         cms = getArguments().getParcelable("cms");
         getActivity().setTitle("Tool");
-        if (savedInstanceState != null)
+        if (savedInstanceState != null){
+
             onRestoreInstanceState(savedInstanceState);
+        }
+
+
+
+
     }
 
     @Override
@@ -162,9 +168,22 @@ public class MainFragment extends Fragment {
 //        buttonItemCms2.setType("Air");
         List<ButtonItemCms> listCms = new ArrayList<ButtonItemCms>();
         listCms.add(buttonItemCms1);
+
 //        listCms.add(buttonItemCms2);
 
+        mRootRef.child("numId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()==null){
+                    mRootRef.child("numId").setValue(1);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 //        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = pref.edit();
 //
