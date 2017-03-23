@@ -1,42 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/btnGoTool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tool"
             android:layout_weight="1"
+            android:text="Tool"
 
             />
 
         <Button
-            android:background="@color/colorPrimary"
-            android:textColor="#ffffff"
-            android:layout_weight="1"
             android:id="@+id/btnGoScene"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scene" />
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Scene"
+            android:textColor="#ffffff" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/tvCountScene"
+
+    <ProgressBar
+        android:id="@+id/pgbLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="all Scene()"
-        android:layout_margin="5dp"/>
-    <ListView
-        android:id="@+id/listView"
+        android:layout_gravity="center"
+        android:visibility="visible"
+
+
+        />
+
+    <LinearLayout
+        android:id="@+id/layoutListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCountScene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="all Scene()" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
 
 
 </LinearLayout>

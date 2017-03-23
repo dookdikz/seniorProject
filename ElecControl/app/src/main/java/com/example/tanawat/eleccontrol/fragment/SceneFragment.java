@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,8 @@ public class SceneFragment extends Fragment {
     static String url;
     ButtonItemCms toolInScene;
     ButtonItemCollectionCms allTool;
+    ProgressBar pgbLoad;
+    LinearLayout layoutListView;
 
     public static void setUrl(String url) {
         SceneFragment.url = url;
@@ -116,7 +120,12 @@ public class SceneFragment extends Fragment {
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) rootView.findViewById(R.id.listView);
         tvCountScene = (TextView) rootView.findViewById(R.id.tvCountScene);
+        pgbLoad = (ProgressBar) rootView.findViewById(R.id.pgbLoad);
 
+        layoutListView = (LinearLayout) rootView.findViewById(R.id.layoutListView);
+
+        pgbLoad.setVisibility(View.VISIBLE);
+        layoutListView.setVisibility(View.GONE);
         btnGoTool = (Button) rootView.findViewById(R.id.btnGoTool);
         btnGoTool.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +220,8 @@ public class SceneFragment extends Fragment {
 
                     }
                 }
+                pgbLoad.setVisibility(View.GONE);
+                layoutListView.setVisibility(View.VISIBLE);
             }
         }, 2000);
 

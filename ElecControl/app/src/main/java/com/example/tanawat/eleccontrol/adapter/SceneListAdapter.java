@@ -176,9 +176,9 @@ public class SceneListAdapter extends BaseAdapter {
 
         final ButtonItemCollectionCms buttonItemCollectionCms = (ButtonItemCollectionCms) getItem(position);
         if (buttonItemCollectionCms.getCheckTime().equals("Off")) {
-            ivTimeSet.setImageResource(R.drawable.time_off);
+            ivTimeSet.setImageResource(R.drawable.alarm_off);
         } else {
-            ivTimeSet.setImageResource(R.drawable.time_on);
+            ivTimeSet.setImageResource(R.drawable.alarm);
         }
         if (buttonItemCollectionCms != null) {
             Log.d("testD", String.valueOf(position));

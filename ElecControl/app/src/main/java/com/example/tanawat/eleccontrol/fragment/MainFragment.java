@@ -25,7 +25,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,11 +77,13 @@ public class MainFragment extends Fragment {
     static ButtonListAdapter listAdapter;
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
-
+    ProgressBar pgbLoad;
+    LinearLayout layoutListView;
 
 
     Button btnGoScene;
     static String url = "http://158.108.122.70:5000/";
+
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
         return buttonItemCollectionCms;
     }
@@ -88,6 +92,7 @@ public class MainFragment extends Fragment {
         this.buttonItemCollectionCms = buttonItemCollectionCms;
 
     }
+
     public MainFragment() {
         super();
     }
@@ -111,12 +116,10 @@ public class MainFragment extends Fragment {
         init(savedInstanceState);
         cms = getArguments().getParcelable("cms");
         getActivity().setTitle("Tool");
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
 
             onRestoreInstanceState(savedInstanceState);
         }
-
-
 
 
     }
@@ -143,8 +146,14 @@ public class MainFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        listView = (ListView) rootView.findViewById(R.id.listView);
 
+        listView = (ListView) rootView.findViewById(R.id.listView);
+        pgbLoad = (ProgressBar) rootView.findViewById(R.id.pgbLoad);
+
+        layoutListView = (LinearLayout) rootView.findViewById(R.id.layoutListView);
+
+        pgbLoad.setVisibility(View.VISIBLE);
+        layoutListView.setVisibility(View.GONE);
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
         btnGoScene = (Button) rootView.findViewById(R.id.btnGoScene);
         btnGoScene.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +183,7 @@ public class MainFragment extends Fragment {
         mRootRef.child("numId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()==null){
+                if (dataSnapshot.getValue() == null) {
                     mRootRef.child("numId").setValue(1);
                 }
             }
@@ -193,8 +202,8 @@ public class MainFragment extends Fragment {
         mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
-                     buttonItemCollectionCms= dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                if (dataSnapshot != null) {
+                    buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
                 }
 
 
@@ -241,6 +250,8 @@ public class MainFragment extends Fragment {
                         mRootRef.child("listTool").setValue(buttonItemCollectionCms);
                     }
                 }
+                pgbLoad.setVisibility(View.GONE);
+                layoutListView.setVisibility(View.VISIBLE);
             }
         }, 2000);
 //        Log.d("aaa", getButtonItemCollectionCms().getData().get(0).getName());
@@ -256,7 +267,6 @@ public class MainFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
 
 
 //
