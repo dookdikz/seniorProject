@@ -11,15 +11,24 @@
         android:orientation="vertical">
 
         <CheckBox
-            android:layout_marginLeft="10dp"
+
+            android:layout_margin="13dp"
             android:id="@+id/cbAddScene"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ffffff"
            />
+        <ImageView
+            android:layout_toRightOf="@id/cbAddScene"
+            android:src="@drawable/switch_icon"
+            android:id="@+id/ivTabTool"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"
+            />
 
         <LinearLayout
-            android:layout_toRightOf="@id/cbAddScene"
+            android:layout_toRightOf="@id/ivTabTool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">

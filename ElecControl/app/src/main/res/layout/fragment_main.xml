@@ -12,10 +12,11 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="horizontal">
-        <Button
+        <ImageView
             android:id="@+id/btnGoTool"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:src="@drawable/tool_icon"
             android:text="Tool"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
@@ -23,12 +24,13 @@
 
             />
 
-        <Button
+        <ImageView
 
             android:layout_weight="1"
             android:id="@+id/btnGoScene"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:src="@drawable/scene_icon_off"
             android:text="Scene" />
 
 

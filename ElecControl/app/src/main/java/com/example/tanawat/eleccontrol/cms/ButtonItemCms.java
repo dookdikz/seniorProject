@@ -6,7 +6,8 @@ import android.os.Parcelable;
 /**
  * Created by Tanawat on 7/11/2559.
  */
-public class ButtonItemCms implements Parcelable {
+public class
+ButtonItemCms implements Parcelable {
     private String id;
     private String name;
     private String status;

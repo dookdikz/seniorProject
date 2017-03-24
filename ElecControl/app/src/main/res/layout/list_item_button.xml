@@ -16,15 +16,15 @@
         android:descendantFocusability="blocksDescendants"
        >
         <ImageView
-
-            android:id="@+id/viewTab"
+android:src="@drawable/switch_icon"
+            android:id="@+id/ivTabTool"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/colorPrimary"
             />
 
         <LinearLayout
-            android:layout_toRightOf="@id/viewTab"
+            android:layout_toRightOf="@id/ivTabTool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -56,7 +56,7 @@
 
             android:id="@+id/btnDeleted"
             android:textColor="#55FFFF"
-            android:background="@drawable/btn_delete"
+            android:background="@drawable/delete_icon_gray"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
@@ -67,9 +67,10 @@
         <ImageView
             android:layout_toLeftOf="@id/btnDeleted"
             android:id="@+id/ivOnOff"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="10dp"
+            android:src="@drawable/switch_off"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
 
             />
 

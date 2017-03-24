@@ -1,18 +1,11 @@
 package com.example.tanawat.eleccontrol.fragment;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,9 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.CrawlAlarm;
-import com.example.tanawat.eleccontrol.activity.MainActivity;
-import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
+import com.example.tanawat.eleccontrol.adapter.ToolListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
@@ -45,14 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,14 +59,14 @@ public class MainFragment extends Fragment {
     Button btnDelete;
     static TextView tvCountTool;
     EditText editUrl;
-    static ButtonListAdapter listAdapter;
+    static ToolListAdapter listAdapter;
     ButtonItemCms cms;
     ButtonItemCollectionCms buttonItemCollectionCms;
     ProgressBar pgbLoad;
     LinearLayout layoutListView;
 
 
-    Button btnGoScene;
+    ImageView btnGoScene;
     static String url = "http://158.108.122.70:5000/";
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
@@ -155,7 +140,7 @@ public class MainFragment extends Fragment {
         pgbLoad.setVisibility(View.VISIBLE);
         layoutListView.setVisibility(View.GONE);
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
-        btnGoScene = (Button) rootView.findViewById(R.id.btnGoScene);
+        btnGoScene = (ImageView) rootView.findViewById(R.id.btnGoScene);
         btnGoScene.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,7 +201,7 @@ public class MainFragment extends Fragment {
 //                }
 
 
-                listAdapter = new ButtonListAdapter(buttonItemCollectionCms, getActivity());
+                listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity());
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
                 listView.setAdapter(listAdapter);
@@ -258,7 +243,7 @@ public class MainFragment extends Fragment {
 
 
 
-        listAdapter = new ButtonListAdapter(buttonItemCollectionCms, getActivity());
+        listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);

@@ -2,12 +2,11 @@ package com.example.tanawat.eleccontrol.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+
+
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,17 +15,16 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.AddSceneAdapter;
-import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
-import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +32,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -98,6 +95,17 @@ public class AddSceneFragment extends Fragment {
 
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
         cbAddScene = (CheckBox) rootView.findViewById(R.id.cbAddScene);
+        if(!(rootView instanceof EditText)) {
+
+            rootView.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(getActivity());
+                    return false;
+                }
+
+            });
+        }
 //        SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = pref.edit();
 
@@ -123,18 +131,14 @@ public class AddSceneFragment extends Fragment {
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                listAdapter.checkBoxClicked(position);
+//            }
+//        });
 
-        if(!(rootView instanceof EditText)) {
 
-            rootView.setOnTouchListener(new View.OnTouchListener() {
-
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(getActivity());
-                    return false;
-                }
-
-            });
-        }
 
     }
 
@@ -199,6 +203,7 @@ public class AddSceneFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);

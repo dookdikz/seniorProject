@@ -75,6 +75,7 @@ public class AddSceneAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView tvNameCommand;
         TextView tvNameType;
+        ImageView ivTabTool;
 
 
     }
@@ -98,6 +99,7 @@ public class AddSceneAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
+            holder.ivTabTool = (ImageView) convertView.findViewById(R.id.ivTabTool);
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
@@ -109,6 +111,15 @@ public class AddSceneAdapter extends BaseAdapter {
 
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
+                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")|| buttonItemCollectionCms.getData().get(position).getType().equals("Tv")){
+                        holder.ivTabTool.setImageResource(R.drawable.remote_icon);
+                    }
+                    else if(buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")){
+                        holder.ivTabTool.setImageResource(R.drawable.switch_icon);
+                    }
+                    else {
+                        holder.ivTabTool.setImageResource(R.drawable.curtain_icon);
+                    }
 
 
                 }
@@ -166,4 +177,15 @@ public class AddSceneAdapter extends BaseAdapter {
 
 
     }
+//    public void checkBoxClicked(int positionClicked){
+//        if (checkAdd.get(positionClicked) == true) {
+//            checkAdd.set(positionClicked, false);
+//            cbAddScene.setChecked(false);
+//        } else {
+//            checkAdd.set(positionClicked, true);
+//            cbAddScene.setChecked(true);
+//        }
+//        Log.d("positionAll", checkAdd.toString());
+//
+//    }
 }

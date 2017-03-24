@@ -35,14 +35,14 @@ import com.google.gson.Gson;
 /**
  * Created by Tanawat on 7/11/2559.
  */
-public class ButtonListAdapter extends BaseAdapter {
+public class ToolListAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnDelete;
 
 
     private Context activity;
 
-    public ButtonListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
+    public ToolListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
         this.buttonItemCollectionCms = buttonItemCollectionCms;
         this.activity = activity;
     }
@@ -77,6 +77,7 @@ public class ButtonListAdapter extends BaseAdapter {
         TextView tvNameCommand;
         TextView tvNameType;
         ImageView ivOnOff;
+        ImageView ivTabTool;
     }
 
     @Override
@@ -98,6 +99,7 @@ public class ButtonListAdapter extends BaseAdapter {
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
             holder.ivOnOff = (ImageView) convertView.findViewById(R.id.ivOnOff);
+            holder.ivTabTool = (ImageView) convertView.findViewById(R.id.ivTabTool);
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
@@ -166,10 +168,20 @@ public class ButtonListAdapter extends BaseAdapter {
                     holder.tvNameType.setText(buttonItemCms.getType());
                     Log.d("testStatus",buttonItemCollectionCms.getData().get(position).getstatus().toString());
                     if(buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")){
-                        holder.ivOnOff.setImageResource(R.drawable.off);
+                        holder.ivOnOff.setImageResource(R.drawable.switch_off);
                     }
                     else {
-                        holder.ivOnOff.setImageResource(R.drawable.on);
+                        holder.ivOnOff.setImageResource(R.drawable.switch_on);
+                    }
+
+                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")|| buttonItemCollectionCms.getData().get(position).getType().equals("Tv")){
+                        holder.ivTabTool.setImageResource(R.drawable.remote_icon);
+                    }
+                    else if(buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")){
+                        holder.ivTabTool.setImageResource(R.drawable.switch_icon);
+                    }
+                    else {
+                        holder.ivTabTool.setImageResource(R.drawable.curtain_icon);
                     }
 
                 }

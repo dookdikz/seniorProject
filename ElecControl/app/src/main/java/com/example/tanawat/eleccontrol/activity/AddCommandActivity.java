@@ -1,8 +1,6 @@
 package com.example.tanawat.eleccontrol.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +8,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.adapter.ButtonListAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.fragment.AddCommandFragment;
-import com.example.tanawat.eleccontrol.fragment.MainFragment;
-import com.google.gson.Gson;
 
 /**
  * Created by Tanawat on 25/11/2559.
@@ -59,8 +54,8 @@ public class AddCommandActivity extends AppCompatActivity implements AddCommandF
 //        Log.d("saveAdd", buttonItemCollectionCms.getData().toString());
 //        editor.apply();
 //        MainFragment mainFragment= new MainFragment();
-//        ButtonListAdapter listAdapter ;
-//        listAdapter = new ButtonListAdapter(buttonItemCollectionCms,getApplicationContext());
+//        ToolListAdapter listAdapter ;
+//        listAdapter = new ToolListAdapter(buttonItemCollectionCms,getApplicationContext());
 //        listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 //        mainFragment.update();
 //
