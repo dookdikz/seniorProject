@@ -54,7 +54,7 @@ public class SetTimeSceneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_set_time_scene, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_set_option_scene, container, false);
         initInstances(rootView, savedInstanceState);
         return rootView;
     }

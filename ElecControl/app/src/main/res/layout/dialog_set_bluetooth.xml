@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:minWidth="400dp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:text="Bluetooth:"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinSelectedBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnBluetoothOK"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+
+            android:text="OK"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/btnBluetoothDialogCancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="DateTimeClickCancel"
+            android:text="Cancel"
+            android:textColor="#ffffff" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

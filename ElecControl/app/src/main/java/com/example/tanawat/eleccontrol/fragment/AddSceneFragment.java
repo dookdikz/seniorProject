@@ -5,6 +5,7 @@ import android.content.Context;
 
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,11 +16,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,7 +48,7 @@ public class AddSceneFragment extends Fragment {
     EditText etNameScene;
     CheckBox cbAddScene;
     ListScene listScene;
-
+    LinearLayout layoutAddScene;
 
     public AddSceneFragment() {
         super();
@@ -60,7 +60,7 @@ public class AddSceneFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-   
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +84,11 @@ public class AddSceneFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    public static void closeKeyboard(Context c, IBinder windowToken) {
+        InputMethodManager mgr = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(windowToken, 0);
+    }
+
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
@@ -92,10 +97,14 @@ public class AddSceneFragment extends Fragment {
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) rootView.findViewById(R.id.listView);
         etNameScene = (EditText) rootView.findViewById(R.id.etNameScene);
-
+        layoutAddScene = (LinearLayout) rootView.findViewById(R.id.layoutAddScene);
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
+        closeKeyboard(getActivity(), etNameScene.getWindowToken());
         cbAddScene = (CheckBox) rootView.findViewById(R.id.cbAddScene);
-        if(!(rootView instanceof EditText)) {
+        etNameScene.clearFocus();
+
+
+        if (!(rootView instanceof EditText)) {
 
             rootView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -137,7 +146,6 @@ public class AddSceneFragment extends Fragment {
 //                listAdapter.checkBoxClicked(position);
 //            }
 //        });
-
 
 
     }
@@ -197,7 +205,7 @@ public class AddSceneFragment extends Fragment {
 //            String json = new Gson().toJson(String.valueOf(id));
 //            editorKey.putString("json", json);
 //            editorKey.apply();
-            getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetTimeOrSensorFragment.newInstance(chooseTool)).commit();
+            getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetSceneOptionFragment.newInstance(chooseTool)).commit();
 
 
         }
@@ -205,7 +213,7 @@ public class AddSceneFragment extends Fragment {
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

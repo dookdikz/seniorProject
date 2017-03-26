@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.fragment.AddSceneFragment;
-import com.example.tanawat.eleccontrol.fragment.SetTimeOrSensorFragment;
+import com.example.tanawat.eleccontrol.fragment.SetSceneOptionFragment;
 
 /**
  * Created by Tanawat on 2/2/2560.
  */
-public class AddSceneActivity extends AppCompatActivity implements SetTimeOrSensorFragment.FragmentListener {
+public class AddSceneActivity extends AppCompatActivity implements SetSceneOptionFragment.FragmentListener {
     Toolbar toolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

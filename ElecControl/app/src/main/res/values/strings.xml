@@ -19,10 +19,27 @@
         <item>Saturday</item>
 
     </string-array>
+    <string-array name="choose_temp_option">
+        <item>less than</item>
+        <item>more than</item>
+    </string-array>
+
+    <string-array name="choose_light_option">
+        <item>less than</item>
+        <item>more than</item>
+    </string-array>
+
+    <string-array name="choose_bluetooth_option">
+        <item>On</item>
+        <item>Off</item>
+    </string-array>
+
     <string-array name="chooseSwitch">
         <item>Switch1</item>
         <item>Switch2</item>
     </string-array>
     <string name="open_drawer">Open Menu</string>
     <string name="close_drawer">Close Menu</string>
+    <string name="set_add_scene">Set</string>
+    <string name="cancel_add_scene">Cancel</string>
 </resources>

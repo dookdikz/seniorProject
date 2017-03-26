@@ -1,40 +1,30 @@
 package com.example.tanawat.eleccontrol.fragment;
 
-import android.app.AlarmManager;
-
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
-import com.example.tanawat.eleccontrol.activity.SetTimeOrSensor;
 
 import java.util.Calendar;
 
 /**
  * Created by Tanawat on 10/2/2560.
  */
-public class DateDialogFragment extends DialogFragment {
+public class SetTimeDialogFragment extends DialogFragment {
     int mNum;
 
-    public static DateDialogFragment newInstance(int num) {
-        DateDialogFragment f = new DateDialogFragment();
+    public static SetTimeDialogFragment newInstance(int num) {
+        SetTimeDialogFragment f = new SetTimeDialogFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
@@ -94,13 +84,13 @@ public class DateDialogFragment extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(style, theme);
+        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View thisDialog = inflater.inflate(R.layout.picker_day_time, container, false);
+        View thisDialog = inflater.inflate(R.layout.dialog_set_time, container, false);
         Button btnDateTimeOK = (Button) thisDialog.findViewById(R.id.btnDateTimeOK);
 
         Calendar calendar = Calendar.getInstance();
@@ -182,8 +172,8 @@ public class DateDialogFragment extends DialogFragment {
                 calendar.set(Calendar.HOUR_OF_DAY, tpSelectedTime.getCurrentHour());
                 calendar.set(Calendar.MINUTE, tpSelectedTime.getCurrentMinute());
                 final int _id = 5;
-                SetTimeOrSensorFragment setTimeOrSensorFragment =new SetTimeOrSensorFragment();
-                setTimeOrSensorFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
+                SetSceneOptionFragment setSceneOptionFragment =new SetSceneOptionFragment();
+                setSceneOptionFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
                 getDialog().dismiss();
 
             }
