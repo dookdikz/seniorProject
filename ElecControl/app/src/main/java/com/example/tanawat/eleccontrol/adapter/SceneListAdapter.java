@@ -43,6 +43,9 @@ public class SceneListAdapter extends BaseAdapter {
     ListScene listScene;
     Button btnDelete;
     ImageView ivTimeSet;
+    ImageView ivTempSet;
+    ImageView ivLightSet;
+    ImageView ivBluetoothSet;
     private Context activity;
 
 
@@ -80,6 +83,10 @@ public class SceneListAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView tvNameScene;
         TextView tvTimerScene;
+        TextView tvTempScene;
+        TextView tvLightScene;
+        TextView tvBluetoothScene;
+
 
     }
 
@@ -114,6 +121,9 @@ public class SceneListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.tvNameScene = (TextView) convertView.findViewById(R.id.tvNameScene);
             holder.tvTimerScene = (TextView) convertView.findViewById(R.id.tvTimerScene);
+            holder.tvTempScene = (TextView) convertView.findViewById(R.id.tvTempSensor);
+            holder.tvLightScene = (TextView) convertView.findViewById(R.id.tvLightSensor);
+            holder.tvBluetoothScene = (TextView) convertView.findViewById(R.id.tvBluetooth);
 
 
             convertView.setTag(holder);
@@ -173,6 +183,9 @@ public class SceneListAdapter extends BaseAdapter {
 
 
         ivTimeSet = (ImageView) convertView.findViewById(R.id.ivTimeSet);
+        ivTempSet = (ImageView) convertView.findViewById(R.id.ivTempSensor);
+        ivLightSet = (ImageView) convertView.findViewById(R.id.ivLightSensor);
+        ivBluetoothSet = (ImageView) convertView.findViewById(R.id.ivBluetooth);
 
         final ButtonItemCollectionCms buttonItemCollectionCms = (ButtonItemCollectionCms) getItem(position);
         if (buttonItemCollectionCms.getCheckTime().equals("Off")) {
@@ -180,12 +193,49 @@ public class SceneListAdapter extends BaseAdapter {
         } else {
             ivTimeSet.setImageResource(R.drawable.alarm);
         }
+        if (!buttonItemCollectionCms.getCheckTempSen().equals("Off")) {
+            ivTempSet.setImageResource(R.drawable.temp_icon);
+        } else {
+            ivTempSet.setImageResource(R.drawable.temp_icon_off);
+        }
+        if (!buttonItemCollectionCms.getCheckLightSen().equals("Off")) {
+            ivLightSet.setImageResource(R.drawable.light_sen_icon);
+        } else {
+            ivLightSet.setImageResource(R.drawable.light_sen_icon_off);
+        }
+        if (buttonItemCollectionCms.getCheckBluetooth().equals("Off")) {
+            ivBluetoothSet.setImageResource(R.drawable.bluetooth_icon_off);
+        } else {
+            ivBluetoothSet.setImageResource(R.drawable.bluetooth_icon);
+        }
+
         if (buttonItemCollectionCms != null) {
-            Log.d("testD", String.valueOf(position));
+
             if (buttonItemCollectionCms.getName() != null) {
                 if (holder != null) {
                     holder.tvNameScene.setText(buttonItemCollectionCms.getName());
                     holder.tvTimerScene.setText(buttonItemCollectionCms.getTime());
+
+                    holder.tvTempScene.setText(buttonItemCollectionCms.getTemp());
+
+                    if(buttonItemCollectionCms.getCheckTempSen().equals("less than")){
+                        holder.tvTempScene.setText("< "+buttonItemCollectionCms.getTemp()+" "+"C");
+                    }
+                    else if(buttonItemCollectionCms.getCheckTempSen().equals("more than")){
+                        holder.tvTempScene.setText("> "+buttonItemCollectionCms.getTemp()+" "+"C");
+                    }
+
+                    holder.tvLightScene.setText(buttonItemCollectionCms.getLight());
+                    if(buttonItemCollectionCms.getCheckLightSen().equals("less than")){
+                        holder.tvLightScene.setText("< "+buttonItemCollectionCms.getTemp()+" "+"Lux");
+                    }
+                    else if(buttonItemCollectionCms.getCheckLightSen().equals("more than")){
+                        holder.tvLightScene.setText("> "+buttonItemCollectionCms.getTemp()+" "+"Lux");
+                    }
+                    holder.tvBluetoothScene.setText(buttonItemCollectionCms.getBluetooth());
+
+
+
 
 
                 }
@@ -208,22 +258,22 @@ public class SceneListAdapter extends BaseAdapter {
                 if (!buttonItemCollectionCms.getTime().equals("None")) {
                     String[] date = buttonItemCollectionCms.getTime().split(":");
                     switch (date[0]) {
-                        case "Sunday":
+                        case "Sun":
                             dayOfWeek = 1;
                             break;
-                        case "Monday":
+                        case "Mon":
                             dayOfWeek = 2;
                             break;
-                        case "Tuesday":
+                        case "Tue":
                             dayOfWeek = 3;
                             break;
-                        case "Wednesday":
+                        case "Wed":
                             dayOfWeek = 4;
                             break;
-                        case "Thursday":
+                        case "Thu":
                             dayOfWeek = 5;
                             break;
-                        case "Friday":
+                        case "Fri":
                             dayOfWeek = 6;
                             break;
                         case "Saturday":

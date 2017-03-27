@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,16 +54,22 @@ public class SetSceneOptionFragment extends Fragment {
     static Button btnStartCancelLight;
     static Button btnStartSetBluetooth;
     static Button btnStartCancelBluetooth;
-    ButtonItemCollectionCms buttonItemCollectionCms;
+    static ButtonItemCollectionCms buttonItemCollectionCms;
     static TextView tvSetTime;
     static TextView tvSetTemp;
     static TextView tvSetLight;
     static TextView tvSetBluetooth;
 
-    String time = "None";
-    int temp;
-    int light;
-    String bluetooth;
+    static String time;
+    static String chooseTime;
+
+    static int temp;
+    static String chooseTemp;
+
+    static int light;
+    static String chooseLight;
+
+    static String bluetooth;
 
     static Calendar calendar;
     static int id;
@@ -88,7 +95,6 @@ public class SetSceneOptionFragment extends Fragment {
         setHasOptionsMenu(true);
 
         buttonItemCollectionCms = getArguments().getParcelable("newScene");
-        time = "None";
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -270,21 +276,29 @@ public class SetSceneOptionFragment extends Fragment {
 
     public void setTime(String strDay, int day, int hour, int minute) {
         calendar = Calendar.getInstance();
-
         calendar.set(calendar.DAY_OF_WEEK, day);
-        calendar.set(calendar.HOUR, hour);
+        calendar.set(calendar.HOUR_OF_DAY, hour);
         calendar.set(calendar.MINUTE, minute);
-        calendar.set(calendar.SECOND, 0);
-        time = strDay + ":" + String.valueOf(hour) + ":" + String.valueOf(minute);
+        String strHour=String.valueOf(hour);
+        String strMinute=String.valueOf(minute);
+        if(hour<10){
+            strHour = "0"+String.valueOf(hour);
+        }
+        if(minute<10){
+            strMinute = "0"+String.valueOf(minute);
+        }
 
+        time = strDay.substring(0,3) + ":" + strHour + ":" + strMinute;
         tvSetTime.setText(time);
     }
     public void setTemp(String choose,int temp){
         this.temp = temp;
+        chooseTemp = choose;
         tvSetTemp.setText(choose+" "+temp + " C");
     }
     public void setLight(String choose,int light){
         this.light = light;
+        chooseLight = choose;
         tvSetLight.setText(choose+" "+light + " Lux");
     }
     public void setBluetooth(String choose){
@@ -300,27 +314,69 @@ public class SetSceneOptionFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionNext) {
+
+            buttonItemCollectionCms.setNumId(id);
+
+
+
+
+
             if (!tvSetTime.getText().equals("No Set")) {
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                buttonItemCollectionCms.setNumId(id);
-                buttonItemCollectionCms.setTime(time);
+                buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddSceneButtonClicked(buttonItemCollectionCms);
+
+
+
+            }
+            else {
+                buttonItemCollectionCms.setTime("No set");
+                buttonItemCollectionCms.setCheckTime("Off");
+
+
+            }
+            if (!tvSetTemp.getText().equals("No Set")) {
+                buttonItemCollectionCms.setTemp(String.valueOf(this.temp));
+                buttonItemCollectionCms.setCheckTempSen(chooseTemp);
+
 
 
 
             } else {
-                buttonItemCollectionCms.setTime(time);
-                buttonItemCollectionCms.setNumId(id);
-                buttonItemCollectionCms.setCheckTime("Off");
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddSceneButtonClicked(buttonItemCollectionCms);
+                buttonItemCollectionCms.setTemp("No Set");
+                buttonItemCollectionCms.setCheckTempSen("Off");
+
             }
+
+            if (!tvSetLight.getText().equals("No Set")) {
+                buttonItemCollectionCms.setLight(String.valueOf(this.light));
+                buttonItemCollectionCms.setCheckLightSen(chooseLight);
+
+
+
+            } else {
+                buttonItemCollectionCms.setLight("No Set");
+                buttonItemCollectionCms.setCheckLightSen("Off");
+
+            }
+
+            if (!tvSetBluetooth.getText().equals("No Set")) {
+                buttonItemCollectionCms.setBluetooth(this.bluetooth);
+                buttonItemCollectionCms.setCheckBluetooth("On");
+
+
+
+            } else {
+                buttonItemCollectionCms.setBluetooth("No set");
+                buttonItemCollectionCms.setCheckBluetooth("Off");
+
+            }
+            FragmentListener listener = (FragmentListener) getActivity();
+            listener.onAddSceneButtonClicked(buttonItemCollectionCms);
             final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
             mRootRef.child("numId").setValue(id);
 

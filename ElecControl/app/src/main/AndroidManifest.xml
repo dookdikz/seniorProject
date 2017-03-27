@@ -43,8 +43,8 @@
             android:theme="@android:style/Theme.Dialog"
             >
         </activity>
-
         <receiver android:name=".activity.AlarmReceiver" android:process=":remote" />
+
         <receiver android:name=".activity.CrawlAlarm" android:process=":remote" />
 <service android:name=".activity.MyService"/>
 

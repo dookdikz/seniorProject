@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         ButtonItemCms cms = getIntent().getParcelableExtra("cms");
         ButtonItemCollectionCms scene = getIntent().getParcelableExtra("scene");
 
+
         initInstance();
         if (savedInstanceState == null) {
 
             startService(new Intent(this, MyService.class));
             if (getIntent().getStringExtra("activity") != null) {
                 if (getIntent().getStringExtra("activity").equals("addSceneActivity")) {
+                    Log.d("asdasd",scene.getTemp());
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene)).commit();
                 } else {
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms)).commit();

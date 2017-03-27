@@ -19,7 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, ShowEvent.class);
         ButtonItemCollectionCms buttonItemCollectionCms = intent.getParcelableExtra("sceneAlarm");
-        Log.d("SceneA", String.valueOf(buttonItemCollectionCms.getName()));
+        Log.d("SceneAlarmm", String.valueOf(buttonItemCollectionCms.getName()));
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra("sceneAlarm", buttonItemCollectionCms);
         context.startActivity(i);

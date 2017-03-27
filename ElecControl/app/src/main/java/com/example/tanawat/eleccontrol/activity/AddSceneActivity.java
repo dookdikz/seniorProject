@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.tanawat.eleccontrol.R;
@@ -42,6 +43,7 @@ public class AddSceneActivity extends AppCompatActivity implements SetSceneOptio
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("scene", buttonItemCollectionCms);
+
         intent.putExtra("activity","addSceneActivity");
         startActivity(intent);
 //                Intent intent = new Intent(AddSceneActivity.this, SetTimeOrSensor.class);

@@ -150,7 +150,6 @@ public class SceneFragment extends Fragment {
 //        buttonItemCollectionCms.setName("Bedroom");
 //        List<ButtonItemCollectionCms> listSceneTest = new ArrayList<>();
 //        listSceneTest.add(buttonItemCollectionCms);
-
         mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
