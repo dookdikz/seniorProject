@@ -199,8 +199,6 @@ public class MainFragment extends Fragment {
 //
 //
 //                }
-
-
                 listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity());
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");

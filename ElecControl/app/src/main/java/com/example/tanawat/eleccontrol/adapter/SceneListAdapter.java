@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
+import com.example.tanawat.eleccontrol.activity.EditSceneActivity;
+import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
@@ -42,6 +44,7 @@ import java.util.Calendar;
 public class SceneListAdapter extends BaseAdapter {
     ListScene listScene;
     Button btnDelete;
+    Button btnEdit;
     ImageView ivTimeSet;
     ImageView ivTempSet;
     ImageView ivLightSet;
@@ -140,6 +143,16 @@ public class SceneListAdapter extends BaseAdapter {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        btnEdit = (Button) convertView.findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, EditSceneActivity.class);
+                intent.putExtra("editScene",listScene.getData().get(position));
+
+                activity.startActivity(intent);
             }
         });
         btnDelete = (Button) convertView.findViewById(R.id.btnDeleted);

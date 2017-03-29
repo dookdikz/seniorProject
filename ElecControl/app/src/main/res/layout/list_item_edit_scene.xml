@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <CheckBox
+
+            android:layout_margin="13dp"
+            android:id="@+id/cbEditScene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+           />
+        <ImageView
+            android:layout_toRightOf="@id/cbEditScene"
+            android:src="@drawable/switch_icon"
+            android:id="@+id/ivTabTool"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"
+            />
+
+        <LinearLayout
+            android:layout_toRightOf="@id/ivTabTool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:id="@+id/tvNameCommand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="10dp"
+                android:text="Name"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/tvTypeCommand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:focusable="false"
+                android:textColor="#000000"
+                android:text="Type"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+
+        <CheckBox
+            android:layout_alignParentRight="true"
+            android:layout_margin="7dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/ivOnOrOff"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            android:button="@drawable/selector_cb_switch"
+            />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

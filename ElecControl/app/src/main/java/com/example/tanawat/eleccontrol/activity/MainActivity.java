@@ -104,6 +104,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     }
 
     @Override
+    public void onEditSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms) {
+        Intent intent = new Intent(MainActivity.this, EditSceneActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();

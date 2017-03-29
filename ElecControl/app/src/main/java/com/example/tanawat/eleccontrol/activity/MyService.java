@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class MyService extends Service {
-
+String a;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,6 +34,7 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null){
                     Log.d("background1",dataSnapshot.getValue(ButtonItemCollectionCms.class).getData().get(0).getName());
+                    a = dataSnapshot.getValue(ButtonItemCollectionCms.class).getData().get(0).getName();
                 }
 
 

@@ -48,6 +48,7 @@ public class SceneFragment extends Fragment {
 
     public interface FragmentListener {
         void onAddSceneButtonClicked();
+        void onEditSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms);
     }
 
     static ListView listView;
