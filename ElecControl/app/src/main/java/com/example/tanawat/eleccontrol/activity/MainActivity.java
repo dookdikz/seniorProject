@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
         ButtonItemCms cms = getIntent().getParcelableExtra("cms");
         ButtonItemCollectionCms scene = getIntent().getParcelableExtra("scene");
+        ButtonItemCollectionCms editScene = getIntent().getParcelableExtra("editScene");
 
 
         initInstance();
@@ -54,7 +55,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                 if (getIntent().getStringExtra("activity").equals("addSceneActivity")) {
                     Log.d("asdasd",scene.getTemp());
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene)).commit();
-                } else {
+                }
+                else if (getIntent().getStringExtra("activity").equals("EditSceneActivity")) {
+                    Log.d("asdasd",scene.getTemp());
+                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(editScene,"edit")).commit();
+                }
+                else {
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms)).commit();
                 }
 
@@ -103,11 +109,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         startActivity(intent);
     }
 
-    @Override
-    public void onEditSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms) {
-        Intent intent = new Intent(MainActivity.this, EditSceneActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

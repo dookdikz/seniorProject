@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,15 +45,18 @@ public class EditSceneFragment extends Fragment {
     static ButtonItemCollectionCms buttonItemCollectionCms;
     EditText etNameScene;
     CheckBox cbEditScene;
+    static ArrayList<Boolean> checkBoolEdit;
     ListScene listScene;
     LinearLayout layoutEditScene;
     public EditSceneFragment() {
         super();
     }
 
-    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms) {
+    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms,ArrayList<Boolean> checkEdit) {
         EditSceneFragment fragment = new EditSceneFragment();
        editScene = buttonItemCollectionCms;
+        checkBoolEdit = checkEdit;
+
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -116,11 +120,13 @@ public class EditSceneFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
-                listAdapter = new EditSceneAdapter(buttonItemCollectionCms, getActivity());
+                listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+                Log.d("checkEd",checkBoolEdit.toString());
                 listView.setAdapter(listAdapter);
                 listAdapter.setEditScene(editScene);
+
             }
 
             @Override
@@ -129,7 +135,7 @@ public class EditSceneFragment extends Fragment {
             }
         });
 
-        listAdapter = new EditSceneAdapter(buttonItemCollectionCms, getActivity());
+        listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
         listAdapter.setEditScene(editScene);
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
@@ -188,9 +194,9 @@ public class EditSceneFragment extends Fragment {
 //
 //            id = id + 1;
 //            chooseTool.setId(id);
-            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-            String key = mRootRef.push().getKey();
-            chooseTool.setId(key);
+//            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+//            String key = mRootRef.push().getKey();
+//            chooseTool.setId(key);
 
 
             chooseTool.setName(etNameScene.getText().toString());
@@ -199,7 +205,7 @@ public class EditSceneFragment extends Fragment {
 //            String json = new Gson().toJson(String.valueOf(id));
 //            editorKey.putString("json", json);
 //            editorKey.apply();
-            getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetSceneOptionFragment.newInstance(chooseTool)).commit();
+            getFragmentManager().beginTransaction().replace(R.id.contentContainer, EditSceneOptionFragment.newInstance(chooseTool)).commit();
 
 
         }

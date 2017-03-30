@@ -48,7 +48,7 @@ public class SceneFragment extends Fragment {
 
     public interface FragmentListener {
         void onAddSceneButtonClicked();
-        void onEditSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms);
+
     }
 
     static ListView listView;
@@ -58,6 +58,7 @@ public class SceneFragment extends Fragment {
     ImageView btnGoTool;
     ListScene listScene;
     ButtonItemCollectionCms scene;
+    ButtonItemCollectionCms editScene;
     static String url;
     ButtonItemCms toolInScene;
     ButtonItemCollectionCms allTool;
@@ -76,6 +77,14 @@ public class SceneFragment extends Fragment {
         SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
         args.putParcelable("scene", scene);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene,String type) {
+        SceneFragment fragment = new SceneFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("editScene",scene);
         fragment.setArguments(args);
         return fragment;
     }
@@ -115,9 +124,7 @@ public class SceneFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.listView);
         tvCountScene = (TextView) rootView.findViewById(R.id.tvCountScene);
         pgbLoad = (ProgressBar) rootView.findViewById(R.id.pgbLoad);
-
         layoutListView = (LinearLayout) rootView.findViewById(R.id.layoutListView);
-
         pgbLoad.setVisibility(View.VISIBLE);
         layoutListView.setVisibility(View.GONE);
         btnGoTool = (ImageView) rootView.findViewById(R.id.btnGoTool);

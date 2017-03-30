@@ -23,6 +23,7 @@ import java.util.ArrayList;
  */
 public class EditSceneAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
+    static int sizeOftype;
     static ButtonItemCollectionCms editScene;
 
     public ButtonItemCollectionCms getEditScene() {
@@ -35,7 +36,11 @@ public class EditSceneAdapter extends BaseAdapter {
 
     Context activity;
 
-    ArrayList<Boolean> checkEdit = new ArrayList<>();
+    public void setCheckEdit(ArrayList<Boolean> checkEdit) {
+        this.checkEdit = checkEdit;
+    }
+
+    static ArrayList<Boolean> checkEdit ;
     ArrayList<Boolean> checkOnOrOff = new ArrayList<>();
 //    private Spinner spinEditCommand;
 
@@ -61,9 +66,10 @@ public class EditSceneAdapter extends BaseAdapter {
         this.buttonItemCollectionCms = buttonItemCollectionCms;
     }
 
-    public EditSceneAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
+    public EditSceneAdapter(ButtonItemCollectionCms buttonItemCollectionCms, ArrayList<Boolean> checkEdit, Context activity) {
 
         this.buttonItemCollectionCms = buttonItemCollectionCms;
+       this.checkEdit = checkEdit;
         this.activity = activity;
     }
 
@@ -105,7 +111,6 @@ public class EditSceneAdapter extends BaseAdapter {
 //            item = (ButtonListItem) convertView;
 //
 //        } else {
-        checkEdit.add(false);
         checkOnOrOff.add(false);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_edit_scene, null);
@@ -195,7 +200,6 @@ public class EditSceneAdapter extends BaseAdapter {
                 } else {
                     checkEdit.set(position, true);
                 }
-
                 Log.d("positionAll", checkEdit.toString());
             }
         });

@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -43,12 +44,15 @@ import java.util.Calendar;
  */
 public class SceneListAdapter extends BaseAdapter {
     ListScene listScene;
+    ButtonItemCollectionCms listTool;
+
     Button btnDelete;
     Button btnEdit;
     ImageView ivTimeSet;
     ImageView ivTempSet;
     ImageView ivLightSet;
     ImageView ivBluetoothSet;
+    EditSceneAdapter editSceneAdapter;
     private Context activity;
 
 
@@ -145,12 +149,26 @@ public class SceneListAdapter extends BaseAdapter {
 
             }
         });
+        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         btnEdit = (Button) convertView.findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, EditSceneActivity.class);
                 intent.putExtra("editScene",listScene.getData().get(position));
+                intent.putExtra("listTool",listTool);
 
                 activity.startActivity(intent);
             }

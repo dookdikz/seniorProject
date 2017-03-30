@@ -24,7 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
+
 import com.example.tanawat.eleccontrol.adapter.AddSceneAdapter;
+import com.example.tanawat.eleccontrol.adapter.EditSceneAdapter;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.google.firebase.database.DataSnapshot;
@@ -138,6 +140,7 @@ public class AddSceneFragment extends Fragment {
 
         listAdapter = new AddSceneAdapter(buttonItemCollectionCms, getActivity());
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
