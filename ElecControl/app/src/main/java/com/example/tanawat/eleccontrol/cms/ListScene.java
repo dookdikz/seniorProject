@@ -2,6 +2,7 @@ package com.example.tanawat.eleccontrol.cms;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,17 @@ public class ListScene implements Parcelable {
 
     public void addData(ButtonItemCollectionCms buttonItemCollectionCms) {
         data.add(buttonItemCollectionCms);
+
+    }
+    public void editData(ButtonItemCollectionCms buttonItemCollectionCms){
+
+
+        for(int i=0;i<data.size();i++){
+            Log.d("NameEdit",buttonItemCollectionCms.getName());
+            if(buttonItemCollectionCms.getId().equals(data.get(i).getId())){
+                data.set(i,buttonItemCollectionCms);
+            }
+        }
 
     }
 

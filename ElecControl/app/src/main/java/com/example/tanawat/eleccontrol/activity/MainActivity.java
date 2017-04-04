@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene)).commit();
                 }
                 else if (getIntent().getStringExtra("activity").equals("EditSceneActivity")) {
-                    Log.d("asdasd",scene.getTemp());
                     getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(editScene,"edit")).commit();
                 }
                 else {

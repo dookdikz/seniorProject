@@ -258,10 +258,10 @@ public class SceneListAdapter extends BaseAdapter {
 
                     holder.tvLightScene.setText(buttonItemCollectionCms.getLight());
                     if(buttonItemCollectionCms.getCheckLightSen().equals("less than")){
-                        holder.tvLightScene.setText("< "+buttonItemCollectionCms.getTemp()+" "+"Lux");
+                        holder.tvLightScene.setText("< "+buttonItemCollectionCms.getLight()+" "+"Lux");
                     }
                     else if(buttonItemCollectionCms.getCheckLightSen().equals("more than")){
-                        holder.tvLightScene.setText("> "+buttonItemCollectionCms.getTemp()+" "+"Lux");
+                        holder.tvLightScene.setText("> "+buttonItemCollectionCms.getLight()+" "+"Lux");
                     }
                     holder.tvBluetoothScene.setText(buttonItemCollectionCms.getBluetooth());
 
@@ -278,73 +278,73 @@ public class SceneListAdapter extends BaseAdapter {
             //  item.setTvTypeText(buttonItemCms.getType());
 
         }
-        ivTimeSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                Intent intent = new Intent(parent.getContext(), AlarmReceiver.class);
-                intent.putExtra("sceneAlarm", buttonItemCollectionCms);
-
-                int dayOfWeek = 0;
-                if (!buttonItemCollectionCms.getTime().equals("None")) {
-                    String[] date = buttonItemCollectionCms.getTime().split(":");
-                    switch (date[0]) {
-                        case "Sun":
-                            dayOfWeek = 1;
-                            break;
-                        case "Mon":
-                            dayOfWeek = 2;
-                            break;
-                        case "Tue":
-                            dayOfWeek = 3;
-                            break;
-                        case "Wed":
-                            dayOfWeek = 4;
-                            break;
-                        case "Thu":
-                            dayOfWeek = 5;
-                            break;
-                        case "Fri":
-                            dayOfWeek = 6;
-                            break;
-                        case "Saturday":
-                            dayOfWeek = 7;
-                            break;
-
-                    }
-                    calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-                    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date[1]));
-                    calendar.set(Calendar.MINUTE, Integer.parseInt(date[2]));
-                    if (buttonItemCollectionCms.getCheckTime().equals("On")) {
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(parent.getContext(), buttonItemCollectionCms.getNumId(), intent, 0);
-                        pendingIntent.cancel();
-                        buttonItemCollectionCms.setCheckTime("Off");
-                    } else {
-                        buttonItemCollectionCms.setCheckTime("On");
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(parent.getContext(), buttonItemCollectionCms.getNumId(), intent, 0);
-                        AlarmManager alarmManager = (AlarmManager) parent.getContext().getSystemService(parent.getContext().ALARM_SERVICE);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                    }
-                } else {
-                    if (buttonItemCollectionCms.getCheckTime().equals("On")) {
-                        buttonItemCollectionCms.setCheckTime("Off");
-                        Log.d("timeset", buttonItemCollectionCms.getTime());
-                    } else {
-                        buttonItemCollectionCms.setCheckTime("On");
-                        Log.d("timeset", buttonItemCollectionCms.getTime());
-                    }
-                }
-
-                for (int i = 0; i < listScene.getData().size(); i++) {
-                    if (buttonItemCollectionCms.getId().equals(listScene.getData().get(i).getId())) {
-                        listScene.getData().get(i).setCheckTime(buttonItemCollectionCms.getCheckTime());
-                    }
-                }
-                mRootRef.child("listScene").setValue(listScene);
-
-            }
-
-        });
+//        ivTimeSet.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Calendar calendar = Calendar.getInstance();
+//                Intent intent = new Intent(parent.getContext(), AlarmReceiver.class);
+//                intent.putExtra("sceneAlarm", buttonItemCollectionCms);
+//
+//                int dayOfWeek = 0;
+//                if (!buttonItemCollectionCms.getTime().equals("No Set")) {
+//                    String[] date = buttonItemCollectionCms.getTime().split(":");
+//                    switch (date[0]) {
+//                        case "Sun":
+//                            dayOfWeek = 1;
+//                            break;
+//                        case "Mon":
+//                            dayOfWeek = 2;
+//                            break;
+//                        case "Tue":
+//                            dayOfWeek = 3;
+//                            break;
+//                        case "Wed":
+//                            dayOfWeek = 4;
+//                            break;
+//                        case "Thu":
+//                            dayOfWeek = 5;
+//                            break;
+//                        case "Fri":
+//                            dayOfWeek = 6;
+//                            break;
+//                        case "Saturday":
+//                            dayOfWeek = 7;
+//                            break;
+//
+//                    }
+//                    calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+//                    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date[1]));
+//                    calendar.set(Calendar.MINUTE, Integer.parseInt(date[2]));
+//                    if (buttonItemCollectionCms.getCheckTime().equals("On")) {
+//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(parent.getContext(), buttonItemCollectionCms.getNumId(), intent, 0);
+//                        pendingIntent.cancel();
+//                        buttonItemCollectionCms.setCheckTime("Off");
+//                    } else {
+//                        buttonItemCollectionCms.setCheckTime("On");
+//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(parent.getContext(), buttonItemCollectionCms.getNumId(), intent, 0);
+//                        AlarmManager alarmManager = (AlarmManager) parent.getContext().getSystemService(parent.getContext().ALARM_SERVICE);
+//                        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//                    }
+//                } else {
+//                    if (buttonItemCollectionCms.getCheckTime().equals("On")) {
+//                        buttonItemCollectionCms.setCheckTime("Off");
+//                        Log.d("timeset", buttonItemCollectionCms.getTime());
+//                    } else {
+//                        buttonItemCollectionCms.setCheckTime("On");
+//                        Log.d("timeset", buttonItemCollectionCms.getTime());
+//                    }
+//                }
+//
+//                for (int i = 0; i < listScene.getData().size(); i++) {
+//                    if (buttonItemCollectionCms.getId().equals(listScene.getData().get(i).getId())) {
+//                        listScene.getData().get(i).setCheckTime(buttonItemCollectionCms.getCheckTime());
+//                    }
+//                }
+//                mRootRef.child("listScene").setValue(listScene);
+//
+//            }
+//
+//        });
 
         return convertView;
     }

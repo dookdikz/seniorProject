@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +80,7 @@ public class EditSceneOptionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         setHasOptionsMenu(true);
-        buttonItemCollectionCms = getArguments().getParcelable("EditScene");
+        buttonItemCollectionCms = getArguments().getParcelable("editScene");
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -102,10 +103,22 @@ public class EditSceneOptionFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        Log.d("setTime",buttonItemCollectionCms.getTime().toString());
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
+        tvSetTime.setText(buttonItemCollectionCms.getTime().toString());
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
+        tvSetTemp.setText(buttonItemCollectionCms.getTemp());
+        if(!buttonItemCollectionCms.getTemp().equals("No Set")){
+            tvSetTemp.setText(buttonItemCollectionCms.getCheckTempSen()+" "+buttonItemCollectionCms.getTemp());
+        }
+
         tvSetLight = (TextView) rootView.findViewById(R.id.tvSetLight);
+        tvSetLight.setText(buttonItemCollectionCms.getLight());
+        if(!buttonItemCollectionCms.getLight().equals("No Set")){
+            tvSetLight.setText(buttonItemCollectionCms.getCheckLightSen()+" "+buttonItemCollectionCms.getLight());
+        }
         tvSetBluetooth = (TextView) rootView.findViewById(R.id.tvSetBluetooth);
+        tvSetBluetooth.setText(buttonItemCollectionCms.getBluetooth());
 
 
         buttonstartSetTime = (Button) rootView.findViewById(R.id.startSetTime);
@@ -270,7 +283,7 @@ public class EditSceneOptionFragment extends Fragment {
     public void setLight(String choose,int light){
         this.light = light;
         chooseLight = choose;
-        tvSetLight.setText(choose+" "+light + " Lux");
+        tvSetLight.setText(choose+" "+this.light + " Lux");
     }
     public void setBluetooth(String choose){
         bluetooth = choose;
@@ -281,41 +294,31 @@ public class EditSceneOptionFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionNext) {
             if (!tvSetTime.getText().equals("No Set")) {
+                id = buttonItemCollectionCms.getNumId();
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
-
-
-
             }
             else {
-                buttonItemCollectionCms.setTime("No set");
+                buttonItemCollectionCms.setTime("No Set");
                 buttonItemCollectionCms.setCheckTime("Off");
-
-
             }
             if (!tvSetTemp.getText().equals("No Set")) {
                 buttonItemCollectionCms.setTemp(String.valueOf(this.temp));
                 buttonItemCollectionCms.setCheckTempSen(chooseTemp);
-
-
-
-
             } else {
                 buttonItemCollectionCms.setTemp("No Set");
                 buttonItemCollectionCms.setCheckTempSen("Off");
 
             }
-
             if (!tvSetLight.getText().equals("No Set")) {
                 buttonItemCollectionCms.setLight(String.valueOf(this.light));
                 buttonItemCollectionCms.setCheckLightSen(chooseLight);
-
-
 
             } else {
                 buttonItemCollectionCms.setLight("No Set");
@@ -330,7 +333,7 @@ public class EditSceneOptionFragment extends Fragment {
 
 
             } else {
-                buttonItemCollectionCms.setBluetooth("No set");
+                buttonItemCollectionCms.setBluetooth("No Set");
                 buttonItemCollectionCms.setCheckBluetooth("Off");
 
             }

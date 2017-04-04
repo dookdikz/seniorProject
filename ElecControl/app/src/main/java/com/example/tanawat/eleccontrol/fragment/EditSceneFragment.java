@@ -171,6 +171,8 @@ public class EditSceneFragment extends Fragment {
         if (item.getItemId() == R.id.actionNext) {
 
             ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
+            chooseTool = editScene;
+            chooseTool.getData().clear();
             ArrayList<Boolean> checkOnOrOff = listAdapter.getCheckOnOrOff();
             for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
                 if (checkOnOrOff.get(i) == true) {
@@ -198,7 +200,8 @@ public class EditSceneFragment extends Fragment {
 //            String key = mRootRef.push().getKey();
 //            chooseTool.setId(key);
 
-
+//            chooseTool.setId(editScene.getId());
+//            chooseTool
             chooseTool.setName(etNameScene.getText().toString());
 
 

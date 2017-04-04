@@ -326,6 +326,7 @@ public class SetSceneOptionFragment extends Fragment {
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
+
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
@@ -334,7 +335,7 @@ public class SetSceneOptionFragment extends Fragment {
 
             }
             else {
-                buttonItemCollectionCms.setTime("No set");
+                buttonItemCollectionCms.setTime("No Set");
                 buttonItemCollectionCms.setCheckTime("Off");
 
 
@@ -371,7 +372,7 @@ public class SetSceneOptionFragment extends Fragment {
 
 
             } else {
-                buttonItemCollectionCms.setBluetooth("No set");
+                buttonItemCollectionCms.setBluetooth("No Set");
                 buttonItemCollectionCms.setCheckBluetooth("Off");
 
             }

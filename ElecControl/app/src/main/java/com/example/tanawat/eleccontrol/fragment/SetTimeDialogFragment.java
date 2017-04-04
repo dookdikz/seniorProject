@@ -172,8 +172,7 @@ public class SetTimeDialogFragment extends DialogFragment {
                 calendar.set(Calendar.HOUR_OF_DAY, tpSelectedTime.getCurrentHour());
                 calendar.set(Calendar.MINUTE, tpSelectedTime.getCurrentMinute());
                 final int _id = 5;
-                EditSceneOptionFragment editSceneOptionFragment = new EditSceneOptionFragment();
-                editSceneOptionFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
+
                 SetSceneOptionFragment setSceneOptionFragment =new SetSceneOptionFragment();
                 setSceneOptionFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
                 getDialog().dismiss();

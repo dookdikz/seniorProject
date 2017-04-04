@@ -126,6 +126,9 @@ public class EditTempDiaLogFragment extends DialogFragment {
 
         btnTempOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(etSetTemp.getText().equals(null)){
+                    etSetTemp.setText("0");
+                }
                 EditSceneOptionFragment editSceneOptionFragment = new  EditSceneOptionFragment();
                 editSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
                 getDialog().dismiss();

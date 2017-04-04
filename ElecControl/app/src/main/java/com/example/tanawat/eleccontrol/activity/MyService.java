@@ -33,8 +33,8 @@ String a;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null){
-                    Log.d("background1",dataSnapshot.getValue(ButtonItemCollectionCms.class).getData().get(0).getName());
-                    a = dataSnapshot.getValue(ButtonItemCollectionCms.class).getData().get(0).getName();
+
+
                 }
 
 

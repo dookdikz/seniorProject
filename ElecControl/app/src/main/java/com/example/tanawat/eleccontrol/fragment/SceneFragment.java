@@ -95,6 +95,9 @@ public class SceneFragment extends Fragment {
         init(savedInstanceState);
         getActivity().setTitle("Scene");
         scene = getArguments().getParcelable("scene");
+        editScene = getArguments().getParcelable("editScene");
+
+
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -201,8 +204,13 @@ public class SceneFragment extends Fragment {
                 if (listScene != null) {
 
                     if (scene != null) {
-                        Log.d("eiei", "eieiei");
+                        Log.d("eieiS", scene.getId());
                         listScene.addData(scene);
+                        mRootRef.child("listScene").setValue(listScene);
+                    }
+                    if(editScene != null){
+                        listScene.editData(editScene);
+                        Log.d("editSc",String.valueOf(editScene.getData().size()));
                         mRootRef.child("listScene").setValue(listScene);
                     }
                 } else {
