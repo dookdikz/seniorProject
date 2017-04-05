@@ -103,22 +103,26 @@ public class EditSceneOptionFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        Log.d("setTime",buttonItemCollectionCms.getTime().toString());
+
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         tvSetTime.setText(buttonItemCollectionCms.getTime().toString());
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
         tvSetTemp.setText(buttonItemCollectionCms.getTemp());
+
         if(!buttonItemCollectionCms.getTemp().equals("No Set")){
-            tvSetTemp.setText(buttonItemCollectionCms.getCheckTempSen()+" "+buttonItemCollectionCms.getTemp());
+            tvSetTemp.setText(buttonItemCollectionCms.getCheckTempSen()+" "+buttonItemCollectionCms.getTemp()+" C");
+            chooseTemp  = buttonItemCollectionCms.getCheckTempSen();
         }
 
         tvSetLight = (TextView) rootView.findViewById(R.id.tvSetLight);
         tvSetLight.setText(buttonItemCollectionCms.getLight());
         if(!buttonItemCollectionCms.getLight().equals("No Set")){
-            tvSetLight.setText(buttonItemCollectionCms.getCheckLightSen()+" "+buttonItemCollectionCms.getLight());
+            tvSetLight.setText(buttonItemCollectionCms.getCheckLightSen()+" "+buttonItemCollectionCms.getLight()+" Lux");
+            chooseLight=buttonItemCollectionCms.getCheckLightSen();
         }
         tvSetBluetooth = (TextView) rootView.findViewById(R.id.tvSetBluetooth);
         tvSetBluetooth.setText(buttonItemCollectionCms.getBluetooth());
+
 
 
         buttonstartSetTime = (Button) rootView.findViewById(R.id.startSetTime);
@@ -317,6 +321,7 @@ public class EditSceneOptionFragment extends Fragment {
 
             }
             if (!tvSetLight.getText().equals("No Set")) {
+
                 buttonItemCollectionCms.setLight(String.valueOf(this.light));
                 buttonItemCollectionCms.setCheckLightSen(chooseLight);
 

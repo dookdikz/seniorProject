@@ -170,6 +170,7 @@ public class EditSceneFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionNext) {
 
+
             ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
             chooseTool = editScene;
             chooseTool.getData().clear();
@@ -188,6 +189,7 @@ public class EditSceneFragment extends Fragment {
                     chooseTool.addData(buttonItemCollectionCms.getData().get(i));
                 }
             }
+
 
 //            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
 //            SharedPreferences.Editor editorKey = prefKey.edit();

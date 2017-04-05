@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,8 +39,8 @@ public class EditSceneAdapter extends BaseAdapter {
         this.checkEdit = checkEdit;
     }
 
-    static ArrayList<Boolean> checkEdit ;
-    ArrayList<Boolean> checkOnOrOff = new ArrayList<>();
+    static ArrayList<Boolean> checkEdit;
+   static ArrayList<Boolean> checkOnOrOff ;
 //    private Spinner spinEditCommand;
 
 
@@ -57,7 +56,6 @@ public class EditSceneAdapter extends BaseAdapter {
     CheckBox ivOnOrOff;
 
 
-
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
         return buttonItemCollectionCms;
     }
@@ -69,7 +67,8 @@ public class EditSceneAdapter extends BaseAdapter {
     public EditSceneAdapter(ButtonItemCollectionCms buttonItemCollectionCms, ArrayList<Boolean> checkEdit, Context activity) {
 
         this.buttonItemCollectionCms = buttonItemCollectionCms;
-       this.checkEdit = checkEdit;
+        this.checkEdit = checkEdit;
+        checkOnOrOff = checkEdit;
         this.activity = activity;
     }
 
@@ -111,13 +110,14 @@ public class EditSceneAdapter extends BaseAdapter {
 //            item = (ButtonListItem) convertView;
 //
 //        } else {
-        checkOnOrOff.add(false);
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_edit_scene, null);
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
             holder.ivTabTool = (ImageView) convertView.findViewById(R.id.ivTabTool);
+
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
@@ -129,13 +129,11 @@ public class EditSceneAdapter extends BaseAdapter {
 
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
-                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")|| buttonItemCollectionCms.getData().get(position).getType().equals("Tv")){
+                    if (buttonItemCollectionCms.getData().get(position).getType().equals("Air") || buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
                         holder.ivTabTool.setImageResource(R.drawable.remote_icon);
-                    }
-                    else if(buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")){
+                    } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
                         holder.ivTabTool.setImageResource(R.drawable.switch_icon);
-                    }
-                    else {
+                    } else {
                         holder.ivTabTool.setImageResource(R.drawable.curtain_icon);
                     }
 
@@ -149,9 +147,10 @@ public class EditSceneAdapter extends BaseAdapter {
 
 
         }
+checkOnOrOff.set(position,false);
 
-
-        ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff) ;
+        ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff);
+        ivOnOrOff.setChecked(false);
         ivOnOrOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,12 +177,19 @@ public class EditSceneAdapter extends BaseAdapter {
 
         cbEditScene = (CheckBox) convertView.findViewById(R.id.cbEditScene);
 
-            for(int j=0;j<editScene.getData().size();j++){
-                if(buttonItemCollectionCms.getData().get(position).getId().equals(editScene.getData().get(j).getId())){
-                    checkEdit.set(position,true);
-                    cbEditScene.setChecked(true);
+        for (int j = 0; j < editScene.getData().size(); j++) {
+            if (buttonItemCollectionCms.getData().get(position).getId().equals(editScene.getData().get(j).getId())) {
+                checkEdit.set(position, true);
+                cbEditScene.setChecked(true);
+                if (editScene.getData().get(j).getstatus().equals("On")) {
+                    checkOnOrOff.set(position,true);
+                    ivOnOrOff.setChecked(true);
+                } else {
+                    checkOnOrOff.set(position,false);
+                    ivOnOrOff.setChecked(false);
                 }
             }
+        }
 //        for(int k=0;k<editScene.getData().size();k++){
 //            if(checkEdit.get(k) == true){
 //                cbEditScene.setChecked(true);
