@@ -365,18 +365,19 @@ public class SceneFragment extends Fragment {
             listener.onAddSceneButtonClicked();
 
 
-        } else if (item.getItemId() == R.id.actionSetting) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-            if (prev != null) {
-                ft.remove(prev);
-            }
-            ft.addToBackStack(null);
-
-            // Create and show the dialog.
-            DialogFragment newFragment = SettingDialogFragment.newInstance(2);
-            newFragment.show(ft, "dialog");
         }
+//        else if (item.getItemId() == R.id.actionSetting) {
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+//            if (prev != null) {
+//                ft.remove(prev);
+//            }
+//            ft.addToBackStack(null);
+//
+//            // Create and show the dialog.
+//            DialogFragment newFragment = SettingDialogFragment.newInstance(2);
+//            newFragment.show(ft, "dialog");
+//        }
         return super.onOptionsItemSelected(item);
     }
 

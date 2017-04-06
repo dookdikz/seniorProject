@@ -308,12 +308,12 @@ public class SetSceneOptionFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_add_scene, menu);
+        inflater.inflate(R.menu.menu_submit_tool, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.actionNext) {
+        if (item.getItemId() == R.id.actionSubmit) {
 
             buttonItemCollectionCms.setNumId(id);
 

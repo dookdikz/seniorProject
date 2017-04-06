@@ -7,6 +7,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +69,7 @@ public class AddCurtainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        setHasOptionsMenu(true);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -95,19 +99,19 @@ public class AddCurtainFragment extends Fragment {
 //        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
 //        spinChooseCurtain.setAdapter(adapterChooseCurtain);
 //        spinOnOrOff.setAdapter(adapterOnOrOff);
-        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
-        btnAddTool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ButtonItemCms buttonItemCms = new ButtonItemCms();
-                buttonItemCms.setName(etNameCurtain.getText().toString());
-                buttonItemCms.setType("Curtain");
-                buttonItemCms.setstatus("Off");
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddToolCommandButtonClicked(buttonItemCms);
-            }
-        });
+//        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
+//        btnAddTool.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                ButtonItemCms buttonItemCms = new ButtonItemCms();
+//                buttonItemCms.setName(etNameCurtain.getText().toString());
+//                buttonItemCms.setType("Curtain");
+//                buttonItemCms.setstatus("Off");
+//                FragmentListener listener = (FragmentListener) getActivity();
+//                listener.onAddToolCommandButtonClicked(buttonItemCms);
+//            }
+//        });
         if(!(rootView instanceof EditText)) {
 
             rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -135,5 +139,24 @@ public class AddCurtainFragment extends Fragment {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_submit_tool,menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actionSubmit) {
+
+            ButtonItemCms buttonItemCms = new ButtonItemCms();
+            buttonItemCms.setName(etNameCurtain.getText().toString());
+            buttonItemCms.setType("Curtain");
+            buttonItemCms.setstatus("Off");
+            FragmentListener listener = (FragmentListener) getActivity();
+            listener.onAddToolCommandButtonClicked(buttonItemCms);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

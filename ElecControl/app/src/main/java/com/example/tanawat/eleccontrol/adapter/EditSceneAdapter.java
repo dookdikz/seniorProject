@@ -40,7 +40,7 @@ public class EditSceneAdapter extends BaseAdapter {
     }
 
     static ArrayList<Boolean> checkEdit;
-   static ArrayList<Boolean> checkOnOrOff ;
+    static ArrayList<Boolean> checkOnOrOff = new ArrayList<>();
 //    private Spinner spinEditCommand;
 
 
@@ -68,7 +68,6 @@ public class EditSceneAdapter extends BaseAdapter {
 
         this.buttonItemCollectionCms = buttonItemCollectionCms;
         this.checkEdit = checkEdit;
-        checkOnOrOff = checkEdit;
         this.activity = activity;
     }
 
@@ -102,7 +101,7 @@ public class EditSceneAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ButtonListItem item;
-
+checkOnOrOff.add(false);
         LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -147,10 +146,9 @@ public class EditSceneAdapter extends BaseAdapter {
 
 
         }
-checkOnOrOff.set(position,false);
-
+        checkOnOrOff.set(position, false);
+        checkEdit.set(position, false);
         ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff);
-        ivOnOrOff.setChecked(false);
         ivOnOrOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +157,8 @@ checkOnOrOff.set(position,false);
                 } else {
                     checkOnOrOff.set(position, true);
                 }
+                Log.d("positionAllOnOff", checkOnOrOff.toString());
+                Log.d("positionAllEdit", checkEdit.toString());
 
 //                Log.d("position", String.valueOf(position));
 //                if(ivOnOrOff.isChecked()){
@@ -182,14 +182,16 @@ checkOnOrOff.set(position,false);
                 checkEdit.set(position, true);
                 cbEditScene.setChecked(true);
                 if (editScene.getData().get(j).getstatus().equals("On")) {
-                    checkOnOrOff.set(position,true);
+                    checkOnOrOff.set(position, true);
                     ivOnOrOff.setChecked(true);
                 } else {
-                    checkOnOrOff.set(position,false);
+                    checkOnOrOff.set(position, false);
                     ivOnOrOff.setChecked(false);
                 }
             }
         }
+
+
 //        for(int k=0;k<editScene.getData().size();k++){
 //            if(checkEdit.get(k) == true){
 //                cbEditScene.setChecked(true);
@@ -206,7 +208,8 @@ checkOnOrOff.set(position,false);
                 } else {
                     checkEdit.set(position, true);
                 }
-                Log.d("positionAll", checkEdit.toString());
+                Log.d("positionAllOnOff", checkOnOrOff.toString());
+                Log.d("positionAllEdit", checkEdit.toString());
             }
         });
 

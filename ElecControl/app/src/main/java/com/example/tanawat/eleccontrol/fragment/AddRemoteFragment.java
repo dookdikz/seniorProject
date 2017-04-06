@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +81,7 @@ public class AddRemoteFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        setHasOptionsMenu(true);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -121,19 +125,19 @@ public class AddRemoteFragment extends Fragment {
         spinChooseRemote.setAdapter(adapterChooseRemote);
 //        spinOnOrOff.setAdapter(adapterOnOrOff);
         closeKeyboard(getActivity(), etNameRemote.getWindowToken());
-        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
-        btnAddTool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ButtonItemCms buttonItemCms = new ButtonItemCms();
-                buttonItemCms.setName(etNameRemote.getText().toString());
-                buttonItemCms.setType(choosenRemote);
-                buttonItemCms.setstatus("Off");
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddToolCommandButtonClicked(buttonItemCms);
-            }
-        });
+//        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
+//        btnAddTool.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                ButtonItemCms buttonItemCms = new ButtonItemCms();
+//                buttonItemCms.setName(etNameRemote.getText().toString());
+//                buttonItemCms.setType(choosenRemote);
+//                buttonItemCms.setstatus("Off");
+//                FragmentListener listener = (FragmentListener) getActivity();
+//                listener.onAddToolCommandButtonClicked(buttonItemCms);
+//            }
+//        });
         if(!(rootView instanceof EditText)) {
 
             rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -166,4 +170,23 @@ public class AddRemoteFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_submit_tool,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actionSubmit) {
+            ButtonItemCms buttonItemCms = new ButtonItemCms();
+            buttonItemCms.setName(etNameRemote.getText().toString());
+            buttonItemCms.setType(choosenRemote);
+            buttonItemCms.setstatus("Off");
+            FragmentListener listener = (FragmentListener) getActivity();
+            listener.onAddToolCommandButtonClicked(buttonItemCms);
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

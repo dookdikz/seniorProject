@@ -1,28 +1,21 @@
 package com.example.tanawat.eleccontrol.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 /**
  * Created by Tanawat on 7/11/2559.
@@ -38,6 +30,7 @@ import com.google.gson.Gson;
 public class ToolListAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnDelete;
+    ListScene listScene;
 
 
     private Context activity;
@@ -93,7 +86,7 @@ public class ToolListAdapter extends BaseAdapter {
 //
 //        } else {
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_button, null);
             holder = new ViewHolder();
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
@@ -109,7 +102,19 @@ public class ToolListAdapter extends BaseAdapter {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
                 setButtonItemCollectionCms(buttonItemCollectionCms);
-                Log.d("checkkk","ye");
+                Log.d("checkkk", "ye");
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listScene = dataSnapshot.getValue(ListScene.class);
 
             }
 
@@ -138,10 +143,20 @@ public class ToolListAdapter extends BaseAdapter {
 //                        String jsonRead = pref.getString("json", null);
 
 //                        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-                        Log.d("checkkk",String.valueOf(buttonItemCollectionCms.getData().size()));
+
+                        for (int i = 0; i < listScene.getData().size(); i++) {
+                            ButtonItemCollectionCms tempScene = listScene.getData().get(i);
+                            for (int j = 0; j < tempScene.getData().size(); j++) {
+                                Log.d("deleteScene",buttonItemCollectionCms.getData().get(positionToRemove).getId()+" + "+tempScene.getId());
+                                if (buttonItemCollectionCms.getData().get(positionToRemove).getId().equals(tempScene.getData().get(j).getId())) {
+                                    listScene.getData().get(i).deleteData(j);
+                                }
+                            }
+                        }
 
                         buttonItemCollectionCms.deleteData(positionToRemove);
                         mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child("listScene").setValue(listScene);
 //                        setButtonItemCollectionCms(buttonItemCollectionCms);
 //                        String json = new Gson().toJson(buttonItemCollectionCms);
 //                        editor.putString("json", json);
@@ -161,34 +176,30 @@ public class ToolListAdapter extends BaseAdapter {
 
         ButtonItemCms buttonItemCms = (ButtonItemCms) getItem(position);
         if (buttonItemCms != null) {
-            Log.d("testD",String.valueOf(position));
-            if(buttonItemCms.getName() !=null){
-                if(holder!=null){
+            Log.d("testD", String.valueOf(position));
+            if (buttonItemCms.getName() != null) {
+                if (holder != null) {
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
-                    Log.d("testStatus",buttonItemCollectionCms.getData().get(position).getstatus().toString());
-                    if(buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")){
+                    Log.d("testStatus", buttonItemCollectionCms.getData().get(position).getstatus().toString());
+                    if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
                         holder.ivOnOff.setImageResource(R.drawable.switch_off);
-                    }
-                    else {
+                    } else {
                         holder.ivOnOff.setImageResource(R.drawable.switch_on);
                     }
 
-                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")|| buttonItemCollectionCms.getData().get(position).getType().equals("Tv")){
+                    if (buttonItemCollectionCms.getData().get(position).getType().equals("Air") || buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
                         holder.ivTabTool.setImageResource(R.drawable.remote_icon);
-                    }
-                    else if(buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")){
+                    } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
                         holder.ivTabTool.setImageResource(R.drawable.switch_icon);
-                    }
-                    else {
+                    } else {
                         holder.ivTabTool.setImageResource(R.drawable.curtain_icon);
                     }
 
                 }
 
-            }
-            else{
-                Log.d("testD","name_null");
+            } else {
+                Log.d("testD", "name_null");
             }
             // item.setTvNameText(buttonItemCms.getName());
             //  item.setTvTypeText(buttonItemCms.getType());

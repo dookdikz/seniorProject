@@ -201,7 +201,7 @@ public class EditSceneOptionFragment extends Fragment {
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_add_scene, menu);
+        inflater.inflate(R.menu.menu_submit_tool, menu);
     }
     @SuppressWarnings("UnusedParameters")
     private void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -296,7 +296,7 @@ public class EditSceneOptionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.actionNext) {
+        if (item.getItemId() == R.id.actionSubmit) {
             if (!tvSetTime.getText().equals("No Set")) {
                 id = buttonItemCollectionCms.getNumId();
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);

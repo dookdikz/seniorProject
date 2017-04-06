@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +29,13 @@ public class AddSwitchFragment extends Fragment {
     private Button btnAddTool;
     private EditText etNameSwitch;
 
-    public interface FragmentListener{
+    public interface FragmentListener {
         void onAddToolCommandButtonClicked(ButtonItemCms buttonItemCms);
     }
 
     private Spinner spinChooseSwitch;
     private Spinner spinOnOrOff;
-   private  String choosenSwitch;
+    private String choosenSwitch;
 
     public AddSwitchFragment() {
         super();
@@ -66,6 +68,7 @@ public class AddSwitchFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        setHasOptionsMenu(true);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -79,7 +82,7 @@ public class AddSwitchFragment extends Fragment {
         final String[] chooseSwitch = getResources().getStringArray(R.array.chooseSwitch);
 //        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
         final ArrayAdapter<String> adapterChooseSwitch = new ArrayAdapter<String>(rootView.getContext(),
-                android.R.layout.simple_dropdown_item_1line,chooseSwitch);
+                android.R.layout.simple_dropdown_item_1line, chooseSwitch);
 //        final ArrayAdapter<String> adapterOnOrOff = new ArrayAdapter<String>(rootView.getContext(),android.R.layout.simple_dropdown_item_1line,onOrOff);
         spinChooseSwitch.setAdapter(adapterChooseSwitch);
 //        spinOnOrOff.setAdapter(adapterOnOrOff);
@@ -94,20 +97,20 @@ public class AddSwitchFragment extends Fragment {
 
             }
         });
-        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
-        btnAddTool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ButtonItemCms buttonItemCms = new ButtonItemCms();
-                buttonItemCms.setName(etNameSwitch.getText().toString());
-                buttonItemCms.setType(choosenSwitch);
-                buttonItemCms.setstatus("Off");
-                FragmentListener listener = (FragmentListener) getActivity();
-                listener.onAddToolCommandButtonClicked(buttonItemCms);
-            }
-        });
-        if(!(rootView instanceof EditText)) {
+//        btnAddTool = (Button) rootView.findViewById(R.id.btnAddTool) ;
+//        btnAddTool.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                ButtonItemCms buttonItemCms = new ButtonItemCms();
+//                buttonItemCms.setName(etNameSwitch.getText().toString());
+//                buttonItemCms.setType(choosenSwitch);
+//                buttonItemCms.setstatus("Off");
+//                FragmentListener listener = (FragmentListener) getActivity();
+//                listener.onAddToolCommandButtonClicked(buttonItemCms);
+//            }
+//        });
+        if (!(rootView instanceof EditText)) {
 
             rootView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -121,7 +124,6 @@ public class AddSwitchFragment extends Fragment {
     }
 
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -132,8 +134,29 @@ public class AddSwitchFragment extends Fragment {
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance (Fragment level's variables) State here
     }
+
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_submit_tool, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actionSubmit) {
+
+            ButtonItemCms buttonItemCms = new ButtonItemCms();
+            buttonItemCms.setName(etNameSwitch.getText().toString());
+            buttonItemCms.setType(choosenSwitch);
+            buttonItemCms.setstatus("Off");
+            FragmentListener listener = (FragmentListener) getActivity();
+            listener.onAddToolCommandButtonClicked(buttonItemCms);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
