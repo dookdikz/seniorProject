@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -31,16 +29,18 @@ import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
  * Created by nuuneoi on 11/16/2014.
  */
 public class AddRemoteFragment extends Fragment {
-    public interface FragmentListener{
+    public interface FragmentListener {
         void onAddToolCommandButtonClicked(ButtonItemCms buttonItemCms);
     }
 
     private Spinner spinChooseRemote;
-//    private Spinner spinOnOrOff;
+    //    private Spinner spinOnOrOff;
     EditText etNameRemote;
     String choosenRemote;
+    TextView testText;
     String choosenOnOff;
     private Button btnAddTool;
+
     public AddRemoteFragment() {
         super();
     }
@@ -51,12 +51,11 @@ public class AddRemoteFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public static void closeKeyboard(Context c, IBinder windowToken) {
         InputMethodManager mgr = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(windowToken, 0);
     }
-
-
 
 
     @Override
@@ -67,7 +66,6 @@ public class AddRemoteFragment extends Fragment {
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
-
 
 
     @Override
@@ -89,19 +87,19 @@ public class AddRemoteFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-
+        testText = (TextView) rootView.findViewById(R.id.testText);
         spinChooseRemote = (Spinner) rootView.findViewById(R.id.spinChooseRemote);
 //        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
         etNameRemote = (EditText) rootView.findViewById(R.id.etNameRemote);
         final String[] chooseRemote = getResources().getStringArray(R.array.chooseRemote);
 //        final String[] onOrOff = getResources().getStringArray(R.array.onOrOff);
         final ArrayAdapter<String> adapterChooseRemote = new ArrayAdapter<String>(rootView.getContext(),
-                android.R.layout.simple_dropdown_item_1line,chooseRemote);
+                android.R.layout.simple_dropdown_item_1line, chooseRemote);
         spinChooseRemote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choosenRemote = chooseRemote[position];
-
+                testText.setText(chooseRemote[position]);
             }
 
             @Override
@@ -138,7 +136,7 @@ public class AddRemoteFragment extends Fragment {
 //                listener.onAddToolCommandButtonClicked(buttonItemCms);
 //            }
 //        });
-        if(!(rootView instanceof EditText)) {
+        if (!(rootView instanceof EditText)) {
 
             rootView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -165,14 +163,15 @@ public class AddRemoteFragment extends Fragment {
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance (Fragment level's variables) State here
     }
+
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_submit_tool,menu);
+        inflater.inflate(R.menu.menu_submit_tool, menu);
     }
 
     @Override

@@ -143,20 +143,23 @@ public class ToolListAdapter extends BaseAdapter {
 //                        String jsonRead = pref.getString("json", null);
 
 //                        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-
-                        for (int i = 0; i < listScene.getData().size(); i++) {
-                            ButtonItemCollectionCms tempScene = listScene.getData().get(i);
-                            for (int j = 0; j < tempScene.getData().size(); j++) {
-                                Log.d("deleteScene",buttonItemCollectionCms.getData().get(positionToRemove).getId()+" + "+tempScene.getId());
-                                if (buttonItemCollectionCms.getData().get(positionToRemove).getId().equals(tempScene.getData().get(j).getId())) {
-                                    listScene.getData().get(i).deleteData(j);
+                        if (listScene != null) {
+                            for (int i = 0; i < listScene.getData().size(); i++) {
+                                ButtonItemCollectionCms tempScene = listScene.getData().get(i);
+                                for (int j = 0; j < tempScene.getData().size(); j++) {
+                                    Log.d("deleteScene", buttonItemCollectionCms.getData().get(positionToRemove).getId() + " + " + tempScene.getId());
+                                    if (buttonItemCollectionCms.getData().get(positionToRemove).getId().equals(tempScene.getData().get(j).getId())) {
+                                        listScene.getData().get(i).deleteData(j);
+                                    }
                                 }
                             }
+                            mRootRef.child("listScene").setValue(listScene);
                         }
+
 
                         buttonItemCollectionCms.deleteData(positionToRemove);
                         mRootRef.child("listTool").setValue(buttonItemCollectionCms);
-                        mRootRef.child("listScene").setValue(listScene);
+
 //                        setButtonItemCollectionCms(buttonItemCollectionCms);
 //                        String json = new Gson().toJson(buttonItemCollectionCms);
 //                        editor.putString("json", json);

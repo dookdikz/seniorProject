@@ -122,8 +122,9 @@ public class SettingDialogFragment extends DialogFragment {
         btnSetUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainFragment.setUrl(etSetUrl.getText().toString());
-                SceneFragment.setUrl(etSetUrl.getText().toString());
+                HttpManager.setUrl(etSetUrl.getText().toString());
+//                MainFragment.setUrl(etSetUrl.getText().toString());
+//                SceneFragment.setUrl(etSetUrl.getText().toString());
                 getDialog().dismiss();
 
             }

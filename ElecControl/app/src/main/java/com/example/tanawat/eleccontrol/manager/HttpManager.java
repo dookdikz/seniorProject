@@ -5,6 +5,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.manager.http.ApiService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -38,6 +43,21 @@ static public String url = "http://158.108.122.70:5000/" ;
     private ApiService service;
 
     public HttpManager() {
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.child("ip").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    url = dataSnapshot.getValue(String.class);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mContext = Contextor.getInstance().getContext();
 
         Gson gson = new GsonBuilder()

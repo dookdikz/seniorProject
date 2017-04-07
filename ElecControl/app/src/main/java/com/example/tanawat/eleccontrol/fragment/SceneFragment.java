@@ -59,11 +59,12 @@ public class SceneFragment extends Fragment {
     ListScene listScene;
     ButtonItemCollectionCms scene;
     ButtonItemCollectionCms editScene;
-    static String url;
+    static String url ="http://158.108.122.70:5000/";
     ButtonItemCms toolInScene;
     ButtonItemCollectionCms allTool;
     ProgressBar pgbLoad;
     LinearLayout layoutListView;
+    static Call<TestSendWeb> call;
 
     public static void setUrl(String url) {
         SceneFragment.url = url;
@@ -94,6 +95,7 @@ public class SceneFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         getActivity().setTitle("Scene");
+        setUrl(HttpManager.getUrl());
         scene = getArguments().getParcelable("scene");
         editScene = getArguments().getParcelable("editScene");
 
@@ -185,6 +187,7 @@ public class SceneFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                setUrl("http://170.108.122.70:5000/");
             }
 
             @Override
@@ -245,48 +248,47 @@ public class SceneFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                HttpManager.setUrl(url);
                 for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
                     Log.d("checkI", "eiei");
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().openAir();
+                             call = HttpManager.getInstance().getService().openAir();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         } else {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().closeAir();
+                           call = HttpManager.getInstance().getService().closeAir();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         }
                     } else if (toolInScene.getType().equals("Tv")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().openTv();
+                            call = HttpManager.getInstance().getService().openTv();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         } else {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().closeTv();
+                            call = HttpManager.getInstance().getService().closeTv();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         }
                     } else if (toolInScene.getType().equals("Switch1")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch1();
+                            call = HttpManager.getInstance().getService().openSwitch1();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         } else {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch1();
+                           call = HttpManager.getInstance().getService().closeSwitch1();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         }
                     } else if (toolInScene.getType().equals("Switch2")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().openSwitch2();
+                            call = HttpManager.getInstance().getService().openSwitch2();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         } else {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().closeSwitch2();
+                             call = HttpManager.getInstance().getService().closeSwitch2();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         }
                     } else if (toolInScene.getType().equals("Curtain")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().openCurtain();
+                             call = HttpManager.getInstance().getService().openCurtain();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         } else {
-                            Call<TestSendWeb> call = HttpManager.getInstance().getService().closeCurtain();
+                            call = HttpManager.getInstance().getService().closeCurtain();
                             call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                         }
                     } else {

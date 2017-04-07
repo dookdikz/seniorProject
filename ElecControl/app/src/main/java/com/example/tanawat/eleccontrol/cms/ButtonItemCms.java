@@ -12,6 +12,8 @@ ButtonItemCms implements Parcelable {
     private String name;
     private String status;
     private String type;
+    private String value;
+
     public ButtonItemCms() {
 
     }
@@ -21,7 +23,9 @@ ButtonItemCms implements Parcelable {
         name = in.readString();
         status = in.readString();
         type = in.readString();
+        value = in.readString();
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -29,6 +33,7 @@ ButtonItemCms implements Parcelable {
         dest.writeString(name);
         dest.writeString(status);
         dest.writeString(type);
+        dest.writeString(value);
     }
 
     @Override
@@ -79,4 +84,13 @@ ButtonItemCms implements Parcelable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }

@@ -50,6 +50,7 @@
 
 </LinearLayout>
         <LinearLayout
+            android:id="@+id/layoutAddTool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -64,6 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutAddScene"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,6 +79,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/layoutSetBluetooth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -84,11 +87,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Setting IP"
+                android:text="Add Bluetooth Address"
                 android:textSize="20dp"
                 android:layout_margin="15dp"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutSetIp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/border">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set IP Address"
+                android:textSize="20dp"
+                android:layout_margin="15dp"/>
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

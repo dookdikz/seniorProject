@@ -1,5 +1,8 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -64,6 +67,7 @@ public class MainFragment extends Fragment {
     ButtonItemCollectionCms buttonItemCollectionCms;
     ProgressBar pgbLoad;
     LinearLayout layoutListView;
+    static Call<TestSendWeb> call;
 
 
     ImageView btnGoScene;
@@ -93,6 +97,7 @@ public class MainFragment extends Fragment {
 
     public static void setUrl(String url) {
         MainFragment.url = url;
+        HttpManager.setUrl(MainFragment.url);
     }
 
     @Override
@@ -150,6 +155,8 @@ public class MainFragment extends Fragment {
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
 
+
+
         final ButtonItemCms buttonItemCms1 = new ButtonItemCms();
 //        ButtonItemCms buttonItemCms2 = new ButtonItemCms();
 
@@ -189,6 +196,7 @@ public class MainFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+
                 }
 
 
@@ -247,6 +255,14 @@ public class MainFragment extends Fragment {
         listView.setAdapter(listAdapter);
 
 //        btnDelete = (Button)getView().findViewById(R.id.btnDeleted);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showChangTempDialog();
+                return true;
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -507,6 +523,18 @@ public class MainFragment extends Fragment {
 //            newFragment.show(ft, "dialog");
 //        }
         return super.onOptionsItemSelected(item);
+    }
+    public void showChangTempDialog() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = ChangeTempDialog.newInstance(4);
+        newFragment.show(ft, "dialog");
     }
 //private class MyListAdap extends ArrayAdapter<String>{
 //    private int layout;
