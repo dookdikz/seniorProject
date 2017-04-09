@@ -13,6 +13,7 @@ ButtonItemCms implements Parcelable {
     private String status;
     private String type;
     private String value;
+    private String checked ;
 
     public ButtonItemCms() {
 
@@ -24,6 +25,7 @@ ButtonItemCms implements Parcelable {
         status = in.readString();
         type = in.readString();
         value = in.readString();
+        checked = in.readString();
     }
 
 
@@ -34,6 +36,7 @@ ButtonItemCms implements Parcelable {
         dest.writeString(status);
         dest.writeString(type);
         dest.writeString(value);
+        dest.writeString(checked);
     }
 
     @Override
@@ -93,4 +96,11 @@ ButtonItemCms implements Parcelable {
         this.value = value;
     }
 
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
 }

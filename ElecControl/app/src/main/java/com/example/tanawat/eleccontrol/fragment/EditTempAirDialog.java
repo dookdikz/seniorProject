@@ -1,6 +1,5 @@
 package com.example.tanawat.eleccontrol.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,23 +8,24 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.AddSceneAdapter;
+import com.example.tanawat.eleccontrol.adapter.EditSceneAdapter;
 
 /**
  * Created by dookdikz on 26/3/2560.
  */
 
-public class SetTempAirDialog extends DialogFragment {
+public class EditTempAirDialog extends DialogFragment {
     int mNum;
+    String temp;
 String choose;
-    public static SetTempAirDialog newInstance(int num) {
-        SetTempAirDialog f = new SetTempAirDialog();
+    public static EditTempAirDialog newInstance(int num) {
+        EditTempAirDialog f = new EditTempAirDialog();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
@@ -86,7 +86,6 @@ String choose;
                 break;
         }
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
-
     }
 
     @Nullable
@@ -98,8 +97,6 @@ String choose;
         Button btnTempAirCancel = (Button) thisDialog.findViewById(R.id.btnTempAirDialogCancel);
         final EditText etTempAir=(EditText) thisDialog.findViewById(R.id.etSetTempAir);
         etTempAir.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-
-
 
 //        final TimePicker tpSelectedTime = (TimePicker) thisDialog.findViewById(R.id.tpSelectedTime);
 //        tpSelectedTime.setIs24HourView(true);
@@ -114,19 +111,13 @@ String choose;
         btnTempAirOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddSceneAdapter addSceneAdapter= new AddSceneAdapter();
-                addSceneAdapter.setTempAir(mNum,etTempAir.getText().toString());
-
+                EditSceneAdapter.setTempAir(mNum,etTempAir.getText().toString());
                 etTempAir.setInputType(0);
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(etTempAir.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 getDialog().dismiss();
-
-
-
             }
         });
-
 
 
 
@@ -134,4 +125,11 @@ String choose;
         return thisDialog;
     }
 
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
 }

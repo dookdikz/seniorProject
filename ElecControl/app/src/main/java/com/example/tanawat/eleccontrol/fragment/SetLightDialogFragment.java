@@ -1,12 +1,15 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -95,6 +98,7 @@ String choose;
         Button btnLightOK = (Button) thisDialog.findViewById(R.id.btnLightOK);
         Button btnLightCancel = (Button) thisDialog.findViewById(R.id.btnLightDialogCancel);
         final EditText etSetLight = (EditText) thisDialog.findViewById(R.id.etSetLight);
+        etSetLight.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
 //        Button btnDateTimeCancel = (Button) thisDialog.findViewById(R.id.btnDateTimeCancel);
         final Spinner spinSelectedLight = (Spinner) thisDialog.findViewById(R.id.spinSelectedLight);
         final String[] chooseLight = getResources().getStringArray(R.array.choose_light_option);
@@ -126,6 +130,8 @@ String choose;
             public void onClick(View v) {
               SetSceneOptionFragment setSceneOptionFragment = new SetSceneOptionFragment();
                 setSceneOptionFragment.setLight(choose,Integer.parseInt(etSetLight.getText().toString()));
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etSetLight.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 getDialog().dismiss();
 
             }

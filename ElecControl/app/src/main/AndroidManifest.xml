@@ -51,7 +51,7 @@
             >
         </activity>
         <receiver android:name=".activity.AlarmReceiver" android:process=":remote" />
-
+        <receiver android:name=".activity.testBroad" android:process=":remote" />
         <receiver android:name=".activity.CrawlAlarm" android:process=":remote" />
 <service android:name=".activity.MyService"/>
 

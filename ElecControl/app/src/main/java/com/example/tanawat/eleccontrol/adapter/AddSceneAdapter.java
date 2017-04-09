@@ -1,9 +1,6 @@
 package com.example.tanawat.eleccontrol.adapter;
 
 import android.content.Context;
-
-
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,22 +15,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.AddSceneActivity;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.fragment.AddSceneFragment;
 import com.example.tanawat.eleccontrol.fragment.SetTempAirDialog;
-import com.example.tanawat.eleccontrol.fragment.SetTempDiaLogFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 
 import java.util.ArrayList;
-
 
 
 /**
  * Created by Tanawat on 3/2/2560.
  */
 public class AddSceneAdapter extends BaseAdapter {
-    ButtonItemCollectionCms buttonItemCollectionCms;
+    static ButtonItemCollectionCms buttonItemCollectionCms;
     Context activity;
 
     ArrayList<Boolean> checkAdd = new ArrayList<>();
@@ -51,6 +46,7 @@ public class AddSceneAdapter extends BaseAdapter {
 
     CheckBox cbAddScene;
     CheckBox ivOnOrOff;
+    TextView tvTempAir;
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
         return buttonItemCollectionCms;
@@ -59,9 +55,11 @@ public class AddSceneAdapter extends BaseAdapter {
     public void setButtonItemCollectionCms(ButtonItemCollectionCms buttonItemCollectionCms) {
         this.buttonItemCollectionCms = buttonItemCollectionCms;
     }
+
     public AddSceneAdapter() {
 
     }
+
     public AddSceneAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
 
         this.buttonItemCollectionCms = buttonItemCollectionCms;
@@ -90,7 +88,7 @@ public class AddSceneAdapter extends BaseAdapter {
         TextView tvNameCommand;
         TextView tvNameType;
         ImageView ivTabTool;
-        TextView tvTempAir;
+
 
 
     }
@@ -115,7 +113,7 @@ public class AddSceneAdapter extends BaseAdapter {
             holder.tvNameCommand = (TextView) convertView.findViewById(R.id.tvNameCommand);
             holder.tvNameType = (TextView) convertView.findViewById(R.id.tvTypeCommand);
             holder.ivTabTool = (ImageView) convertView.findViewById(R.id.ivTabTool);
-            holder.tvTempAir = (TextView) convertView.findViewById(R.id.tvTempAir);
+
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
@@ -127,18 +125,14 @@ public class AddSceneAdapter extends BaseAdapter {
 
                     holder.tvNameCommand.setText(buttonItemCms.getName());
                     holder.tvNameType.setText(buttonItemCms.getType());
-                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")|| buttonItemCollectionCms.getData().get(position).getType().equals("Tv")){
+                    if (buttonItemCollectionCms.getData().get(position).getType().equals("Air") || buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
                         holder.ivTabTool.setImageResource(R.drawable.remote_icon);
-                    }
-                    else if(buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")){
+                    } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Switch1") || buttonItemCollectionCms.getData().get(position).getType().equals("Switch2")) {
                         holder.ivTabTool.setImageResource(R.drawable.switch_icon);
-                    }
-                    else {
+                    } else {
                         holder.ivTabTool.setImageResource(R.drawable.curtain_icon);
                     }
-                    if(buttonItemCollectionCms.getData().get(position).getType().equals("Air")){
-                        holder.tvTempAir.setVisibility(View.VISIBLE);
-                    }
+
 
 
                 }
@@ -150,24 +144,31 @@ public class AddSceneAdapter extends BaseAdapter {
 
 
         }
-
-holder.tvTempAir.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        FragmentTransaction ft =((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
-        Fragment prev = ((FragmentActivity) activity).getSupportFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
+        tvTempAir = (TextView) convertView.findViewById(R.id.tvTempAir);
+        if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
+           tvTempAir.setVisibility(View.VISIBLE);
+            if(buttonItemCollectionCms.getData().get(position).getValue()!=null){
+                tvTempAir.setText(buttonItemCollectionCms.getData().get(position).getValue());
+            }
         }
-        ft.addToBackStack(null);
 
-        // Create and show the dialog.
-        DialogFragment newFragment = SetTempAirDialog.newInstance(position);
-        newFragment.show(ft, "dialog");
+        tvTempAir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = ((FragmentActivity) activity).getSupportFragmentManager().beginTransaction();
+                Fragment prev = ((FragmentActivity) activity).getSupportFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
 
-    }
-});
-        ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff) ;
+                // Create and show the dialog.
+                DialogFragment newFragment = SetTempAirDialog.newInstance(position);
+                newFragment.show(ft, "dialog");
+
+            }
+        });
+        ivOnOrOff = (CheckBox) convertView.findViewById(R.id.ivOnOrOff);
         ivOnOrOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,8 +212,11 @@ holder.tvTempAir.setOnClickListener(new View.OnClickListener() {
 
 
     }
-    public void setTempAir(int position,String temp){
+
+    public void setTempAir(int position, String temp) {
         buttonItemCollectionCms.getData().get(position).setValue(temp);
+        AddSceneFragment addSceneFragment = new AddSceneFragment();
+        addSceneFragment.setTempRemote(buttonItemCollectionCms);
     }
 
 //    public void checkBoxClicked(int positionClicked){

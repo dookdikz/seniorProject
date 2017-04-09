@@ -59,13 +59,20 @@
 
         <CheckBox
             android:layout_alignParentRight="true"
-            android:layout_margin="7dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/ivOnOrOff"
-            android:layout_width="75dp"
+            android:layout_width="55dp"
             android:layout_height="35dp"
             android:button="@drawable/selector_cb_switch"
             />
+        <TextView
+            android:layout_toLeftOf="@id/ivOnOrOff"
+            android:layout_marginTop="20dp"
+            android:id="@+id/tvTempAir"
+            android:text="Temp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>

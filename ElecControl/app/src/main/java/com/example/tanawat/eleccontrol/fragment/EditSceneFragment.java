@@ -43,6 +43,7 @@ public class EditSceneFragment extends Fragment {
     static EditSceneAdapter listAdapter;
     static ButtonItemCollectionCms editScene;
     static ButtonItemCollectionCms buttonItemCollectionCms;
+    static ButtonItemCollectionCms newButtonItemCollectionCms;
     EditText etNameScene;
     CheckBox cbEditScene;
     static ArrayList<Boolean> checkBoolEdit;
@@ -120,10 +121,16 @@ public class EditSceneFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                for(int i=0;i<buttonItemCollectionCms.getData().size();i++){
+                    for(int j =0;j<editScene.getData().size();j++){
+                        if(buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())){
+                            buttonItemCollectionCms.getData().set(i,editScene.getData().get(j));
+                        }
+                    }
+                }
                 listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-                Log.d("checkEd",checkBoolEdit.toString());
                 listView.setAdapter(listAdapter);
                 listAdapter.setEditScene(editScene);
 
@@ -134,12 +141,22 @@ public class EditSceneFragment extends Fragment {
 
             }
         });
+        if(buttonItemCollectionCms!=null){
+            for(int i=0;i<buttonItemCollectionCms.getData().size();i++){
+                for(int j =0;j<editScene.getData().size();j++){
+                    if(buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())){
+                        buttonItemCollectionCms.getData().set(i,editScene.getData().get(j));
+                    }
+                }
+            }
+
 
         listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
         listAdapter.setEditScene(editScene);
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
+        }
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -186,9 +203,20 @@ public class EditSceneFragment extends Fragment {
             ArrayList<Boolean> checkEdit = listAdapter.getCheckEdit();
             for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
                 if (checkEdit.get(i) == true) {
+                    buttonItemCollectionCms.getData().get(i).setChecked("true");
+
+                }
+                else {
+                    buttonItemCollectionCms.getData().get(i).setChecked("false");
+                }
+            }
+            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
+
                     chooseTool.addData(buttonItemCollectionCms.getData().get(i));
                 }
             }
+
 
 
 //            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
@@ -220,5 +248,15 @@ public class EditSceneFragment extends Fragment {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+    public static void setTempRemote(ButtonItemCollectionCms tool){
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.child("testaa").setValue(buttonItemCollectionCms);
+        mRootRef.child("testbb").setValue(tool);
+        buttonItemCollectionCms =tool;
+        Log.d("checkSetTemp",checkBoolEdit.toString());
+
+
+
     }
 }

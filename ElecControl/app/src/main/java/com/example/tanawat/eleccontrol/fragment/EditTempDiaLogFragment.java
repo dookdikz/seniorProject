@@ -1,11 +1,14 @@
 package com.example.tanawat.eleccontrol.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,6 +97,7 @@ public class EditTempDiaLogFragment extends DialogFragment {
         Button btnTempOK = (Button) thisDialog.findViewById(R.id.btnTempDialogOK);
         Button btnTempCancel = (Button) thisDialog.findViewById(R.id.btnTempDialogCancel);
         etSetTemp = (EditText) thisDialog.findViewById(R.id.etSetTemp);
+        etSetTemp.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
 //        Button btnTempCancel = (Button) thisDialog.findViewById(R.id.btnTempCancel);
         final Spinner spinSelectedTemp = (Spinner) thisDialog.findViewById(R.id.spinSelectedTemp);
         final String[] chooseTemp = getResources().getStringArray(R.array.choose_temp_option);
@@ -131,6 +135,8 @@ public class EditTempDiaLogFragment extends DialogFragment {
                 }
                 EditSceneOptionFragment editSceneOptionFragment = new  EditSceneOptionFragment();
                 editSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etSetTemp.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 getDialog().dismiss();
 
             }

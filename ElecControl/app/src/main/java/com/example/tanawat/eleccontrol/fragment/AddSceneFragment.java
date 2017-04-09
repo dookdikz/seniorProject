@@ -46,7 +46,7 @@ public class AddSceneFragment extends Fragment {
     static ListView listView;
     static TextView tvCountTool;
     static AddSceneAdapter listAdapter;
-    ButtonItemCollectionCms buttonItemCollectionCms;
+    static ButtonItemCollectionCms buttonItemCollectionCms;
     EditText etNameScene;
     CheckBox cbAddScene;
     ListScene listScene;
@@ -186,6 +186,16 @@ public class AddSceneFragment extends Fragment {
             ArrayList<Boolean> checkAdd = listAdapter.getCheckAdd();
             for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
                 if (checkAdd.get(i) == true) {
+                    buttonItemCollectionCms.getData().get(i).setChecked("true");
+
+                }
+                else {
+                    buttonItemCollectionCms.getData().get(i).setChecked("flase");
+                }
+            }
+            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
+
                     chooseTool.addData(buttonItemCollectionCms.getData().get(i));
                 }
             }
@@ -218,5 +228,8 @@ public class AddSceneFragment extends Fragment {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+    public static void setTempRemote(ButtonItemCollectionCms tool){
+        buttonItemCollectionCms =tool;
     }
 }

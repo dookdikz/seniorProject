@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,7 +20,13 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class MyService extends Service {
-String a;
+    ButtonItemCollectionCms buttonItemCollectionCms;
+    ListScene listScene;
+    String temp;
+    String light;
+    String macBlue;
+    String statusBlue;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -28,17 +35,90 @@ String a;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        buttonItemCollectionCms = new ButtonItemCollectionCms();
+        listScene = new ListScene();
+
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
-
+                if (dataSnapshot != null) {
+                    buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
 
                 }
 
 
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    listScene = dataSnapshot.getValue(ListScene.class);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("sensor/light").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+
+                    light = dataSnapshot.getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("sensor/temp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+
+                    temp = dataSnapshot.getValue(String.class);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("MacBlue/data").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    macBlue = dataSnapshot.getValue(String.class);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("MacBlue/status").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+
+                    statusBlue = dataSnapshot.getValue(String.class);
+                }
             }
 
             @Override
@@ -50,7 +130,7 @@ String a;
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-               Log.d("background","eiei");
+                Log.d("background", "eiei");
 
 
             }
