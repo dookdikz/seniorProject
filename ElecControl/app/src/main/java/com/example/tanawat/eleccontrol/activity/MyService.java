@@ -1,13 +1,11 @@
 package com.example.tanawat.eleccontrol.activity;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
@@ -34,6 +32,8 @@ public class MyService extends Service {
     Long light;
     String macBlue;
     Long statusBlue;
+    static Call<TestSendWeb> call;
+
 
     @Nullable
     @Override
@@ -45,6 +45,7 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         buttonItemCollectionCms = new ButtonItemCollectionCms();
         listScene = new ListScene();
+        final String macAddress = android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address");
 
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
@@ -68,6 +69,33 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     listScene = dataSnapshot.getValue(ListScene.class);
+                    if (listScene != null && statusBlue!=null) {
+                        if (macBlue.equals(macAddress)) {
+                            for (int i = 0; i < listScene.getData().size(); i++) {
+                                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+                                    if (listScene.getData().get(i).getBluetooth().equals("On")) {
+                                        if (statusBlue==1) {
+                                            Log.d("BlueTh","On");
+                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                            }
+                                        }
+                                    } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
+                                        if (statusBlue==0) {
+                                            Log.d("BlueTh","Off");
+                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                            }
+                                        }
+                                    }
+
+
+                                }
+
+                            }
+                        }
+
+                    }
 
                 }
             }
@@ -81,8 +109,33 @@ public class MyService extends Service {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-
                     light = dataSnapshot.getValue(Long.class);
+                    if (listScene != null) {
+                        for (int i = 0; i < listScene.getData().size(); i++) {
+                            if (!listScene.getData().get(i).getCheckLightSen().equals("No Set")) {
+                                if (listScene.getData().get(i).getCheckLightSen().equals("more than")) {
+//                                    Log.d("testBack1", String.valueOf(light));
+//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
+                                    if (light >= Long.parseLong(listScene.getData().get(i).getLight())) {
+                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                        }
+                                    }
+                                } else if (listScene.getData().get(i).getCheckLightSen().equals("less than")) {
+//                                    Log.d("testBack1", String.valueOf(light));
+//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
+                                    if (light < Long.parseLong(listScene.getData().get(i).getLight())) {
+                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                        }
+                                    }
+                                }
+
+
+                            }
+
+                        }
+                    }
                 }
             }
 
@@ -97,33 +150,27 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
 
                     temp = dataSnapshot.getValue(Long.class);
-                    for(int i=0;i<listScene.getData().size();i++){
-                        if(!listScene.getData().get(i).getCheckTempSen().equals("Off")){
-                            if(listScene.getData().get(i).getCheckTempSen().equals("more than")){
-                                if(Long.parseLong(listScene.getData().get(i).getTemp())>temp);
-                                {
-                                    for(int j=0;j<listScene.getData().get(i).getData().size();j++){
-                                        if(listScene.getData().get(i).getData().get(j).getType().equals("Air")){
-
+                    if (listScene != null) {
+                        for (int i = 0; i < listScene.getData().size(); i++) {
+                            if (!listScene.getData().get(i).getCheckTempSen().equals("No Set")) {
+                                if (listScene.getData().get(i).getCheckTempSen().equals("more than")) {
+                                    if (temp >= Long.parseLong(listScene.getData().get(i).getTemp())) {
+                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
                                         }
-                                        else if(listScene.getData().get(i).getData().get(j).getType().equals("Tv")){
-
-                                        }
-                                        else if(listScene.getData().get(i).getData().get(j).getType().equals("Switch1")){
-
-                                        }
-                                        else if(listScene.getData().get(i).getData().get(j).getType().equals("Curtain")){
-
-                                        }
-                                        else{
-                                            
+                                    }
+                                } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
+                                    if (temp < Long.parseLong(listScene.getData().get(i).getTemp())) {
+                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
                                         }
                                     }
                                 }
+
+
                             }
 
                         }
-
                     }
                 }
 
@@ -154,6 +201,32 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
 
                     statusBlue = dataSnapshot.getValue(Long.class);
+                    if (listScene != null) {
+                        if (macBlue.equals(macAddress)) {
+                            for (int i = 0; i < listScene.getData().size(); i++) {
+                                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+                                    if (listScene.getData().get(i).getBluetooth().equals("On")) {
+                                        if (statusBlue==1) {
+                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                            }
+                                        }
+                                    } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
+                                        if (statusBlue==0) {
+                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                                            }
+                                        }
+                                    }
+
+
+                                }
+
+                            }
+                        }
+
+                    }
+
                 }
             }
 
@@ -166,17 +239,107 @@ public class MyService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(temp !=null){
-                    if(temp<25){
+                if (temp != null) {
+                    if (temp < 25) {
                         Log.d("background", "7893");
                     }
 
                 }
 
 
-
             }
         }, 3000);
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void onCheck(String type, int i, int j, DatabaseReference mRootRef) {
+        if (listScene.getData().get(i).getData().get(j).getstatus().equals("On")) {
+            for (int k = 0; k < buttonItemCollectionCms.getData().size(); k++) {
+//                Log.d("testBack3", buttonItemCollectionCms.getData().get(k).getId());
+//                Log.d("testBack4", listScene.getData().get(i).getData().get(j).getId());
+                if (buttonItemCollectionCms.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId())) {
+                    if (buttonItemCollectionCms.getData().get(k).getstatus().equals("Off")) {
+                        buttonItemCollectionCms.getData().get(k).setstatus("On");
+                        if (type.equals("Air")) {
+                            call = HttpManager.getInstance().getService().openAir();
+                        } else if (type.equals("Tv")) {
+                            call = HttpManager.getInstance().getService().openTv();
+                        } else if (type.equals("Switch1")) {
+                            call = HttpManager.getInstance().getService().openSwitch1();
+                        } else if (type.equals("Switch2")) {
+                            call = HttpManager.getInstance().getService().openSwitch2();
+                        } else {
+                            call = HttpManager.getInstance().getService().openCurtain();
+                        }
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                        if (type.equals("Air")) {
+                            if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+//                                call = HttpManager.getInstance().getService().openAir();
+                            }
+
+                        }
+                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                    }
+                    else{
+                        if (type.equals("Air")) {
+                            if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+//                                call = HttpManager.getInstance().getService().openAir();
+                            }
+
+                        }
+                    }
+                }
+            }
+        } else if (listScene.getData().get(i).getData().get(j).getstatus().equals("Off")) {
+            for (int k = 0; k < buttonItemCollectionCms.getData().size(); k++) {
+                if (buttonItemCollectionCms.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId())) {
+                    if (buttonItemCollectionCms.getData().get(k).getstatus().equals("On")) {
+                        buttonItemCollectionCms.getData().get(k).setstatus("Off");
+                        if (type.equals("Air")) {
+                            call = HttpManager.getInstance().getService().closeAir();
+                        } else if (type.equals("Tv")) {
+                            call = HttpManager.getInstance().getService().closeTv();
+                        } else if (type.equals("Switch1")) {
+                            call = HttpManager.getInstance().getService().closeSwitch1();
+                        } else if (type.equals("Switch2")) {
+                            call = HttpManager.getInstance().getService().closeSwitch2();
+                        } else {
+                            call = HttpManager.getInstance().getService().closeCurtain();
+                        }
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                    }
+                }
+            }
+        }
+    }
+
+    class SentToServer implements Callback<TestSendWeb> {
+        public static final int MODE_OPEN_AIR = 1;
+        public static final int MODE_CLOSE_AIR = 2;
+        public static final int MODE_OPEN_TV = 3;
+        public static final int MODE_CLOSE_TV = 4;
+        public static final int MODE_OPEN_SWITCH1 = 5;
+        public static final int MODE_CLOSE_SWITCH1 = 6;
+        public static final int MODE_OPEN_SWITCH2 = 7;
+        public static final int MODE_CLOSE_SWITCH2 = 8;
+        public static final int MODE_OPEN_CURTAIN = 9;
+        public static final int MODE_CLOSE_CURTAIN = 10;
+        int mode;
+
+        public SentToServer(int mode) {
+            this.mode = mode;
+        }
+
+        @Override
+        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+//            Toast.makeText(getApplicationContext(), "Suscess + " + buttonItemCollectionCms.getName(), Toast.LENGTH_SHORT).show();
+            Log.d("testBackgroud", "eiei");
+        }
+
+        @Override
+        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+
+        }
     }
 }

@@ -249,7 +249,6 @@ public class SceneFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
-                    Log.d("checkI", "eiei");
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
                         if (toolInScene.getstatus().equals("On")) {
