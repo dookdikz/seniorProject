@@ -75,14 +75,13 @@ public class MyService extends Service {
                                 if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
                                     if (listScene.getData().get(i).getBluetooth().equals("On")) {
                                         if (statusBlue==1) {
-                                            Log.d("BlueTh","On");
+
                                             for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
                                                 onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
                                             }
                                         }
                                     } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
                                         if (statusBlue==0) {
-                                            Log.d("BlueTh","Off");
                                             for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
                                                 onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
                                             }
