@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
@@ -177,13 +178,17 @@ public class AddRemoteFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionSubmit) {
-            ButtonItemCms buttonItemCms = new ButtonItemCms();
-            buttonItemCms.setName(etNameRemote.getText().toString());
-            buttonItemCms.setType(choosenRemote);
-            buttonItemCms.setstatus("Off");
-            FragmentListener listener = (FragmentListener) getActivity();
-            listener.onAddToolCommandButtonClicked(buttonItemCms);
-
+            if (etNameRemote.getText().toString().matches("")) {
+                Toast.makeText(getContext(), "Please input name", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                ButtonItemCms buttonItemCms = new ButtonItemCms();
+                buttonItemCms.setName(etNameRemote.getText().toString());
+                buttonItemCms.setType(choosenRemote);
+                buttonItemCms.setstatus("Off");
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onAddToolCommandButtonClicked(buttonItemCms);
+            }
 
         }
         return super.onOptionsItemSelected(item);

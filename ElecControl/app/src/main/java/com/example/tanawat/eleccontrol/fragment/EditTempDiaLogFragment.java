@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 
@@ -134,10 +135,17 @@ public class EditTempDiaLogFragment extends DialogFragment {
                     etSetTemp.setText("0");
                 }
                 EditSceneOptionFragment editSceneOptionFragment = new  EditSceneOptionFragment();
-                editSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etSetTemp.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getDialog().dismiss();
+                if(etSetTemp.getText().toString().matches("")){
+                    Toast.makeText(getContext(), "Please input data", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    editSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etSetTemp.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    getDialog().dismiss();
+                }
+
+
 
             }
         });

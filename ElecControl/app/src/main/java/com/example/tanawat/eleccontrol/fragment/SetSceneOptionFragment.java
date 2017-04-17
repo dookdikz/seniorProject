@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -59,7 +60,10 @@ public class SetSceneOptionFragment extends Fragment {
     static TextView tvSetTemp;
     static TextView tvSetLight;
     static TextView tvSetBluetooth;
-
+    CheckBox cbSetTime;
+    CheckBox cbSetTemp;
+    CheckBox cbSetLight;
+    CheckBox cbSetBluetooth;
     static String time;
     static String chooseTime;
 
@@ -133,6 +137,10 @@ public class SetSceneOptionFragment extends Fragment {
 
             }
         });
+        cbSetTime = (CheckBox) rootView.findViewById(R.id.cbSetTime) ;
+        cbSetTemp = (CheckBox) rootView.findViewById(R.id.cbSetTemp) ;
+        cbSetLight = (CheckBox) rootView.findViewById(R.id.cbSetLight) ;
+        cbSetBluetooth = (CheckBox) rootView.findViewById(R.id.cbSetBluetooth) ;
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
         tvSetLight = (TextView) rootView.findViewById(R.id.tvSetLight);
@@ -205,7 +213,144 @@ public class SetSceneOptionFragment extends Fragment {
                 tvSetBluetooth.setText("No Set");
             }
         });
-       
+        if(!cbSetTime.isChecked()){
+            buttonstartSetTime.setEnabled(false);
+            buttonstartCancelTime.setEnabled(false);
+            tvSetTime.setEnabled(false);
+            tvSetTime.setText("No Set");
+
+            cbSetTemp.setEnabled(true);
+            cbSetLight.setEnabled(true);
+            cbSetBluetooth.setEnabled(true);
+        }
+        else{
+            buttonstartSetTime.setEnabled(true);
+            buttonstartCancelTime.setEnabled(true);
+            tvSetTime.setEnabled(true);
+
+            cbSetTemp.setEnabled(false);
+            btnStartSetTemp.setEnabled(false);
+            btnStartCancelTemp.setEnabled(false);
+            tvSetTemp.setEnabled(false);
+            tvSetTemp.setText("No Set");
+
+            cbSetLight.setEnabled(false);
+            btnStartSetLight.setEnabled(false);
+            btnStartCancelLight.setEnabled(false);
+            tvSetLight.setEnabled(false);
+            tvSetLight.setText("No Set");
+
+            cbSetBluetooth.setEnabled(false);
+            btnStartSetBluetooth.setEnabled(false);
+            btnStartCancelBluetooth.setEnabled(false);
+            tvSetBluetooth.setEnabled(false);
+            tvSetBluetooth.setText("No Set");
+        }
+        if(!cbSetTemp.isChecked()){
+            btnStartSetTemp.setEnabled(false);
+            btnStartCancelTemp.setEnabled(false);
+            tvSetTemp.setEnabled(false);
+            tvSetTemp.setText("No Set");
+        }
+        if(!cbSetLight.isChecked()){
+            btnStartSetLight.setEnabled(false);
+            btnStartCancelLight.setEnabled(false);
+            tvSetLight.setEnabled(false);
+            tvSetLight.setText("No Set");
+        }
+        if(!cbSetBluetooth.isChecked()){
+            btnStartSetBluetooth.setEnabled(false);
+            btnStartCancelBluetooth.setEnabled(false);
+            tvSetBluetooth.setEnabled(false);
+            tvSetBluetooth.setText("No Set");
+        }
+        cbSetTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cbSetTime.isChecked()){
+                    buttonstartSetTime.setEnabled(false);
+                    buttonstartCancelTime.setEnabled(false);
+                    tvSetTime.setText("No Set");
+                    tvSetTime.setEnabled(false);
+
+                    cbSetTemp.setEnabled(true);
+                    cbSetLight.setEnabled(true);
+                    cbSetBluetooth.setEnabled(true);
+                }
+                else{
+                    buttonstartSetTime.setEnabled(true);
+                    buttonstartCancelTime.setEnabled(true);
+                    tvSetTime.setEnabled(true);
+
+                    cbSetTemp.setEnabled(false);
+                    btnStartSetTemp.setEnabled(false);
+                    btnStartCancelTemp.setEnabled(false);
+                    tvSetTemp.setEnabled(false);
+                    tvSetTemp.setText("No Set");
+
+                    cbSetLight.setEnabled(false);
+                    btnStartSetLight.setEnabled(false);
+                    btnStartCancelLight.setEnabled(false);
+                    tvSetLight.setEnabled(false);
+                    tvSetLight.setText("No Set");
+
+                    cbSetBluetooth.setEnabled(false);
+                    btnStartSetBluetooth.setEnabled(false);
+                    btnStartCancelBluetooth.setEnabled(false);
+                    tvSetBluetooth.setEnabled(false);
+                    tvSetBluetooth.setText("No Set");
+                }
+            }
+        });
+        cbSetTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cbSetTemp.isChecked()){
+                    btnStartSetTemp.setEnabled(false);
+                    btnStartCancelTemp.setEnabled(false);
+                    tvSetTemp.setEnabled(false);
+                    tvSetTemp.setText("No Set");
+                }
+                else{
+                    btnStartSetTemp.setEnabled(true);
+                    btnStartCancelTemp.setEnabled(true);
+                    tvSetTemp.setEnabled(true);
+                }
+            }
+        });
+        cbSetLight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cbSetLight.isChecked()){
+                    btnStartSetLight.setEnabled(false);
+                    btnStartCancelLight.setEnabled(false);
+                    tvSetLight.setEnabled(false);
+                    tvSetLight.setText("No Set");
+                }
+                else{
+                    btnStartSetLight.setEnabled(true);
+                    btnStartCancelLight.setEnabled(true);
+                    tvSetLight.setEnabled(true);
+                }
+            }
+        });
+        cbSetBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cbSetBluetooth.isChecked()){
+                    btnStartSetBluetooth.setEnabled(false);
+                    btnStartCancelBluetooth.setEnabled(false);
+                    tvSetBluetooth.setEnabled(false);
+                    tvSetBluetooth.setText("No Set");
+                }
+                else{
+                    btnStartSetBluetooth.setEnabled(true);
+                    btnStartCancelBluetooth.setEnabled(true);
+                    tvSetBluetooth.setEnabled(true);
+                }
+            }
+        });
+
 
     }
 

@@ -3,10 +3,8 @@ package com.example.tanawat.eleccontrol.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.EditSceneAdapter;
@@ -49,13 +48,14 @@ public class EditSceneFragment extends Fragment {
     static ArrayList<Boolean> checkBoolEdit;
     ListScene listScene;
     LinearLayout layoutEditScene;
+
     public EditSceneFragment() {
         super();
     }
 
-    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms,ArrayList<Boolean> checkEdit) {
+    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms, ArrayList<Boolean> checkEdit) {
         EditSceneFragment fragment = new EditSceneFragment();
-       editScene = buttonItemCollectionCms;
+        editScene = buttonItemCollectionCms;
         checkBoolEdit = checkEdit;
 
         Bundle args = new Bundle();
@@ -120,19 +120,22 @@ public class EditSceneFragment extends Fragment {
         mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
-                for(int i=0;i<buttonItemCollectionCms.getData().size();i++){
-                    for(int j =0;j<editScene.getData().size();j++){
-                        if(buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())){
-                            buttonItemCollectionCms.getData().set(i,editScene.getData().get(j));
+                if (dataSnapshot != null) {
+                    buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                    for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                        for (int j = 0; j < editScene.getData().size(); j++) {
+                            if (buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())) {
+                                buttonItemCollectionCms.getData().set(i, editScene.getData().get(j));
+                            }
                         }
                     }
+                    listAdapter = new EditSceneAdapter(buttonItemCollectionCms, checkBoolEdit, getActivity());
+                    listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+                    tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+                    listView.setAdapter(listAdapter);
+                    listAdapter.setEditScene(editScene);
                 }
-                listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
-                listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
-                tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-                listView.setAdapter(listAdapter);
-                listAdapter.setEditScene(editScene);
+
 
             }
 
@@ -141,21 +144,21 @@ public class EditSceneFragment extends Fragment {
 
             }
         });
-        if(buttonItemCollectionCms!=null){
-            for(int i=0;i<buttonItemCollectionCms.getData().size();i++){
-                for(int j =0;j<editScene.getData().size();j++){
-                    if(buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())){
-                        buttonItemCollectionCms.getData().set(i,editScene.getData().get(j));
+        if (buttonItemCollectionCms != null) {
+            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                for (int j = 0; j < editScene.getData().size(); j++) {
+                    if (buttonItemCollectionCms.getData().get(i).getId().equals(editScene.getData().get(j).getId())) {
+                        buttonItemCollectionCms.getData().set(i, editScene.getData().get(j));
                     }
                 }
             }
 
 
-        listAdapter = new EditSceneAdapter(buttonItemCollectionCms,checkBoolEdit, getActivity());
-        listAdapter.setEditScene(editScene);
-        listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
-        tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
-        listView.setAdapter(listAdapter);
+            listAdapter = new EditSceneAdapter(buttonItemCollectionCms, checkBoolEdit, getActivity());
+            listAdapter.setEditScene(editScene);
+            listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+            tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
+            listView.setAdapter(listAdapter);
         }
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -187,36 +190,36 @@ public class EditSceneFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionNext) {
 
-
-            ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
-            chooseTool = editScene;
-            chooseTool.getData().clear();
-            ArrayList<Boolean> checkOnOrOff = listAdapter.getCheckOnOrOff();
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (checkOnOrOff.get(i) == true) {
-                    buttonItemCollectionCms.getData().get(i).setstatus("On");
-                } else {
-                    buttonItemCollectionCms.getData().get(i).setstatus("Off");
-                }
-
-            }
-            ArrayList<Boolean> checkEdit = listAdapter.getCheckEdit();
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (checkEdit.get(i) == true) {
-                    buttonItemCollectionCms.getData().get(i).setChecked("true");
+            if (etNameScene.getText().toString().matches("")) {
+                Toast.makeText(getContext(), "Please input name", Toast.LENGTH_SHORT).show();
+            } else {
+                ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
+                chooseTool = editScene;
+                chooseTool.getData().clear();
+                ArrayList<Boolean> checkOnOrOff = listAdapter.getCheckOnOrOff();
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (checkOnOrOff.get(i) == true) {
+                        buttonItemCollectionCms.getData().get(i).setstatus("On");
+                    } else {
+                        buttonItemCollectionCms.getData().get(i).setstatus("Off");
+                    }
 
                 }
-                else {
-                    buttonItemCollectionCms.getData().get(i).setChecked("false");
-                }
-            }
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
+                ArrayList<Boolean> checkEdit = listAdapter.getCheckEdit();
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (checkEdit.get(i) == true) {
+                        buttonItemCollectionCms.getData().get(i).setChecked("true");
 
-                    chooseTool.addData(buttonItemCollectionCms.getData().get(i));
+                    } else {
+                        buttonItemCollectionCms.getData().get(i).setChecked("false");
+                    }
                 }
-            }
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
 
+                        chooseTool.addData(buttonItemCollectionCms.getData().get(i));
+                    }
+                }
 
 
 //            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
@@ -232,15 +235,17 @@ public class EditSceneFragment extends Fragment {
 
 //            chooseTool.setId(editScene.getId());
 //            chooseTool
-            chooseTool.setName(etNameScene.getText().toString());
+                chooseTool.setName(etNameScene.getText().toString());
 
 
 //            String json = new Gson().toJson(String.valueOf(id));
 //            editorKey.putString("json", json);
 //            editorKey.apply();
-            getFragmentManager().beginTransaction().replace(R.id.contentContainer, EditSceneOptionFragment.newInstance(chooseTool)).commit();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etNameScene.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, EditSceneOptionFragment.newInstance(chooseTool)).commit();
 
-
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -249,13 +254,9 @@ public class EditSceneFragment extends Fragment {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
-    public static void setTempRemote(ButtonItemCollectionCms tool){
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("testaa").setValue(buttonItemCollectionCms);
-        mRootRef.child("testbb").setValue(tool);
-        buttonItemCollectionCms =tool;
-        Log.d("checkSetTemp",checkBoolEdit.toString());
 
+    public static void setTempRemote(ButtonItemCollectionCms tool) {
+        buttonItemCollectionCms = tool;
 
 
     }

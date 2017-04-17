@@ -53,6 +53,7 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+                    onBackground(macAddress, mRootRef);
 
                 }
 
@@ -69,32 +70,7 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     listScene = dataSnapshot.getValue(ListScene.class);
-                    if (listScene != null && statusBlue!=null) {
-                        if (macBlue.equals(macAddress)) {
-                            for (int i = 0; i < listScene.getData().size(); i++) {
-                                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
-                                    if (listScene.getData().get(i).getBluetooth().equals("On")) {
-                                        if (statusBlue==1) {
-
-                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                            }
-                                        }
-                                    } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
-                                        if (statusBlue==0) {
-                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                            }
-                                        }
-                                    }
-
-
-                                }
-
-                            }
-                        }
-
-                    }
+                    onBackground(macAddress, mRootRef);
 
                 }
             }
@@ -109,32 +85,7 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     light = dataSnapshot.getValue(Long.class);
-                    if (listScene != null) {
-                        for (int i = 0; i < listScene.getData().size(); i++) {
-                            if (!listScene.getData().get(i).getCheckLightSen().equals("No Set")) {
-                                if (listScene.getData().get(i).getCheckLightSen().equals("more than")) {
-//                                    Log.d("testBack1", String.valueOf(light));
-//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
-                                    if (light >= Long.parseLong(listScene.getData().get(i).getLight())) {
-                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                        }
-                                    }
-                                } else if (listScene.getData().get(i).getCheckLightSen().equals("less than")) {
-//                                    Log.d("testBack1", String.valueOf(light));
-//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
-                                    if (light < Long.parseLong(listScene.getData().get(i).getLight())) {
-                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                        }
-                                    }
-                                }
-
-
-                            }
-
-                        }
-                    }
+                    onBackground(macAddress, mRootRef);
                 }
             }
 
@@ -149,28 +100,30 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
 
                     temp = dataSnapshot.getValue(Long.class);
-                    if (listScene != null) {
-                        for (int i = 0; i < listScene.getData().size(); i++) {
-                            if (!listScene.getData().get(i).getCheckTempSen().equals("No Set")) {
-                                if (listScene.getData().get(i).getCheckTempSen().equals("more than")) {
-                                    if (temp >= Long.parseLong(listScene.getData().get(i).getTemp())) {
-                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                        }
-                                    }
-                                } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
-                                    if (temp < Long.parseLong(listScene.getData().get(i).getTemp())) {
-                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                        }
-                                    }
-                                }
-
-
-                            }
-
-                        }
-                    }
+                    onBackground(macAddress, mRootRef);
+//                    if (listScene != null)
+//                    {
+//                        for (int i = 0; i < listScene.getData().size(); i++) {
+//                            if (!listScene.getData().get(i).getCheckTempSen().equals("No Set")) {
+//                                if (listScene.getData().get(i).getCheckTempSen().equals("more than")) {
+//                                    if (temp >= Long.parseLong(listScene.getData().get(i).getTemp())) {
+//                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+//                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+//                                        }
+//                                    }
+//                                } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
+//                                    if (temp < Long.parseLong(listScene.getData().get(i).getTemp())) {
+//                                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+//                                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+//                                        }
+//                                    }
+//                                }
+//
+//
+//                            }
+//
+//                        }
+//                    }
                 }
 
             }
@@ -185,6 +138,7 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     macBlue = dataSnapshot.getValue(String.class);
+                    onBackground(macAddress, mRootRef);
 
                 }
             }
@@ -200,31 +154,33 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
 
                     statusBlue = dataSnapshot.getValue(Long.class);
-                    if (listScene != null) {
-                        if (macBlue.equals(macAddress)) {
-                            for (int i = 0; i < listScene.getData().size(); i++) {
-                                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
-                                    if (listScene.getData().get(i).getBluetooth().equals("On")) {
-                                        if (statusBlue==1) {
-                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                            }
-                                        }
-                                    } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
-                                        if (statusBlue==0) {
-                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
-                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
-                                            }
-                                        }
-                                    }
-
-
-                                }
-
-                            }
-                        }
-
-                    }
+                    onBackground(macAddress, mRootRef);
+//                    if (listScene != null)
+//                    {
+//                        if (macBlue.equals(macAddress)) {
+//                            for (int i = 0; i < listScene.getData().size(); i++) {
+//                                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+//                                    if (listScene.getData().get(i).getBluetooth().equals("On")) {
+//                                        if (statusBlue==1) {
+//                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+//                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+//                                            }
+//                                        }
+//                                    } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
+//                                        if (statusBlue==0) {
+//                                            for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+//                                                onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+//                                            }
+//                                        }
+//                                    }
+//
+//
+//                                }
+//
+//                            }
+//                        }
+//
+//                    }
 
                 }
             }
@@ -249,6 +205,91 @@ public class MyService extends Service {
             }
         }, 3000);
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void onBackground(String macAddress, DatabaseReference mRootRef) {
+        if (listScene != null &&statusBlue!=null &&light!=null)
+        {
+            for (int i = 0; i < listScene.getData().size(); i++) {
+                int count = 0;
+                int checkCount = 0;
+                if (!listScene.getData().get(i).getCheckTempSen().equals("Off")) {
+                    count += 1;
+                }
+                if (!listScene.getData().get(i).getCheckLightSen().equals("Off")) {
+                    count += 1;
+                }
+                if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+                    count += 1;
+                }
+
+
+                if (!listScene.getData().get(i).getCheckLightSen().equals("No Set")) {
+                    if (listScene.getData().get(i).getCheckLightSen().equals("more than")) {
+//                                    Log.d("testBack1", String.valueOf(light));
+//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
+                        if (light >= Long.parseLong(listScene.getData().get(i).getLight())) {
+                            checkCount += 1;
+
+                        }
+                    } else if (listScene.getData().get(i).getCheckLightSen().equals("less than")) {
+//                                    Log.d("testBack1", String.valueOf(light));
+//                                    Log.d("testBack2", listScene.getData().get(i).getLight());
+                        if (light < Long.parseLong(listScene.getData().get(i).getLight())) {
+                            checkCount += 1;
+
+                        }
+                    }
+
+
+                }
+
+                if (!listScene.getData().get(i).getCheckTempSen().equals("No Set")) {
+
+                    if (listScene.getData().get(i).getCheckTempSen().equals("more than")) {
+                        if (temp >= Long.parseLong(listScene.getData().get(i).getTemp())) {
+                            checkCount += 1;
+
+                        }
+                    } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
+                        if (temp < Long.parseLong(listScene.getData().get(i).getTemp())) {
+                            checkCount += 1;
+
+                        }
+                    }
+
+
+                }
+                if (macBlue.equals(macAddress))
+                {
+                    if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+                        if (listScene.getData().get(i).getBluetooth().equals("On")) {
+                            if (statusBlue == 1) {
+                                checkCount += 1;
+
+                            }
+                        } else if (listScene.getData().get(i).getBluetooth().equals("Off")) {
+                            if (statusBlue == 0) {
+                                checkCount += 1;
+                            }
+                        }
+
+
+                    }
+                }
+
+                if(count!=0 &&checkCount!=0){
+                    if(count==checkCount){
+                        for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
+                            onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
+                        }
+                    }
+                }
+                Log.d("temp",String.valueOf(count));
+                Log.d("tempC",String.valueOf(checkCount));
+            }
+
+        }
     }
 
     private void onCheck(String type, int i, int j, DatabaseReference mRootRef) {

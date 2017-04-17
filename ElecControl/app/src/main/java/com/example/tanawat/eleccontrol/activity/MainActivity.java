@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     TextView tvTempSensor;
+    TextView tvLightSensor;
     LinearLayout layoutSetBluetooth;
     LinearLayout layoutAddTool;
     LinearLayout layoutAddScene;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     private void initInstance() {
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         tvTempSensor = (TextView) findViewById(R.id.tvTempSensor);
+        tvLightSensor = (TextView) findViewById(R.id.tvLightSensor);
         layoutSetBluetooth = (LinearLayout) findViewById(R.id.layoutSetBluetooth);
         layoutAddTool = (LinearLayout) findViewById(R.id.layoutAddTool);
         layoutAddScene = (LinearLayout) findViewById(R.id.layoutAddScene);
@@ -89,6 +91,17 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 tvTempSensor.setText(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child("sensor/light").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tvLightSensor.setText(dataSnapshot.getValue().toString());
             }
 
             @Override

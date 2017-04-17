@@ -43,6 +43,10 @@
             android:label="Edit Scene"
             android:windowSoftInputMode="stateHidden"
             >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -50,7 +54,13 @@
             android:theme="@android:style/Theme.Dialog"
             >
         </activity>
-        <receiver android:name=".activity.AlarmReceiver" android:process=":remote" />
+        <receiver android:name=".activity.AlarmReceiver" android:process=":remote" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+    </receiver>
+
         <receiver android:name=".activity.testBroad" android:process=":remote" />
         <receiver android:name=".activity.CrawlAlarm" android:process=":remote" />
 <service android:name=".activity.MyService"/>

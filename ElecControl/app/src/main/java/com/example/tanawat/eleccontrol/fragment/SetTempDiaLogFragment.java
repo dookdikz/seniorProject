@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 
@@ -135,10 +136,15 @@ public class SetTempDiaLogFragment extends DialogFragment {
         btnTempOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SetSceneOptionFragment setSceneOptionFragment = new SetSceneOptionFragment();
-                setSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etSetTemp.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getDialog().dismiss();
+                if(etSetTemp.getText().toString().matches("")){
+                    Toast.makeText(getContext(), "Please input data", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    setSceneOptionFragment.setTemp(choose, Integer.parseInt(etSetTemp.getText().toString()));
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etSetTemp.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    getDialog().dismiss();
+                }
 
             }
         });

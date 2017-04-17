@@ -3,8 +3,11 @@ package com.example.tanawat.eleccontrol.activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,14 +37,17 @@ public class AlarmReceiver extends BroadcastReceiver {
     ButtonItemCollectionCms allTool;
     ListScene allScene;
     ButtonItemCms buttonItemCms;
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         FirebaseApp.initializeApp(context);
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-
+        Uri data = intent.getData();
+        Log.d("getTTT",data.toString());
         buttonItemCollectionCms = intent.getParcelableExtra("sceneAlarm");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-
+            Log.d("getTT", buttonItemCollectionCms.getData().get(i).getstatus());
             buttonItemCms = buttonItemCollectionCms.getData().get(i);
 
             if (buttonItemCms.getType().equals("Air")) {
@@ -235,7 +241,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         for (int j = 0; j < allTool.getData().size(); j++) {
                             String idTool = allTool.getData().get(j).getId();
                             if (idTool.equals(idToolInScene)) {
-                                Log.d("getStatus",buttonItemCollectionCms.getData().get(i).getstatus());
+                                Log.d("getStatus", buttonItemCollectionCms.getData().get(i).getstatus());
                                 allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
                             }
                         }
@@ -244,9 +250,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 }
                 mRootRef.child("listTool").setValue(allTool);
 
-                for(int i=0;i<allScene.getData().size();i++){
-                    String idScene= buttonItemCollectionCms.getId();
-                    if(idScene.equals(allScene.getData().get(i).getId())){
+                for (int i = 0; i < allScene.getData().size(); i++) {
+                    String idScene = buttonItemCollectionCms.getId();
+                    if (idScene.equals(allScene.getData().get(i).getId())) {
                         allScene.getData().get(i).setCheckTime("Off");
                     }
                 }

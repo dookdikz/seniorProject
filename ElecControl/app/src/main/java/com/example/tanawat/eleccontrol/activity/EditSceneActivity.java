@@ -78,4 +78,10 @@ public class EditSceneActivity extends AppCompatActivity implements EditSceneOpt
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+    }
 }

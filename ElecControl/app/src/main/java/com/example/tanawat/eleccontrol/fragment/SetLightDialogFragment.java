@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 
@@ -129,10 +130,15 @@ String choose;
         btnLightOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
               SetSceneOptionFragment setSceneOptionFragment = new SetSceneOptionFragment();
-                setSceneOptionFragment.setLight(choose,Integer.parseInt(etSetLight.getText().toString()));
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etSetLight.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getDialog().dismiss();
+                if(etSetLight.getText().toString().matches("")){
+                    Toast.makeText(getContext(), "Please input data", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    setSceneOptionFragment.setLight(choose, Integer.parseInt(etSetLight.getText().toString()));
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etSetLight.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    getDialog().dismiss();
+                }
 
             }
         });

@@ -16,13 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -44,6 +43,11 @@ public class EditSceneOptionFragment extends Fragment {
     static TextView tvSetTemp;
     static TextView tvSetLight;
     static TextView tvSetBluetooth;
+
+    CheckBox cbEditTime;
+    CheckBox cbEditTemp;
+    CheckBox cbEditLight;
+    CheckBox cbEditBluetooth;
 
     static String time;
     static String chooseTime;
@@ -88,7 +92,7 @@ public class EditSceneOptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_set_option_scene, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_edit_option_scene, container, false);
         initInstances(rootView, savedInstanceState);
         return rootView;
     }
@@ -104,14 +108,25 @@ public class EditSceneOptionFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
 
+        cbEditTime = (CheckBox) rootView.findViewById(R.id.cbEditTime);
+        cbEditTemp = (CheckBox) rootView.findViewById(R.id.cbEditTemp);
+        cbEditLight = (CheckBox) rootView.findViewById(R.id.cbEditLight);
+        cbEditBluetooth = (CheckBox) rootView.findViewById(R.id.cbEditBluetooth);
+
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         tvSetTime.setText(buttonItemCollectionCms.getTime().toString());
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
         tvSetTemp.setText(buttonItemCollectionCms.getTemp());
 
+
+        if (!buttonItemCollectionCms.getTime().equals("No Set")) {
+            cbEditTime.setChecked(true);
+        }
         if(!buttonItemCollectionCms.getTemp().equals("No Set")){
             tvSetTemp.setText(buttonItemCollectionCms.getCheckTempSen()+" "+buttonItemCollectionCms.getTemp()+" C");
             chooseTemp  = buttonItemCollectionCms.getCheckTempSen();
+            cbEditTemp.setChecked(true);
+            temp = Integer.parseInt(buttonItemCollectionCms.getTemp());
         }
 
         tvSetLight = (TextView) rootView.findViewById(R.id.tvSetLight);
@@ -119,10 +134,15 @@ public class EditSceneOptionFragment extends Fragment {
         if(!buttonItemCollectionCms.getLight().equals("No Set")){
             tvSetLight.setText(buttonItemCollectionCms.getCheckLightSen()+" "+buttonItemCollectionCms.getLight()+" Lux");
             chooseLight=buttonItemCollectionCms.getCheckLightSen();
+            light = Integer.parseInt(buttonItemCollectionCms.getLight());
+            cbEditLight.setChecked(true);
         }
         tvSetBluetooth = (TextView) rootView.findViewById(R.id.tvSetBluetooth);
         tvSetBluetooth.setText(buttonItemCollectionCms.getBluetooth());
-
+        if (!buttonItemCollectionCms.getBluetooth().equals("No Set")) {
+            cbEditBluetooth.setChecked(true);
+            bluetooth = buttonItemCollectionCms.getBluetooth();
+        }
 
 
         buttonstartSetTime = (Button) rootView.findViewById(R.id.startSetTime);
@@ -191,6 +211,140 @@ public class EditSceneOptionFragment extends Fragment {
                 tvSetBluetooth.setText("No Set");
             }
         });
+
+        if (!cbEditTime.isChecked()) {
+            buttonstartSetTime.setEnabled(false);
+            buttonstartCancelTime.setEnabled(false);
+            tvSetTime.setEnabled(false);
+            tvSetTime.setText("No Set");
+
+            cbEditTemp.setEnabled(true);
+            cbEditLight.setEnabled(true);
+            cbEditBluetooth.setEnabled(true);
+        } else {
+            buttonstartSetTime.setEnabled(true);
+            buttonstartCancelTime.setEnabled(true);
+            tvSetTime.setEnabled(true);
+
+            cbEditTemp.setEnabled(false);
+            btnStartSetTemp.setEnabled(false);
+            btnStartCancelTemp.setEnabled(false);
+            tvSetTemp.setEnabled(false);
+            tvSetTemp.setText("No Set");
+
+            cbEditLight.setEnabled(false);
+            btnStartSetLight.setEnabled(false);
+            btnStartCancelLight.setEnabled(false);
+            tvSetLight.setEnabled(false);
+            tvSetLight.setText("No Set");
+
+            cbEditBluetooth.setEnabled(false);
+            btnStartSetBluetooth.setEnabled(false);
+            btnStartCancelBluetooth.setEnabled(false);
+            tvSetBluetooth.setEnabled(false);
+            tvSetBluetooth.setText("No Set");
+        }
+        if (!cbEditTemp.isChecked()) {
+            btnStartSetTemp.setEnabled(false);
+            btnStartCancelTemp.setEnabled(false);
+            tvSetTemp.setEnabled(false);
+            tvSetTemp.setText("No Set");
+        }
+        if (!cbEditLight.isChecked()) {
+            btnStartSetLight.setEnabled(false);
+            btnStartCancelLight.setEnabled(false);
+            tvSetLight.setEnabled(false);
+            tvSetLight.setText("No Set");
+        }
+        if (!cbEditBluetooth.isChecked()) {
+            btnStartSetBluetooth.setEnabled(false);
+            btnStartCancelBluetooth.setEnabled(false);
+            tvSetBluetooth.setEnabled(false);
+            tvSetBluetooth.setText("No Set");
+        }
+        cbEditTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!cbEditTime.isChecked()) {
+                    buttonstartSetTime.setEnabled(false);
+                    buttonstartCancelTime.setEnabled(false);
+                    tvSetTime.setText("No Set");
+                    tvSetTime.setEnabled(false);
+
+                    cbEditTemp.setEnabled(true);
+                    cbEditLight.setEnabled(true);
+                    cbEditBluetooth.setEnabled(true);
+                } else {
+                    buttonstartSetTime.setEnabled(true);
+                    buttonstartCancelTime.setEnabled(true);
+                    tvSetTime.setEnabled(true);
+
+                    cbEditTemp.setEnabled(false);
+                    btnStartSetTemp.setEnabled(false);
+                    btnStartCancelTemp.setEnabled(false);
+                    tvSetTemp.setEnabled(false);
+                    tvSetTemp.setText("No Set");
+
+                    cbEditLight.setEnabled(false);
+                    btnStartSetLight.setEnabled(false);
+                    btnStartCancelLight.setEnabled(false);
+                    tvSetLight.setEnabled(false);
+                    tvSetLight.setText("No Set");
+
+                    cbEditBluetooth.setEnabled(false);
+                    btnStartSetBluetooth.setEnabled(false);
+                    btnStartCancelBluetooth.setEnabled(false);
+                    tvSetBluetooth.setEnabled(false);
+                    tvSetBluetooth.setText("No Set");
+                }
+            }
+        });
+        cbEditTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!cbEditTemp.isChecked()) {
+                    btnStartSetTemp.setEnabled(false);
+                    btnStartCancelTemp.setEnabled(false);
+                    tvSetTemp.setEnabled(false);
+                    tvSetTemp.setText("No Set");
+                } else {
+                    btnStartSetTemp.setEnabled(true);
+                    btnStartCancelTemp.setEnabled(true);
+                    tvSetTemp.setEnabled(true);
+                }
+            }
+        });
+        cbEditLight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!cbEditLight.isChecked()) {
+                    btnStartSetLight.setEnabled(false);
+                    btnStartCancelLight.setEnabled(false);
+                    tvSetLight.setEnabled(false);
+                    tvSetLight.setText("No Set");
+                } else {
+                    btnStartSetLight.setEnabled(true);
+                    btnStartCancelLight.setEnabled(true);
+                    tvSetLight.setEnabled(true);
+                }
+            }
+        });
+        cbEditBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!cbEditBluetooth.isChecked()) {
+                    btnStartSetBluetooth.setEnabled(false);
+                    btnStartCancelBluetooth.setEnabled(false);
+                    tvSetBluetooth.setEnabled(false);
+                    tvSetBluetooth.setText("No Set");
+                } else {
+                    btnStartSetBluetooth.setEnabled(true);
+                    btnStartCancelBluetooth.setEnabled(true);
+                    tvSetBluetooth.setEnabled(true);
+                }
+            }
+        });
+
 
     }
 
@@ -290,7 +444,7 @@ public class EditSceneOptionFragment extends Fragment {
         tvSetLight.setText(choose+" "+this.light + " Lux");
     }
     public void setBluetooth(String choose){
-        bluetooth = choose;
+        this.bluetooth = choose;
         tvSetBluetooth.setText(choose);
     }
 
@@ -299,12 +453,18 @@ public class EditSceneOptionFragment extends Fragment {
         if (item.getItemId() == R.id.actionSubmit) {
             if (!tvSetTime.getText().equals("No Set")) {
                 id = buttonItemCollectionCms.getNumId();
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    Log.d("getT", buttonItemCollectionCms.getData().get(i).getstatus());
+                }
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
-                alarmManager.cancel(pendingIntent);
+//                alarmManager.cancel(pendingIntent);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
                 buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
             }

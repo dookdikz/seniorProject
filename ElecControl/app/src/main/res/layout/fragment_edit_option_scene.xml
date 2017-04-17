@@ -9,16 +9,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cbEditTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center"
             android:text="Set time "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ffffff" />
-
+        </LinearLayout>
         <TextView
             android:id="@+id/tvShowSetTime"
             android:layout_width="match_parent"
@@ -54,16 +66,27 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <TextView
-
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbEditTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_gravity="center"
                 android:text="Set Temperature"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff" />
-
+            </LinearLayout>
             <TextView
                 android:id="@+id/tvSetTemp"
                 android:layout_width="match_parent"
@@ -99,16 +122,27 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <TextView
-
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
-                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cbEditLight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center"
                     android:text="Set Light Intensity"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="#ffffff" />
-
+                </LinearLayout>
                 <TextView
                     android:id="@+id/tvSetLight"
                     android:layout_width="match_parent"
@@ -143,16 +177,27 @@
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
-                    <TextView
-
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorPrimary"
-                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cbEditBluetooth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:layout_gravity="center"
                         android:text="Set Bluetooth "
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="#ffffff" />
-
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/tvSetBluetooth"
                         android:layout_width="match_parent"

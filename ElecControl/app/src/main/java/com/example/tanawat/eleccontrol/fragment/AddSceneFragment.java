@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 
@@ -172,33 +173,35 @@ public class AddSceneFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionNext) {
-
-            ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
-            ArrayList<Boolean> checkOnOrOff = listAdapter.getCheckOnOrOff();
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (checkOnOrOff.get(i) == true) {
-                    buttonItemCollectionCms.getData().get(i).setstatus("On");
-                } else {
-                    buttonItemCollectionCms.getData().get(i).setstatus("Off");
-                }
-
+            if (etNameScene.getText().toString().matches("")) {
+                Toast.makeText(getContext(), "Please input name", Toast.LENGTH_SHORT).show();
             }
-            ArrayList<Boolean> checkAdd = listAdapter.getCheckAdd();
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (checkAdd.get(i) == true) {
-                    buttonItemCollectionCms.getData().get(i).setChecked("true");
+            else {
+                ButtonItemCollectionCms chooseTool = new ButtonItemCollectionCms();
+                ArrayList<Boolean> checkOnOrOff = listAdapter.getCheckOnOrOff();
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (checkOnOrOff.get(i) == true) {
+                        buttonItemCollectionCms.getData().get(i).setstatus("On");
+                    } else {
+                        buttonItemCollectionCms.getData().get(i).setstatus("Off");
+                    }
 
                 }
-                else {
-                    buttonItemCollectionCms.getData().get(i).setChecked("flase");
-                }
-            }
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
+                ArrayList<Boolean> checkAdd = listAdapter.getCheckAdd();
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (checkAdd.get(i) == true) {
+                        buttonItemCollectionCms.getData().get(i).setChecked("true");
 
-                    chooseTool.addData(buttonItemCollectionCms.getData().get(i));
+                    } else {
+                        buttonItemCollectionCms.getData().get(i).setChecked("flase");
+                    }
                 }
-            }
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (buttonItemCollectionCms.getData().get(i).getChecked().equals("true")) {
+
+                        chooseTool.addData(buttonItemCollectionCms.getData().get(i));
+                    }
+                }
 
 //            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
 //            SharedPreferences.Editor editorKey = prefKey.edit();
@@ -207,19 +210,21 @@ public class AddSceneFragment extends Fragment {
 //
 //            id = id + 1;
 //            chooseTool.setId(id);
-            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-            String key = mRootRef.push().getKey();
-            chooseTool.setId(key);
+                DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+                String key = mRootRef.push().getKey();
+                chooseTool.setId(key);
 
 
-            chooseTool.setName(etNameScene.getText().toString());
+                chooseTool.setName(etNameScene.getText().toString());
 
 
 //            String json = new Gson().toJson(String.valueOf(id));
 //            editorKey.putString("json", json);
 //            editorKey.apply();
-            getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetSceneOptionFragment.newInstance(chooseTool)).commit();
-
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etNameScene.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SetSceneOptionFragment.newInstance(chooseTool)).commit();
+            }
 
         }
         return super.onOptionsItemSelected(item);
