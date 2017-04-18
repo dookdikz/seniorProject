@@ -3,9 +3,7 @@ package com.example.tanawat.eleccontrol.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -59,7 +56,7 @@ public class SceneFragment extends Fragment {
     ListScene listScene;
     ButtonItemCollectionCms scene;
     ButtonItemCollectionCms editScene;
-    static String url ="http://158.108.122.70:5000/";
+    static String url = "http://158.108.122.70:5000/";
     ButtonItemCms toolInScene;
     ButtonItemCollectionCms allTool;
     ProgressBar pgbLoad;
@@ -82,10 +79,11 @@ public class SceneFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public static SceneFragment newInstance(ButtonItemCollectionCms scene,String type) {
+
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene, String type) {
         SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
-        args.putParcelable("editScene",scene);
+        args.putParcelable("editScene", scene);
         fragment.setArguments(args);
         return fragment;
     }
@@ -187,7 +185,8 @@ public class SceneFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
-                setUrl("http://170.108.122.70:5000/");
+            //TODO: setUrl
+                 setUrl("http://170.108.122.70:5000/");
             }
 
             @Override
@@ -211,9 +210,9 @@ public class SceneFragment extends Fragment {
                         listScene.addData(scene);
                         mRootRef.child("listScene").setValue(listScene);
                     }
-                    if(editScene != null){
+                    if (editScene != null) {
                         listScene.editData(editScene);
-                        Log.d("editSc",String.valueOf(editScene.getData().size()));
+                        Log.d("editSc", String.valueOf(editScene.getData().size()));
                         mRootRef.child("listScene").setValue(listScene);
                     }
                 } else {
@@ -252,43 +251,121 @@ public class SceneFragment extends Fragment {
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
                         if (toolInScene.getstatus().equals("On")) {
-                             call = HttpManager.getInstance().getService().openAir();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                        call = HttpManager.getInstance().getService().openAir();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         } else {
-                           call = HttpManager.getInstance().getService().closeAir();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                        call = HttpManager.getInstance().getService().closeAir();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         }
                     } else if (toolInScene.getType().equals("Tv")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            call = HttpManager.getInstance().getService().openTv();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                        call = HttpManager.getInstance().getService().openTv();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         } else {
-                            call = HttpManager.getInstance().getService().closeTv();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
+                                        call = HttpManager.getInstance().getService().closeTv();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         }
                     } else if (toolInScene.getType().equals("Switch1")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            call = HttpManager.getInstance().getService().openSwitch1();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().openSwitch1();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         } else {
-                           call = HttpManager.getInstance().getService().closeSwitch1();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().closeSwitch1();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         }
                     } else if (toolInScene.getType().equals("Switch2")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            call = HttpManager.getInstance().getService().openSwitch2();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().openSwitch2();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         } else {
-                             call = HttpManager.getInstance().getService().closeSwitch2();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().closeSwitch2();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         }
                     } else if (toolInScene.getType().equals("Curtain")) {
                         if (toolInScene.getstatus().equals("On")) {
-                             call = HttpManager.getInstance().getService().openCurtain();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().openCurtain();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         } else {
-                            call = HttpManager.getInstance().getService().closeCurtain();
-                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                            for (int j = 0; j < allTool.getData().size(); j++) {
+                                if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
+                                    if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
+                                        call = HttpManager.getInstance().getService().closeCurtain();
+                                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                }
+                            }
+
                         }
                     } else {
                         Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
@@ -301,7 +378,7 @@ public class SceneFragment extends Fragment {
 ////                allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 //
                 for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
-                    Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
                     String idToolInScene = listScene.getData().get(position).getData().get(i).getId();
                     if (allTool != null) {
                         for (int j = 0; j < allTool.getData().size(); j++) {

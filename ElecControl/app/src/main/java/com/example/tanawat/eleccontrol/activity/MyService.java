@@ -94,7 +94,7 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
                     light = dataSnapshot.getValue(Long.class);
                     if(light!=null){
-                        light = ((1023-light)*10/light);
+                        light = ((1023-light)*50/light);
                     }
                     onBackground(macAddress, mRootRef);
                 }
@@ -216,7 +216,8 @@ public class MyService extends Service {
     private void onBackground(String macAddress, DatabaseReference mRootRef) {
         if (listScene != null &&statusBlue!=null &&light!=null)
         {
-            for (int i = 0; i < listScene.getData().size(); i++) {
+            for (int i = 0; i < listScene.getData().size(); i++)
+            {
                 int count = 0;
                 int checkCount = 0;
                 if (!listScene.getData().get(i).getCheckTempSen().equals("Off")) {
@@ -391,8 +392,8 @@ ButtonItemCollectionCms scene;
                     Notification notification =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.mipmap.ic_launcher)
-                                    .setContentTitle("แจ้งเตือน")
-                                    .setContentText(scene.getName()+" is working")
+                                    .setContentTitle("Notification")
+                                    .setContentText(scene.getName()+" have worked")
                                     .setAutoCancel(true)
                                     .build();
 

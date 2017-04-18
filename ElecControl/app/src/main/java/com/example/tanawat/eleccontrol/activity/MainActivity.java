@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null){
                     Long light = dataSnapshot.getValue(Long.class);
-                    light = ((1023-light)*  10/light);
+                    light = ((1023-light)*  50/light);
                     tvLightSensor.setText(light.toString());
                 }
 
