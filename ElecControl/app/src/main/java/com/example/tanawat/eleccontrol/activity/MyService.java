@@ -1,12 +1,17 @@
 package com.example.tanawat.eleccontrol.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
@@ -16,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +39,8 @@ public class MyService extends Service {
     String macBlue;
     Long statusBlue;
     static Call<TestSendWeb> call;
+    NotificationCompat notification;
+    int numNotifi = 0;
 
 
     @Nullable
@@ -85,6 +93,9 @@ public class MyService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     light = dataSnapshot.getValue(Long.class);
+                    if(light!=null){
+                        light = ((1023-light)*10/light);
+                    }
                     onBackground(macAddress, mRootRef);
                 }
             }
@@ -194,12 +205,7 @@ public class MyService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (temp != null) {
-                    if (temp < 25) {
-                        Log.d("background", "7893");
-                    }
 
-                }
 
 
             }
@@ -311,7 +317,7 @@ public class MyService extends Service {
                         } else {
                             call = HttpManager.getInstance().getService().openCurtain();
                         }
-                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
                         if (type.equals("Air")) {
                             if(listScene.getData().get(i).getData().get(j).getValue()!=null){
 //                                call = HttpManager.getInstance().getService().openAir();
@@ -346,7 +352,7 @@ public class MyService extends Service {
                         } else {
                             call = HttpManager.getInstance().getService().closeCurtain();
                         }
-                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
                         mRootRef.child("listTool").setValue(buttonItemCollectionCms);
                     }
                 }
@@ -366,19 +372,35 @@ public class MyService extends Service {
         public static final int MODE_OPEN_CURTAIN = 9;
         public static final int MODE_CLOSE_CURTAIN = 10;
         int mode;
-
-        public SentToServer(int mode) {
+ButtonItemCollectionCms scene;
+        public SentToServer(int mode,ButtonItemCollectionCms buttonItemCollectionCms) {
             this.mode = mode;
+            scene = buttonItemCollectionCms;
         }
 
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
 //            Toast.makeText(getApplicationContext(), "Suscess + " + buttonItemCollectionCms.getName(), Toast.LENGTH_SHORT).show();
-            Log.d("testBackgroud", "eiei");
+
         }
 
         @Override
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
+
+
+                    Notification notification =
+                            new NotificationCompat.Builder(getApplicationContext())
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setContentTitle("แจ้งเตือน")
+                                    .setContentText(scene.getName()+" is working")
+                                    .setAutoCancel(true)
+                                    .build();
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    notificationManager.notify(scene.getNumId(), notification);
+
+
 
         }
     }
