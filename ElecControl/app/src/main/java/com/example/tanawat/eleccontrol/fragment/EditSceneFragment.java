@@ -48,14 +48,18 @@ public class EditSceneFragment extends Fragment {
     static ArrayList<Boolean> checkBoolEdit;
     ListScene listScene;
     LinearLayout layoutEditScene;
+    static String mUserId;
+    String pathListTool;
+    String pathListScene;
 
     public EditSceneFragment() {
         super();
     }
 
-    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms, ArrayList<Boolean> checkEdit) {
+    public static EditSceneFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms, ArrayList<Boolean> checkEdit,String mUser) {
         EditSceneFragment fragment = new EditSceneFragment();
         editScene = buttonItemCollectionCms;
+        mUserId = mUser;
         checkBoolEdit = checkEdit;
 
         Bundle args = new Bundle();
@@ -92,6 +96,8 @@ public class EditSceneFragment extends Fragment {
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        pathListScene = mUserId+"/listScene";
+        pathListTool = mUserId+"/listTool";
         listView = (ListView) rootView.findViewById(R.id.listView);
         etNameScene = (EditText) rootView.findViewById(R.id.etNameScene);
         etNameScene.setText(editScene.getName());
@@ -117,7 +123,7 @@ public class EditSceneFragment extends Fragment {
 
 //        String jsonRead = pref.getString("json", null);
 //        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {

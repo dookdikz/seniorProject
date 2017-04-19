@@ -1,6 +1,7 @@
 package com.example.tanawat.eleccontrol.activity;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,16 +26,25 @@ import android.widget.Toast;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
+import com.example.tanawat.eleccontrol.fragment.LoginFragment;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.fragment.SettingDialogFragment;
+
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener, SceneFragment.FragmentListener {
+public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener, SceneFragment.FragmentListener, GoogleApiClient.OnConnectionFailedListener {
+    private static final String ANONYMOUS ="anonymous" ;
     Button btnGoScene;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -45,14 +55,40 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     LinearLayout layoutAddTool;
     LinearLayout layoutAddScene;
     LinearLayout layoutSetIp;
+    LinearLayout layoutSignOut;
     String bluetoothCollection = null;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private GoogleApiClient mGoogleApiClient;
+String mUsername;
+    String mPhotoUrl;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mUsername = ANONYMOUS;
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        } else {
+            mUsername = mFirebaseUser.getUid();
 
+            Log.d("mUser",mUsername);
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
         ButtonItemCms cms = getIntent().getParcelableExtra("cms");
         ButtonItemCollectionCms scene = getIntent().getParcelableExtra("scene");
         ButtonItemCollectionCms editScene = getIntent().getParcelableExtra("editScene");
@@ -60,19 +96,21 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
         initInstance();
         if (savedInstanceState == null) {
+Intent intentService = new Intent(this,MyService.class);
+            intentService.putExtra("mUser",mUsername);
 
-            startService(new Intent(this, MyService.class));
+            startService(intentService);
             if (getIntent().getStringExtra("activity") != null) {
                 if (getIntent().getStringExtra("activity").equals("addSceneActivity")) {
-                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene)).commit();
+                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(scene,mUsername)).commit();
                 } else if (getIntent().getStringExtra("activity").equals("EditSceneActivity")) {
-                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(editScene, "edit")).commit();
+                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, SceneFragment.newInstance(editScene, "edit",mUsername)).commit();
                 } else {
-                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms)).commit();
+                    getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms,mUsername)).commit();
                 }
 
             } else {
-                getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms)).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, MainFragment.newInstance(cms,mUsername)).commit();
             }
         }
     }
@@ -85,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         layoutAddTool = (LinearLayout) findViewById(R.id.layoutAddTool);
         layoutAddScene = (LinearLayout) findViewById(R.id.layoutAddScene);
         layoutSetIp = (LinearLayout) findViewById(R.id.layoutSetIp);
+        layoutSignOut = (LinearLayout) findViewById(R.id.layoutSignOut);
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
         mRootRef.child("sensor/temp").addValueEventListener(new ValueEventListener() {
@@ -203,6 +242,15 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             newFragment.show(ft, "dialog");
             }
         });
+        layoutSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mUsername = ANONYMOUS;
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -221,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     public void onAddSceneButtonClicked() {
 
         Intent intent = new Intent(MainActivity.this, AddSceneActivity.class);
+        intent.putExtra("mUser",mUsername);
         startActivity(intent);
     }
 
@@ -242,6 +291,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

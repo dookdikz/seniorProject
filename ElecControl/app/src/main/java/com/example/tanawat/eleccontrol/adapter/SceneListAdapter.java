@@ -1,32 +1,21 @@
 package com.example.tanawat.eleccontrol.adapter;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
 import com.example.tanawat.eleccontrol.activity.EditSceneActivity;
-import com.example.tanawat.eleccontrol.activity.MainActivity;
-import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
-import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.view.ButtonListItem;
 import com.google.firebase.database.DataSnapshot;
@@ -34,10 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Tanawat on 31/1/2560.
@@ -52,13 +37,26 @@ public class SceneListAdapter extends BaseAdapter {
     ImageView ivTempSet;
     ImageView ivLightSet;
     ImageView ivBluetoothSet;
+    String mUser;
     EditSceneAdapter editSceneAdapter;
+    String pathListTool;
+    String pathListScene;
     private Context activity;
 
 
-    public SceneListAdapter(ListScene listScene, Context context) {
+    public String getmUser() {
+        return mUser;
+    }
+
+    public void setmUser(String mUser) {
+        this.mUser = mUser;
+    }
+
+    public SceneListAdapter(ListScene listScene, Context context, String mUser) {
         this.listScene = listScene;
         this.activity = context;
+        this.mUser = mUser;
+
     }
 
     public ListScene getListScene() {
@@ -102,7 +100,7 @@ public class SceneListAdapter extends BaseAdapter {
         ViewHolder holder = null;
         ButtonListItem item;
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
+        final LayoutInflater inflater = (LayoutInflater) activity.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 //        if (convertView != null) {
@@ -136,8 +134,8 @@ public class SceneListAdapter extends BaseAdapter {
             convertView.setTag(holder);
             //     item = new ButtonListItem(parent.getContext());
         }
-
-        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+pathListScene = mUser+"/listScene";
+        mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listScene = dataSnapshot.getValue(ListScene.class);
@@ -149,7 +147,9 @@ public class SceneListAdapter extends BaseAdapter {
 
             }
         });
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        pathListTool = mUser+"/listTool";
+
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
@@ -167,8 +167,9 @@ public class SceneListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, EditSceneActivity.class);
-                intent.putExtra("editScene",listScene.getData().get(position));
-                intent.putExtra("listTool",listTool);
+                intent.putExtra("editScene", listScene.getData().get(position));
+                intent.putExtra("listTool", listTool);
+                intent.putExtra("mUserId",mUser);
 
                 activity.startActivity(intent);
             }
@@ -195,7 +196,7 @@ public class SceneListAdapter extends BaseAdapter {
 
 
                         listScene.deleteData(positionToRemove);
-                        mRootRef.child("listScene").setValue(listScene);
+                        mRootRef.child(pathListScene).setValue(listScene);
 
 //                        String json = new Gson().toJson(listScene);
 //                        editor.putString("json", json);
@@ -249,24 +250,19 @@ public class SceneListAdapter extends BaseAdapter {
 
                     holder.tvTempScene.setText(buttonItemCollectionCms.getTemp());
 
-                    if(buttonItemCollectionCms.getCheckTempSen().equals("less than")){
-                        holder.tvTempScene.setText("< "+buttonItemCollectionCms.getTemp()+" "+"C");
-                    }
-                    else if(buttonItemCollectionCms.getCheckTempSen().equals("more than")){
-                        holder.tvTempScene.setText("> "+buttonItemCollectionCms.getTemp()+" "+"C");
+                    if (buttonItemCollectionCms.getCheckTempSen().equals("less than")) {
+                        holder.tvTempScene.setText("< " + buttonItemCollectionCms.getTemp() + " " + "C");
+                    } else if (buttonItemCollectionCms.getCheckTempSen().equals("more than")) {
+                        holder.tvTempScene.setText("> " + buttonItemCollectionCms.getTemp() + " " + "C");
                     }
 
                     holder.tvLightScene.setText(buttonItemCollectionCms.getLight());
-                    if(buttonItemCollectionCms.getCheckLightSen().equals("less than")){
-                        holder.tvLightScene.setText("< "+buttonItemCollectionCms.getLight()+" "+"Lux");
-                    }
-                    else if(buttonItemCollectionCms.getCheckLightSen().equals("more than")){
-                        holder.tvLightScene.setText("> "+buttonItemCollectionCms.getLight()+" "+"Lux");
+                    if (buttonItemCollectionCms.getCheckLightSen().equals("less than")) {
+                        holder.tvLightScene.setText("< " + buttonItemCollectionCms.getLight() + " " + "Lux");
+                    } else if (buttonItemCollectionCms.getCheckLightSen().equals("more than")) {
+                        holder.tvLightScene.setText("> " + buttonItemCollectionCms.getLight() + " " + "Lux");
                     }
                     holder.tvBluetoothScene.setText(buttonItemCollectionCms.getBluetooth());
-
-
-
 
 
                 }

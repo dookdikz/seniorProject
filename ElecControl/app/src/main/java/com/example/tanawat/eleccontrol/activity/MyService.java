@@ -38,6 +38,9 @@ public class MyService extends Service {
     Long light;
     String macBlue;
     Long statusBlue;
+    String pathListTool;
+    String pathListScene;
+    String mUser;
     static Call<TestSendWeb> call;
     NotificationCompat notification;
     int numNotifi = 0;
@@ -51,12 +54,15 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mUser = intent.getStringExtra("mUser");
+        pathListScene = mUser+"/listScene";
+        pathListTool = mUser+"/listTool";
         buttonItemCollectionCms = new ButtonItemCollectionCms();
         listScene = new ListScene();
         final String macAddress = android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address");
 
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -73,7 +79,7 @@ public class MyService extends Service {
 
             }
         });
-        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -325,7 +331,7 @@ public class MyService extends Service {
                             }
 
                         }
-                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
                     }
                     else{
                         if (type.equals("Air")) {
@@ -354,7 +360,7 @@ public class MyService extends Service {
                             call = HttpManager.getInstance().getService().closeCurtain();
                         }
                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
-                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
                     }
                 }
             }

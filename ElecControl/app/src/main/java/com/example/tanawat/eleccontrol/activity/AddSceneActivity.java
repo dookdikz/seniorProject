@@ -18,14 +18,16 @@ import com.example.tanawat.eleccontrol.fragment.SetSceneOptionFragment;
  */
 public class AddSceneActivity extends AppCompatActivity implements SetSceneOptionFragment.FragmentListener {
     Toolbar toolbar;
+    String mUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scene);
+        mUser = getIntent().getStringExtra("mUser");
         initInstance();
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, AddSceneFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, AddSceneFragment.newInstance(mUser)).commit();
         }
     }
 

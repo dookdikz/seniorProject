@@ -28,21 +28,22 @@ public class EditSceneActivity extends AppCompatActivity implements EditSceneOpt
     Toolbar toolbar;
     ArrayList<Boolean> checkEdit;
     ButtonItemCollectionCms buttonItemCollectionCms;
+    String mUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_scene);
         buttonItemCollectionCms = getIntent().getParcelableExtra("editScene");
+        mUser = getIntent().getStringExtra("mUserId");
         checkEdit = new ArrayList<>();
         ButtonItemCollectionCms listTool = getIntent().getParcelableExtra("listTool");
         for(int i=0;i<listTool.getData().size();i++){
             checkEdit.add(false);
         }
-        Log.d("checkEditt",checkEdit.toString());
         initInstance();
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, EditSceneFragment.newInstance(buttonItemCollectionCms,checkEdit)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.contentContainer, EditSceneFragment.newInstance(buttonItemCollectionCms,checkEdit,mUser)).commit();
         }
     }
 

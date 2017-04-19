@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
     public interface FragmentListener {
         void onAddButtonClicked();
     }
-    
+
     ButtonItemCms toolClicked;
     Button btnCommand;
     ButtonItemManager buttonListManager;
@@ -65,9 +65,12 @@ public class MainFragment extends Fragment {
     EditText editUrl;
     static ToolListAdapter listAdapter;
     ButtonItemCms cms;
+    String mUsername;
     ButtonItemCollectionCms buttonItemCollectionCms;
     ProgressBar pgbLoad;
     LinearLayout layoutListView;
+    String pathNumId;
+    String pathListTool;
     static Call<TestSendWeb> call;
 
 
@@ -87,11 +90,11 @@ public class MainFragment extends Fragment {
         super();
     }
 
-    public static MainFragment newInstance(ButtonItemCms cms) {
+    public static MainFragment newInstance(ButtonItemCms cms,String mUsername) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putParcelable("cms", cms);
-
+        args.putString("mUser",mUsername);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,6 +109,9 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         cms = getArguments().getParcelable("cms");
+        mUsername = getArguments().getString("mUser");
+        pathNumId = mUsername+"/numId";
+        pathListTool = mUsername+"/listTool";
         getActivity().setTitle("Tool");
         if (savedInstanceState != null) {
 
@@ -150,7 +156,7 @@ public class MainFragment extends Fragment {
         btnGoScene.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SceneFragment.newInstance(null)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SceneFragment.newInstance(null,mUsername)).commit();
             }
         });
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
@@ -173,11 +179,11 @@ public class MainFragment extends Fragment {
 
 //        listCms.add(buttonItemCms2);
 
-        mRootRef.child("numId").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRootRef.child(pathNumId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
-                    mRootRef.child("numId").setValue(1);
+                    mRootRef.child(pathNumId).setValue(1);
                 }
             }
 
@@ -192,7 +198,7 @@ public class MainFragment extends Fragment {
 //        String jsonRead = pref.getString("json", null);
 //        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -208,8 +214,9 @@ public class MainFragment extends Fragment {
 //
 //
 //                }
-                listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity());
+                listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(),mUsername);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+                listAdapter.setmUser(mUsername);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
                 listView.setAdapter(listAdapter);
 
@@ -231,7 +238,7 @@ public class MainFragment extends Fragment {
                     if (cms != null) {
 
                         buttonItemCollectionCms.addData(cms);
-                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
                     }
                 } else {
 
@@ -239,7 +246,7 @@ public class MainFragment extends Fragment {
                     if (cms != null) {
 
                         buttonItemCollectionCms.addData(cms);
-                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
                     }
                 }
                 pgbLoad.setVisibility(View.GONE);
@@ -250,7 +257,8 @@ public class MainFragment extends Fragment {
 
 
 
-        listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity());
+        listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(),mUsername);
+        listAdapter.setmUser(mUsername);
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
@@ -339,7 +347,7 @@ public class MainFragment extends Fragment {
 //
 //                String jsonRead = pref.getString("json", null);
 //                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-                mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
                 Toast.makeText(getContext(), buttonItemCollectionCms.getData().get(position).getName() + " " + buttonItemCollectionCms.getData().get(position).getstatus() + " " + buttonItemCollectionCms.getData().get(position).getId(), Toast.LENGTH_SHORT).show();

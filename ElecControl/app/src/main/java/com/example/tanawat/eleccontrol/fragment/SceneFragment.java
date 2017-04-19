@@ -59,8 +59,11 @@ public class SceneFragment extends Fragment {
     static String url = "http://158.108.122.70:5000/";
     ButtonItemCms toolInScene;
     ButtonItemCollectionCms allTool;
+    String mUsername;
     ProgressBar pgbLoad;
     LinearLayout layoutListView;
+    String pathListTool;
+    String pathListScene;
     static Call<TestSendWeb> call;
 
     public static void setUrl(String url) {
@@ -71,19 +74,20 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    public static SceneFragment newInstance(ButtonItemCollectionCms scene) {
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene,String mUser) {
         SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
         args.putParcelable("scene", scene);
-
+        args.putString("mUser",mUser);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static SceneFragment newInstance(ButtonItemCollectionCms scene, String type) {
+    public static SceneFragment newInstance(ButtonItemCollectionCms scene, String type,String mUser) {
         SceneFragment fragment = new SceneFragment();
         Bundle args = new Bundle();
         args.putParcelable("editScene", scene);
+        args.putString("mUser",mUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,9 +97,13 @@ public class SceneFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         getActivity().setTitle("Scene");
+       //TODO: setURL
         setUrl(HttpManager.getUrl());
         scene = getArguments().getParcelable("scene");
         editScene = getArguments().getParcelable("editScene");
+        mUsername = getArguments().getString("mUser");
+        pathListTool = mUsername+"/listTool";
+        pathListScene = mUsername+"/listScene";
 
 
         if (savedInstanceState != null)
@@ -134,7 +142,7 @@ public class SceneFragment extends Fragment {
         btnGoTool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.contentContainer, MainFragment.newInstance(null)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, MainFragment.newInstance(null,mUsername)).commit();
             }
         });
 
@@ -161,15 +169,16 @@ public class SceneFragment extends Fragment {
 //        buttonItemCollectionCms.setName("Bedroom");
 //        List<ButtonItemCollectionCms> listSceneTest = new ArrayList<>();
 //        listSceneTest.add(buttonItemCollectionCms);
-        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     listScene = dataSnapshot.getValue(ListScene.class);
 
                 }
-                listAdapter = new SceneListAdapter(listScene, getActivity());
+                listAdapter = new SceneListAdapter(listScene, getActivity(),mUsername);
                 listAdapter.setListScene(listScene);
+                listAdapter.setmUser(mUsername);
                 tvCountScene.setText("All Scene" + "(" + listAdapter.getCount() + ")");
                 listView.setAdapter(listAdapter);
 
@@ -181,7 +190,7 @@ public class SceneFragment extends Fragment {
 
             }
         });
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
@@ -208,12 +217,11 @@ public class SceneFragment extends Fragment {
                     if (scene != null) {
                         Log.d("eieiS", scene.getId());
                         listScene.addData(scene);
-                        mRootRef.child("listScene").setValue(listScene);
+                        mRootRef.child(pathListScene).setValue(listScene);
                     }
                     if (editScene != null) {
                         listScene.editData(editScene);
-                        Log.d("editSc", String.valueOf(editScene.getData().size()));
-                        mRootRef.child("listScene").setValue(listScene);
+                        mRootRef.child(pathListScene).setValue(listScene);
                     }
                 } else {
 //            SharedPreferences prefKey = getContext().getSharedPreferences("keyScene", Context.MODE_PRIVATE);
@@ -224,9 +232,8 @@ public class SceneFragment extends Fragment {
 //            editorKey.apply();
                     listScene = new ListScene();
                     if (scene != null) {
-                        Log.d("eiei", "eieiei");
                         listScene.addData(scene);
-                        mRootRef.child("listScene").setValue(listScene);
+                        mRootRef.child(pathListScene).setValue(listScene);
 
                     }
                 }
@@ -236,8 +243,9 @@ public class SceneFragment extends Fragment {
         }, 2000);
 
 
-        listAdapter = new SceneListAdapter(listScene, getActivity());
+        listAdapter = new SceneListAdapter(listScene, getActivity(),mUsername);
         listAdapter.setListScene(listScene);
+        listAdapter.setmUser(mUsername);
         //tvCountScene.setText("All Tool" + "(" + listAdapter.getCount() + ")");
         tvCountScene.setText("All Scene" + "(" + listAdapter.getCount() + ")");
         listView.setAdapter(listAdapter);
@@ -396,7 +404,7 @@ public class SceneFragment extends Fragment {
 //
 //
 
-                mRootRef.child("listTool").setValue(allTool);
+                mRootRef.child(pathListTool).setValue(allTool);
 
             }
 

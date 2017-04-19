@@ -31,13 +31,25 @@ public class ToolListAdapter extends BaseAdapter {
     ButtonItemCollectionCms buttonItemCollectionCms;
     Button btnDelete;
     ListScene listScene;
+    String mUser;
+    String pathListTool;
+    String pathListScene;
 
 
     private Context activity;
 
-    public ToolListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity) {
+    public String getmUser() {
+        return mUser;
+    }
+
+    public void setmUser(String mUser) {
+        this.mUser = mUser;
+    }
+
+    public ToolListAdapter(ButtonItemCollectionCms buttonItemCollectionCms, Context activity, String mUser) {
         this.buttonItemCollectionCms = buttonItemCollectionCms;
         this.activity = activity;
+        this.mUser = mUser;
     }
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
@@ -97,12 +109,12 @@ public class ToolListAdapter extends BaseAdapter {
             //     item = new ButtonListItem(parent.getContext());
         }
 
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        pathListTool = mUser+"/listTool";
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
                 setButtonItemCollectionCms(buttonItemCollectionCms);
-                Log.d("checkkk", "ye");
 
             }
 
@@ -111,7 +123,8 @@ public class ToolListAdapter extends BaseAdapter {
 
             }
         });
-        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
+        pathListScene = mUser+"/listScene";
+        mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listScene = dataSnapshot.getValue(ListScene.class);
@@ -153,12 +166,12 @@ public class ToolListAdapter extends BaseAdapter {
                                     }
                                 }
                             }
-                            mRootRef.child("listScene").setValue(listScene);
+                            mRootRef.child(pathListScene).setValue(listScene);
                         }
 
 
                         buttonItemCollectionCms.deleteData(positionToRemove);
-                        mRootRef.child("listTool").setValue(buttonItemCollectionCms);
+                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
 
 //                        setButtonItemCollectionCms(buttonItemCollectionCms);
 //                        String json = new Gson().toJson(buttonItemCollectionCms);

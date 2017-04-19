@@ -52,14 +52,17 @@ public class AddSceneFragment extends Fragment {
     CheckBox cbAddScene;
     ListScene listScene;
     LinearLayout layoutAddScene;
-
+    String pathListTool;
+    String pathListScene;
+    String mUserId;
     public AddSceneFragment() {
         super();
     }
 
-    public static AddSceneFragment newInstance() {
+    public static AddSceneFragment newInstance(String mUser) {
         AddSceneFragment fragment = new AddSceneFragment();
         Bundle args = new Bundle();
+        args.putString("mUser",mUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,8 +70,10 @@ public class AddSceneFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUserId = getArguments().getString("mUser");
+        pathListScene = mUserId+"/listScene";
+        pathListTool = mUserId+"/listTool";
         init(savedInstanceState);
-
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -123,7 +128,7 @@ public class AddSceneFragment extends Fragment {
 
 //        String jsonRead = pref.getString("json", null);
 //        buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);

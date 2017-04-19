@@ -29,6 +29,8 @@ public class EditSceneAdapter extends BaseAdapter {
     static ButtonItemCollectionCms buttonItemCollectionCms;
     static int sizeOftype;
     static ButtonItemCollectionCms editScene;
+    String pathListTool;
+    String mUser;
     TextView tvTempAir;
 
     public ButtonItemCollectionCms getEditScene() {

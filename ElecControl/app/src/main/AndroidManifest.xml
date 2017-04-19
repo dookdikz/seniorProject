@@ -4,17 +4,18 @@
 
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".MainApplication">
+        android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,27 +23,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AddCommandActivity">
-          </activity>
-        <activity android:name=".activity.SetTimeOrSensor"
-            android:theme="@style/AppTheme"
-            android:label="Set Time">
-        </activity>
-        <activity android:name=".activity.AddToolActivity"
-            android:label="Add Tools"
-            >
+        <activity android:name=".activity.AddCommandActivity"></activity>
+        <activity
+            android:name=".activity.SetTimeOrSensor"
+            android:label="Set Time"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".activity.AddToolActivity"
+            android:label="Add Tools">
 
         </activity>
-        <activity android:name=".activity.AddSceneActivity"
+        <activity
+            android:name=".activity.AddSceneActivity"
             android:label="Add Scene"
-            android:windowSoftInputMode="stateHidden"
-            >
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
-        <activity android:name=".activity.EditSceneActivity"
+        <activity
+            android:name=".activity.EditSceneActivity"
             android:label="Edit Scene"
-            android:windowSoftInputMode="stateHidden"
-            >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <data android:scheme="package" />
@@ -51,19 +51,30 @@
         </activity>
         <activity
             android:name=".activity.ShowEvent"
-            android:theme="@android:style/Theme.Dialog"
-            >
+            android:theme="@android:style/Theme.Dialog"></activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="Login">
+
         </activity>
-        <receiver android:name=".activity.AlarmReceiver" android:process=":remote" >
+
+        <receiver
+            android:name=".activity.AlarmReceiver"
+            android:process=":remote">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <data android:scheme="package" />
             </intent-filter>
-    </receiver>
+        </receiver>
 
-        <receiver android:name=".activity.testBroad" android:process=":remote" />
-        <receiver android:name=".activity.CrawlAlarm" android:process=":remote" />
-<service android:name=".activity.MyService"/>
+        <receiver
+            android:name=".activity.testBroad"
+            android:process=":remote" />
+        <receiver
+            android:name=".activity.CrawlAlarm"
+            android:process=":remote" />
+
+        <service android:name=".activity.MyService" />
 
     </application>
 
