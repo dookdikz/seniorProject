@@ -107,7 +107,8 @@ String choose;
         btnTempAirCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AddSceneAdapter addSceneAdapter= new AddSceneAdapter();
+                addSceneAdapter.setTempAir(mNum,null);
                 getDialog().dismiss();
             }
         });

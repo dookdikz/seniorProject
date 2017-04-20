@@ -42,6 +42,7 @@ public class MyService extends Service {
     String pathListScene;
     String mUser;
     static Call<TestSendWeb> call;
+    final DatabaseReference mRootRef  = FirebaseDatabase.getInstance().getReference();
     NotificationCompat notification;
     int numNotifi = 0;
 
@@ -61,7 +62,6 @@ public class MyService extends Service {
         listScene = new ListScene();
         final String macAddress = android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address");
 
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -220,7 +220,7 @@ public class MyService extends Service {
     }
 
     private void onBackground(String macAddress, DatabaseReference mRootRef) {
-        if (listScene != null &&statusBlue!=null &&light!=null)
+        if (listScene != null &&statusBlue!=null &&light!=null &&buttonItemCollectionCms!=null)
         {
             for (int i = 0; i < listScene.getData().size(); i++)
             {
@@ -248,7 +248,7 @@ public class MyService extends Service {
                     } else if (listScene.getData().get(i).getCheckLightSen().equals("less than")) {
 //                                    Log.d("testBack1", String.valueOf(light));
 //                                    Log.d("testBack2", listScene.getData().get(i).getLight());
-                        if (light < Long.parseLong(listScene.getData().get(i).getLight())) {
+                        if (light <= Long.parseLong(listScene.getData().get(i).getLight())) {
                             checkCount += 1;
 
                         }
@@ -265,7 +265,7 @@ public class MyService extends Service {
 
                         }
                     } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
-                        if (temp < Long.parseLong(listScene.getData().get(i).getTemp())) {
+                        if (temp <= Long.parseLong(listScene.getData().get(i).getTemp())) {
                             checkCount += 1;
 
                         }
@@ -327,6 +327,7 @@ public class MyService extends Service {
                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
                         if (type.equals("Air")) {
                             if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+                                sentTempAir(i, j);
 //                                call = HttpManager.getInstance().getService().openAir();
                             }
 
@@ -336,6 +337,7 @@ public class MyService extends Service {
                     else{
                         if (type.equals("Air")) {
                             if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+                                sentTempAir(i, j);
 //                                call = HttpManager.getInstance().getService().openAir();
                             }
 
@@ -360,11 +362,61 @@ public class MyService extends Service {
                             call = HttpManager.getInstance().getService().closeCurtain();
                         }
                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
-                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+
                     }
                 }
             }
         }
+    }
+
+    private void sentTempAir(int i, int j) {
+        if(listScene.getData().get(i).getData().get(j).getValue().equals("18")){
+            call = HttpManager.getInstance().getService().temp18();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("19")){
+            call = HttpManager.getInstance().getService().temp19();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("20")){
+            call = HttpManager.getInstance().getService().temp20();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("21")){
+            call = HttpManager.getInstance().getService().temp21();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("22")){
+            call = HttpManager.getInstance().getService().temp22();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("23")){
+            call = HttpManager.getInstance().getService().temp23();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("24")){
+            call = HttpManager.getInstance().getService().temp24();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("25")){
+            call = HttpManager.getInstance().getService().temp25();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("26")){
+            call = HttpManager.getInstance().getService().temp26();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("27")){
+            call = HttpManager.getInstance().getService().temp27();
+        }
+        else if(listScene.getData().get(i).getData().get(j).getValue().equals("28")){
+            call = HttpManager.getInstance().getService().temp28();
+        }
+        else{
+
+        }
+        call.enqueue(new Callback<TestSendWeb>() {
+            @Override
+            public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<TestSendWeb> call, Throwable t) {
+
+            }
+        });
     }
 
     class SentToServer implements Callback<TestSendWeb> {
@@ -387,25 +439,37 @@ ButtonItemCollectionCms scene;
 
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
-//            Toast.makeText(getApplicationContext(), "Suscess + " + buttonItemCollectionCms.getName(), Toast.LENGTH_SHORT).show();
+//
+            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+            Notification notification =
+                    new NotificationCompat.Builder(getApplicationContext())
+                            .setSmallIcon(R.mipmap.icon_app)
+                            .setContentTitle("Notification")
+                            .setContentText(scene.getName()+" have worked")
+                            .setAutoCancel(true)
+                            .build();
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(scene.getNumId(), notification);
 
         }
 
         @Override
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
 
+//            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+            Notification notification =
+                    new NotificationCompat.Builder(getApplicationContext())
+                            .setSmallIcon(R.mipmap.icon_app)
+                            .setContentTitle("Notification")
+                            .setContentText(scene.getName()+" have failed")
+                            .setAutoCancel(true)
+                            .build();
 
-                    Notification notification =
-                            new NotificationCompat.Builder(getApplicationContext())
-                                    .setSmallIcon(R.mipmap.ic_launcher)
-                                    .setContentTitle("Notification")
-                                    .setContentText(scene.getName()+" have worked")
-                                    .setAutoCancel(true)
-                                    .build();
-
-                    NotificationManager notificationManager =
-                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    notificationManager.notify(scene.getNumId(), notification);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(scene.getNumId(), notification);
 
 
 

@@ -5,6 +5,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -195,11 +196,18 @@ public class EditSceneAdapter extends BaseAdapter {
             }
         });
         tvTempAir = (TextView) convertView.findViewById(R.id.tvTempAir);
+
         if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
             tvTempAir.setVisibility(View.VISIBLE);
-            if(buttonItemCollectionCms.getData().get(position).getValue()!=null){
-                tvTempAir.setText(buttonItemCollectionCms.getData().get(position).getValue());
+            if (buttonItemCollectionCms.getData().get(position).getValue() != null) {
+                    tvTempAir.setText(buttonItemCollectionCms.getData().get(position).getValue() + " C");
+
             }
+            else {
+                tvTempAir.setText("temp");
+            }
+
+
         }
 
         tvTempAir.setOnClickListener(new View.OnClickListener() {
@@ -247,16 +255,16 @@ public class EditSceneAdapter extends BaseAdapter {
 //                }
 //            }
 //        }
-        if(buttonItemCollectionCms.getData().get(position).getChecked()!=null){
+        if (buttonItemCollectionCms.getData().get(position).getChecked() != null) {
 
 
-        if (buttonItemCollectionCms.getData().get(position).getChecked().equals("true")) {
-            checkEdit.set(position, true);
-            cbEditScene.setChecked(true);
-        } else {
-            checkEdit.set(position, false);
-            cbEditScene.setChecked(false);
-        }
+            if (buttonItemCollectionCms.getData().get(position).getChecked().equals("true")) {
+                checkEdit.set(position, true);
+                cbEditScene.setChecked(true);
+            } else {
+                checkEdit.set(position, false);
+                cbEditScene.setChecked(false);
+            }
         }
         if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
             checkOnOrOff.set(position, true);
@@ -297,7 +305,12 @@ public class EditSceneAdapter extends BaseAdapter {
     }
 
     public static void setTempAir(int position, String temp) {
-        buttonItemCollectionCms.getData().get(position).setValue(temp);
+        if (temp.equals("0")) {
+            buttonItemCollectionCms.getData().get(position).setValue(null);
+        } else {
+            buttonItemCollectionCms.getData().get(position).setValue(temp);
+        }
+
         EditSceneFragment.setTempRemote(buttonItemCollectionCms);
 
     }

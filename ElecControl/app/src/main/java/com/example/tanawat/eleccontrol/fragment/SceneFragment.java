@@ -405,6 +405,7 @@ public class SceneFragment extends Fragment {
 //
 
                 mRootRef.child(pathListTool).setValue(allTool);
+                listView.setEnabled(false);
 
             }
 
@@ -487,11 +488,13 @@ public class SceneFragment extends Fragment {
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
             Toast.makeText(getContext(), "Suscess + " + toolInScene.getName(), Toast.LENGTH_SHORT).show();
+            listView.setEnabled(true);
         }
 
         @Override
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
             Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+            listView.setEnabled(true);
         }
     }
 }

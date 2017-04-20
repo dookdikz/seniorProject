@@ -31,7 +31,7 @@
                     android:id="@+id/tvNameScene"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-
+android:maxLines="1"
                     android:layout_marginLeft="10dp"
                     android:text="Name"
                     android:textColor="#FFFFFF"

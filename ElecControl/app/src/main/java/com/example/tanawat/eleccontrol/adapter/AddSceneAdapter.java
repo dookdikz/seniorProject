@@ -148,7 +148,10 @@ public class AddSceneAdapter extends BaseAdapter {
         if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
            tvTempAir.setVisibility(View.VISIBLE);
             if(buttonItemCollectionCms.getData().get(position).getValue()!=null){
-                tvTempAir.setText(buttonItemCollectionCms.getData().get(position).getValue());
+                tvTempAir.setText(buttonItemCollectionCms.getData().get(position).getValue()+" C");
+            }
+            else{
+                tvTempAir.setText("temp");
             }
         }
 
@@ -214,7 +217,11 @@ public class AddSceneAdapter extends BaseAdapter {
     }
 
     public void setTempAir(int position, String temp) {
-        buttonItemCollectionCms.getData().get(position).setValue(temp);
+        if (temp.equals("0")) {
+            buttonItemCollectionCms.getData().get(position).setValue(null);
+        } else {
+            buttonItemCollectionCms.getData().get(position).setValue(temp);
+        }
         AddSceneFragment addSceneFragment = new AddSceneFragment();
         addSceneFragment.setTempRemote(buttonItemCollectionCms);
     }

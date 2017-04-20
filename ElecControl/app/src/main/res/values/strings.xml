@@ -20,12 +20,12 @@
 
     </string-array>
     <string-array name="choose_temp_option">
-        <item>less than</item>
+        <item>less than or equal</item>
         <item>more than</item>
     </string-array>
 
     <string-array name="choose_light_option">
-        <item>less than</item>
+        <item>less than or equal</item>
         <item>more than</item>
     </string-array>
 

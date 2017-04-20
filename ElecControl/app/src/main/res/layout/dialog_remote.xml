@@ -6,15 +6,17 @@
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:orientation="vertical">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Set Temperature"
-    android:textSize="20dp"
-    android:layout_gravity="center"
-    android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Temperature"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:gravity="center" />
+
         <LinearLayout
             android:layout_width="match_parent"
 
@@ -23,8 +25,8 @@
             android:orientation="horizontal">
 
             <EditText
-android:maxLength="2"
-                android:inputType="phone"
+                android:maxLength="2"
+                android:inputType="number"
                 android:id="@+id/etChangeTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

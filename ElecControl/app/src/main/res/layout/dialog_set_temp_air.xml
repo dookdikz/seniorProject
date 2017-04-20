@@ -8,26 +8,34 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <Spinner android:id="@+id/spinSelectedTemp" android:layout_width="match_parent" android:layout_height="wrap_content">
-    </Spinner>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textSize="30sp"
+       android:text="Set Air Temperature "
+       android:textStyle="bold"/>
+
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
 
-        android:text="Temperature:"
-        android:textStyle="bold"
-        android:textSize="25dp"/>
-    <EditText
-android:id="@+id/etSetTempAir"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"/>
+            android:text="Temperature:"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/etSetTempAir"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,12 +43,21 @@ android:id="@+id/etSetTempAir"
 
             android:text="C"
             android:textStyle="bold"
-            android:textSize="25dp"/>
-</LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <Button android:id="@+id/btnTempAirDialogOK" android:layout_width="0dip" android:layout_height="wrap_content"
+            android:textSize="25dp" />
+    </LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="(please input 18-28C) and (please input 0C for clear)"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnTempAirDialogOK"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="#ffffff"
             android:text="OK"
@@ -48,13 +65,17 @@ android:id="@+id/etSetTempAir"
             android:background="@color/colorPrimary"
             android:layout_margin="5dp"
             android:onClick="DateTimeClickOK" />
-        <Button android:id="@+id/btnTempAirDialogCancel" android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"
+
+        <Button
+            android:id="@+id/btnTempAirDialogCancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Cancel"
             android:textColor="#ffffff"
             android:background="@color/colorPrimary"
             android:layout_margin="5dp"
             android:onClick="DateTimeClickCancel" />
-
 
 
     </LinearLayout>

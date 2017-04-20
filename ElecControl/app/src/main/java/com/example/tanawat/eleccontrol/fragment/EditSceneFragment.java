@@ -249,6 +249,7 @@ public class EditSceneFragment extends Fragment {
 //            editorKey.apply();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(etNameScene.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 getFragmentManager().beginTransaction().replace(R.id.contentContainer, EditSceneOptionFragment.newInstance(chooseTool)).commit();
 
             }

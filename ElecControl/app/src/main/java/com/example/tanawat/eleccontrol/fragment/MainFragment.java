@@ -54,7 +54,6 @@ public class MainFragment extends Fragment {
     public interface FragmentListener {
         void onAddButtonClicked();
     }
-
     ButtonItemCms toolClicked;
     Button btnCommand;
     ButtonItemManager buttonListManager;
@@ -72,6 +71,7 @@ public class MainFragment extends Fragment {
     String pathNumId;
     String pathListTool;
     static Call<TestSendWeb> call;
+    final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
     ImageView btnGoScene;
@@ -142,7 +142,7 @@ public class MainFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         pgbLoad = (ProgressBar) rootView.findViewById(R.id.pgbLoad);
@@ -335,25 +335,26 @@ public class MainFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
-                if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
-                    buttonItemCollectionCms.getData().get(position).setstatus("On");
-                } else if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
-                    buttonItemCollectionCms.getData().get(position).setstatus("Off");
-                }
 
+//                if (buttonItemCollectionCms.getData().get(position).getstatus().equals("Off")) {
+//                    buttonItemCollectionCms.getData().get(position).setstatus("On");
+//                } else if (buttonItemCollectionCms.getData().get(position).getstatus().equals("On")) {
+//                    buttonItemCollectionCms.getData().get(position).setstatus("Off");
+//                }
 //                String json = new Gson().toJson(buttonItemCollectionCms);
 //                editor.putString("json", json);
 //                editor.apply();
 //
 //                String jsonRead = pref.getString("json", null);
 //                buttonItemCollectionCms = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
-                mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
 
                 Toast.makeText(getContext(), buttonItemCollectionCms.getData().get(position).getName() + " " + buttonItemCollectionCms.getData().get(position).getstatus() + " " + buttonItemCollectionCms.getData().get(position).getId(), Toast.LENGTH_SHORT).show();
 
                 Log.d("count", String.valueOf(listAdapter.getCount()));
                 listView.setAdapter(listAdapter);
+                listView.setEnabled(false);
                 listAdapter.notifyDataSetChanged();
 
 
@@ -466,12 +467,29 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+            if (toolClicked.getstatus().equals("Off")) {
+                toolClicked.setstatus("On");
+            } else if (toolClicked.getstatus().equals("On")) {
+                toolClicked.setstatus("Off");
+            }
+            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
             Toast.makeText(getContext(), "Suscess + " + toolClicked, Toast.LENGTH_SHORT).show();
+            listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+            listView.setEnabled(true);
         }
 
         @Override
+
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
+//            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
             Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+            listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+            listView.setEnabled(true);
         }
     }
 //private class MyListAdap extends ArrayAdapter<String>{

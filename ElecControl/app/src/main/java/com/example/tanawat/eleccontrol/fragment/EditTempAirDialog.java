@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.adapter.AddSceneAdapter;
@@ -95,8 +97,10 @@ String choose;
 
         Button btnTempAirOK = (Button) thisDialog.findViewById(R.id.btnTempAirDialogOK);
         Button btnTempAirCancel = (Button) thisDialog.findViewById(R.id.btnTempAirDialogCancel);
+
         final EditText etTempAir=(EditText) thisDialog.findViewById(R.id.etSetTempAir);
         etTempAir.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+
 
 //        final TimePicker tpSelectedTime = (TimePicker) thisDialog.findViewById(R.id.tpSelectedTime);
 //        tpSelectedTime.setIs24HourView(true);
@@ -104,7 +108,6 @@ String choose;
         btnTempAirCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getDialog().dismiss();
             }
         });

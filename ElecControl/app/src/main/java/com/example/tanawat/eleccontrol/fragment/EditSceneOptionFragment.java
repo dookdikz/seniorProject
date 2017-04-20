@@ -227,18 +227,21 @@ public class EditSceneOptionFragment extends Fragment {
             tvSetTime.setEnabled(true);
 
             cbEditTemp.setEnabled(false);
+            cbEditTemp.setChecked(false);
             btnStartSetTemp.setEnabled(false);
             btnStartCancelTemp.setEnabled(false);
             tvSetTemp.setEnabled(false);
             tvSetTemp.setText("No Set");
 
             cbEditLight.setEnabled(false);
+            cbEditLight.setChecked(false);
             btnStartSetLight.setEnabled(false);
             btnStartCancelLight.setEnabled(false);
             tvSetLight.setEnabled(false);
             tvSetLight.setText("No Set");
 
             cbEditBluetooth.setEnabled(false);
+            cbEditBluetooth.setChecked(false);
             btnStartSetBluetooth.setEnabled(false);
             btnStartCancelBluetooth.setEnabled(false);
             tvSetBluetooth.setEnabled(false);
@@ -280,18 +283,21 @@ public class EditSceneOptionFragment extends Fragment {
                     tvSetTime.setEnabled(true);
 
                     cbEditTemp.setEnabled(false);
+                    cbEditTemp.setChecked(false);
                     btnStartSetTemp.setEnabled(false);
                     btnStartCancelTemp.setEnabled(false);
                     tvSetTemp.setEnabled(false);
                     tvSetTemp.setText("No Set");
 
                     cbEditLight.setEnabled(false);
+                    cbEditLight.setChecked(false);
                     btnStartSetLight.setEnabled(false);
                     btnStartCancelLight.setEnabled(false);
                     tvSetLight.setEnabled(false);
                     tvSetLight.setText("No Set");
 
                     cbEditBluetooth.setEnabled(false);
+                    cbEditBluetooth.setChecked(false);
                     btnStartSetBluetooth.setEnabled(false);
                     btnStartCancelBluetooth.setEnabled(false);
                     tvSetBluetooth.setEnabled(false);

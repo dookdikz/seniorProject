@@ -88,7 +88,6 @@ public class AddRemoteFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        testText = (TextView) rootView.findViewById(R.id.testText);
         spinChooseRemote = (Spinner) rootView.findViewById(R.id.spinChooseRemote);
 //        spinOnOrOff = (Spinner) rootView.findViewById(R.id.spinOnOrOff);
         etNameRemote = (EditText) rootView.findViewById(R.id.etNameRemote);
@@ -100,7 +99,6 @@ public class AddRemoteFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choosenRemote = chooseRemote[position];
-                testText.setText(chooseRemote[position]);
             }
 
             @Override

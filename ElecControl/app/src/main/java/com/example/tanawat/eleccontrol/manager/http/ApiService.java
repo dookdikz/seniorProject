@@ -33,4 +33,28 @@ public interface ApiService {
     Call<TestSendWeb> openCurtain();
     @GET("off_curtain")
     Call<TestSendWeb> closeCurtain();
+
+    @GET("temp_18")
+    Call<TestSendWeb> temp18();
+    @GET("temp_19")
+    Call<TestSendWeb> temp19();
+    @GET("temp_20")
+    Call<TestSendWeb> temp20();
+    @GET("temp_21")
+    Call<TestSendWeb> temp21();
+    @GET("temp_22")
+    Call<TestSendWeb> temp22();
+    @GET("temp_23")
+    Call<TestSendWeb> temp23();
+    @GET("temp_24")
+    Call<TestSendWeb> temp24();
+    @GET("temp_25")
+    Call<TestSendWeb> temp25();
+    @GET("temp_26")
+    Call<TestSendWeb> temp26();
+    @GET("temp_27")
+    Call<TestSendWeb> temp27();
+    @GET("temp_28")
+    Call<TestSendWeb> temp28();
+
 }
