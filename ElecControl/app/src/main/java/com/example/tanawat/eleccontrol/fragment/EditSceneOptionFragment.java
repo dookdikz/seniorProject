@@ -63,6 +63,10 @@ public class EditSceneOptionFragment extends Fragment {
     static Calendar calendar;
     static int id;
 
+    String mUser;
+    String pathListTool;
+    String pathListScene;
+
     public interface FragmentListener {
         void onEditSceneButtonClicked(ButtonItemCollectionCms buttonItemCollectionCms);
     }
@@ -71,10 +75,11 @@ public class EditSceneOptionFragment extends Fragment {
         super();
     }
 
-    public static EditSceneOptionFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms) {
+    public static EditSceneOptionFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms,String mUser) {
         EditSceneOptionFragment fragment = new EditSceneOptionFragment();
         Bundle args = new Bundle();
         args.putParcelable("editScene", buttonItemCollectionCms);
+        args.putString("mUser",mUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,7 +89,10 @@ public class EditSceneOptionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         setHasOptionsMenu(true);
+        mUser = getArguments().getString("mUser");
         buttonItemCollectionCms = getArguments().getParcelable("editScene");
+        pathListTool = mUser + "/listTool";
+        pathListScene = mUser + "/listScene";
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -459,16 +467,16 @@ public class EditSceneOptionFragment extends Fragment {
         if (item.getItemId() == R.id.actionSubmit) {
             if (!tvSetTime.getText().equals("No Set")) {
                 id = buttonItemCollectionCms.getNumId();
-                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                    Log.d("getT", buttonItemCollectionCms.getData().get(i).getstatus());
-                }
+//                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+//                    Log.d("getT", buttonItemCollectionCms.getData().get(i).getstatus());
+//                }
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("id",id);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("mUser",mUser);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
-//                alarmManager.cancel(pendingIntent);
+                alarmManager.cancel(pendingIntent);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
                 buttonItemCollectionCms.setTime(this.time);

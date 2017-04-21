@@ -1,31 +1,22 @@
 package com.example.tanawat.eleccontrol.fragment;
 
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-
-import java.util.Calendar;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
@@ -36,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
 
 
 /**
@@ -77,14 +70,19 @@ public class SetSceneOptionFragment extends Fragment {
 
     static Calendar calendar;
     static int id;
+    String mUser;
+    String pathNumId;
+    String pathListTool;
+    String pathListScene;
 
     public SetSceneOptionFragment() {
         super();
     }
 
-    public static SetSceneOptionFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms) {
+    public static SetSceneOptionFragment newInstance(ButtonItemCollectionCms buttonItemCollectionCms, String mUser) {
         SetSceneOptionFragment fragment = new SetSceneOptionFragment();
         Bundle args = new Bundle();
+        args.putString("mUser", mUser);
         args.putParcelable("newScene", buttonItemCollectionCms);
         fragment.setArguments(args);
 
@@ -97,9 +95,11 @@ public class SetSceneOptionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
         setHasOptionsMenu(true);
-
         buttonItemCollectionCms = getArguments().getParcelable("newScene");
-
+        mUser = getArguments().getString("mUser");
+        pathNumId = mUser+"/numId";
+        pathListTool = mUser + "/listTool";
+        pathListScene = mUser + "/listScene";
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
     }
@@ -125,7 +125,7 @@ public class SetSceneOptionFragment extends Fragment {
 
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
-        mRootRef.child("numId").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathNumId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 id = dataSnapshot.getValue(Integer.class) + 1;
@@ -137,10 +137,10 @@ public class SetSceneOptionFragment extends Fragment {
 
             }
         });
-        cbSetTime = (CheckBox) rootView.findViewById(R.id.cbSetTime) ;
-        cbSetTemp = (CheckBox) rootView.findViewById(R.id.cbSetTemp) ;
-        cbSetLight = (CheckBox) rootView.findViewById(R.id.cbSetLight) ;
-        cbSetBluetooth = (CheckBox) rootView.findViewById(R.id.cbSetBluetooth) ;
+        cbSetTime = (CheckBox) rootView.findViewById(R.id.cbSetTime);
+        cbSetTemp = (CheckBox) rootView.findViewById(R.id.cbSetTemp);
+        cbSetLight = (CheckBox) rootView.findViewById(R.id.cbSetLight);
+        cbSetBluetooth = (CheckBox) rootView.findViewById(R.id.cbSetBluetooth);
         tvSetTime = (TextView) rootView.findViewById(R.id.tvShowSetTime);
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
         tvSetLight = (TextView) rootView.findViewById(R.id.tvSetLight);
@@ -174,7 +174,7 @@ public class SetSceneOptionFragment extends Fragment {
                 showTempPickerDialog(buttonItemCollectionCms);
             }
         });
-        btnStartCancelTemp  = (Button) rootView.findViewById(R.id.btnCancelTemp);
+        btnStartCancelTemp = (Button) rootView.findViewById(R.id.btnCancelTemp);
         btnStartCancelTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +190,7 @@ public class SetSceneOptionFragment extends Fragment {
                 showLightPickerDialog(buttonItemCollectionCms);
             }
         });
-        btnStartCancelLight  = (Button) rootView.findViewById(R.id.btnCancelLight);
+        btnStartCancelLight = (Button) rootView.findViewById(R.id.btnCancelLight);
         btnStartCancelLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,14 +206,14 @@ public class SetSceneOptionFragment extends Fragment {
                 showBluetoothPickerDialog(buttonItemCollectionCms);
             }
         });
-        btnStartCancelBluetooth  = (Button) rootView.findViewById(R.id.btnCancelBluetooth);
+        btnStartCancelBluetooth = (Button) rootView.findViewById(R.id.btnCancelBluetooth);
         btnStartCancelBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tvSetBluetooth.setText("No Set");
             }
         });
-        if(!cbSetTime.isChecked()){
+        if (!cbSetTime.isChecked()) {
             buttonstartSetTime.setEnabled(false);
             buttonstartCancelTime.setEnabled(false);
             tvSetTime.setEnabled(false);
@@ -222,8 +222,7 @@ public class SetSceneOptionFragment extends Fragment {
             cbSetTemp.setEnabled(true);
             cbSetLight.setEnabled(true);
             cbSetBluetooth.setEnabled(true);
-        }
-        else{
+        } else {
             buttonstartSetTime.setEnabled(true);
             buttonstartCancelTime.setEnabled(true);
             tvSetTime.setEnabled(true);
@@ -249,19 +248,19 @@ public class SetSceneOptionFragment extends Fragment {
             tvSetBluetooth.setEnabled(false);
             tvSetBluetooth.setText("No Set");
         }
-        if(!cbSetTemp.isChecked()){
+        if (!cbSetTemp.isChecked()) {
             btnStartSetTemp.setEnabled(false);
             btnStartCancelTemp.setEnabled(false);
             tvSetTemp.setEnabled(false);
             tvSetTemp.setText("No Set");
         }
-        if(!cbSetLight.isChecked()){
+        if (!cbSetLight.isChecked()) {
             btnStartSetLight.setEnabled(false);
             btnStartCancelLight.setEnabled(false);
             tvSetLight.setEnabled(false);
             tvSetLight.setText("No Set");
         }
-        if(!cbSetBluetooth.isChecked()){
+        if (!cbSetBluetooth.isChecked()) {
             btnStartSetBluetooth.setEnabled(false);
             btnStartCancelBluetooth.setEnabled(false);
             tvSetBluetooth.setEnabled(false);
@@ -270,7 +269,7 @@ public class SetSceneOptionFragment extends Fragment {
         cbSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!cbSetTime.isChecked()){
+                if (!cbSetTime.isChecked()) {
                     buttonstartSetTime.setEnabled(false);
                     buttonstartCancelTime.setEnabled(false);
                     tvSetTime.setText("No Set");
@@ -279,8 +278,7 @@ public class SetSceneOptionFragment extends Fragment {
                     cbSetTemp.setEnabled(true);
                     cbSetLight.setEnabled(true);
                     cbSetBluetooth.setEnabled(true);
-                }
-                else{
+                } else {
                     buttonstartSetTime.setEnabled(true);
                     buttonstartCancelTime.setEnabled(true);
                     tvSetTime.setEnabled(true);
@@ -311,13 +309,12 @@ public class SetSceneOptionFragment extends Fragment {
         cbSetTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!cbSetTemp.isChecked()){
+                if (!cbSetTemp.isChecked()) {
                     btnStartSetTemp.setEnabled(false);
                     btnStartCancelTemp.setEnabled(false);
                     tvSetTemp.setEnabled(false);
                     tvSetTemp.setText("No Set");
-                }
-                else{
+                } else {
                     btnStartSetTemp.setEnabled(true);
                     btnStartCancelTemp.setEnabled(true);
                     tvSetTemp.setEnabled(true);
@@ -327,13 +324,12 @@ public class SetSceneOptionFragment extends Fragment {
         cbSetLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!cbSetLight.isChecked()){
+                if (!cbSetLight.isChecked()) {
                     btnStartSetLight.setEnabled(false);
                     btnStartCancelLight.setEnabled(false);
                     tvSetLight.setEnabled(false);
                     tvSetLight.setText("No Set");
-                }
-                else{
+                } else {
                     btnStartSetLight.setEnabled(true);
                     btnStartCancelLight.setEnabled(true);
                     tvSetLight.setEnabled(true);
@@ -343,13 +339,12 @@ public class SetSceneOptionFragment extends Fragment {
         cbSetBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!cbSetBluetooth.isChecked()){
+                if (!cbSetBluetooth.isChecked()) {
                     btnStartSetBluetooth.setEnabled(false);
                     btnStartCancelBluetooth.setEnabled(false);
                     tvSetBluetooth.setEnabled(false);
                     tvSetBluetooth.setText("No Set");
-                }
-                else{
+                } else {
                     btnStartSetBluetooth.setEnabled(true);
                     btnStartCancelBluetooth.setEnabled(true);
                     tvSetBluetooth.setEnabled(true);
@@ -385,6 +380,7 @@ public class SetSceneOptionFragment extends Fragment {
 
 
     }
+
     public void showTempPickerDialog(ButtonItemCollectionCms buttonItemCollectionCms) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
@@ -430,29 +426,32 @@ public class SetSceneOptionFragment extends Fragment {
         calendar.set(calendar.DAY_OF_WEEK, day);
         calendar.set(calendar.HOUR_OF_DAY, hour);
         calendar.set(calendar.MINUTE, minute);
-        String strHour=String.valueOf(hour);
-        String strMinute=String.valueOf(minute);
-        if(hour<10){
-            strHour = "0"+String.valueOf(hour);
+        String strHour = String.valueOf(hour);
+        String strMinute = String.valueOf(minute);
+        if (hour < 10) {
+            strHour = "0" + String.valueOf(hour);
         }
-        if(minute<10){
-            strMinute = "0"+String.valueOf(minute);
+        if (minute < 10) {
+            strMinute = "0" + String.valueOf(minute);
         }
 
-        time = strDay.substring(0,3) + ":" + strHour + ":" + strMinute;
+        time = strDay.substring(0, 3) + ":" + strHour + ":" + strMinute;
         tvSetTime.setText(time);
     }
-    public void setTemp(String choose,int temp){
+
+    public void setTemp(String choose, int temp) {
         this.temp = temp;
         chooseTemp = choose;
-        tvSetTemp.setText(choose+" "+temp + " C");
+        tvSetTemp.setText(choose + " " + temp + " C");
     }
-    public void setLight(String choose,int light){
+
+    public void setLight(String choose, int light) {
         this.light = light;
         chooseLight = choose;
-        tvSetLight.setText(choose+" "+light + " Lux");
+        tvSetLight.setText(choose + " " + light + " Lux");
     }
-    public void setBluetooth(String choose){
+
+    public void setBluetooth(String choose) {
         bluetooth = choose;
         tvSetBluetooth.setText(choose);
     }
@@ -469,9 +468,6 @@ public class SetSceneOptionFragment extends Fragment {
             buttonItemCollectionCms.setNumId(id);
 
 
-
-
-
             if (!tvSetTime.getText().equals("No Set")) {
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
@@ -483,9 +479,7 @@ public class SetSceneOptionFragment extends Fragment {
                 buttonItemCollectionCms.setCheckTime("On");
 
 
-
-            }
-            else {
+            } else {
                 buttonItemCollectionCms.setTime("No Set");
                 buttonItemCollectionCms.setCheckTime("Off");
 
@@ -494,8 +488,6 @@ public class SetSceneOptionFragment extends Fragment {
             if (!tvSetTemp.getText().equals("No Set")) {
                 buttonItemCollectionCms.setTemp(String.valueOf(this.temp));
                 buttonItemCollectionCms.setCheckTempSen(chooseTemp);
-
-
 
 
             } else {
@@ -509,7 +501,6 @@ public class SetSceneOptionFragment extends Fragment {
                 buttonItemCollectionCms.setCheckLightSen(chooseLight);
 
 
-
             } else {
                 buttonItemCollectionCms.setLight("No Set");
                 buttonItemCollectionCms.setCheckLightSen("Off");
@@ -521,7 +512,6 @@ public class SetSceneOptionFragment extends Fragment {
                 buttonItemCollectionCms.setCheckBluetooth("On");
 
 
-
             } else {
                 buttonItemCollectionCms.setBluetooth("No Set");
                 buttonItemCollectionCms.setCheckBluetooth("Off");
@@ -530,7 +520,7 @@ public class SetSceneOptionFragment extends Fragment {
             FragmentListener listener = (FragmentListener) getActivity();
             listener.onAddSceneButtonClicked(buttonItemCollectionCms);
             final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-            mRootRef.child("numId").setValue(id);
+            mRootRef.child(pathNumId).setValue(id);
 
 
         }

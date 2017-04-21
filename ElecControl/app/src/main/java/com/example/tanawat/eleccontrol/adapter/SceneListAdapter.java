@@ -250,15 +250,15 @@ pathListScene = mUser+"/listScene";
 
                     holder.tvTempScene.setText(buttonItemCollectionCms.getTemp());
 
-                    if (buttonItemCollectionCms.getCheckTempSen().equals("less than")) {
-                        holder.tvTempScene.setText("< " + buttonItemCollectionCms.getTemp() + " " + "C");
+                    if (buttonItemCollectionCms.getCheckTempSen().equals("less than or equal")) {
+                        holder.tvTempScene.setText("<= " + buttonItemCollectionCms.getTemp() + " " + "C");
                     } else if (buttonItemCollectionCms.getCheckTempSen().equals("more than")) {
                         holder.tvTempScene.setText("> " + buttonItemCollectionCms.getTemp() + " " + "C");
                     }
 
                     holder.tvLightScene.setText(buttonItemCollectionCms.getLight());
-                    if (buttonItemCollectionCms.getCheckLightSen().equals("less than")) {
-                        holder.tvLightScene.setText("< " + buttonItemCollectionCms.getLight() + " " + "Lux");
+                    if (buttonItemCollectionCms.getCheckLightSen().equals("less than or equal")) {
+                        holder.tvLightScene.setText("<= " + buttonItemCollectionCms.getLight() + " " + "Lux");
                     } else if (buttonItemCollectionCms.getCheckLightSen().equals("more than")) {
                         holder.tvLightScene.setText("> " + buttonItemCollectionCms.getLight() + " " + "Lux");
                     }

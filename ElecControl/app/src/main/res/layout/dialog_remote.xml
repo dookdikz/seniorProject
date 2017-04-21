@@ -4,32 +4,34 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Temperature"
-            android:textSize="20dp"
             android:layout_gravity="center"
-            android:gravity="center" />
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Change Air Temperature"
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
 
-            android:gravity="center"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <EditText
-                android:maxLength="2"
-                android:inputType="number"
                 android:id="@+id/etChangeTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="2"
                 android:text="25" />
 
             <TextView
@@ -38,15 +40,23 @@
                 android:text="C" />
         </LinearLayout>
 
-        <Button
-            android:gravity="center"
-            android:layout_gravity="center"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="( please input 18-28C )" />
+
+        <Button
+            android:id="@+id/btnChangeTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@color/colorPrimary"
+            android:gravity="center"
             android:text="Change"
+            android:layout_margin="10dp"
             android:textColor="@color/colorWhite"
-            android:id="@+id/button2" />
+            android:onClick="DateTimeClickOK"/>
     </LinearLayout>
 
 </RelativeLayout>

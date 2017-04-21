@@ -37,17 +37,47 @@ public class AlarmReceiver extends BroadcastReceiver {
     ButtonItemCollectionCms allTool;
     ListScene allScene;
     ButtonItemCms buttonItemCms;
+    String mUser;
+    String pathListTool;
+    String pathListScene;
+    int id;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
         FirebaseApp.initializeApp(context);
+        mUser = intent.getStringExtra("mUser");
+        pathListTool = mUser + "/listTool";
+        pathListScene = mUser + "/listScene";
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        Uri data = intent.getData();
-        Log.d("getTTT",data.toString());
-        buttonItemCollectionCms = intent.getParcelableExtra("sceneAlarm");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allScene = dataSnapshot.getValue(ListScene.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        id = intent.getIntExtra("id",0);
+
+        Log.d("getTInt",String.valueOf(id));
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<allScene.getData().size();i++){
+                    if(allScene.getData().get(i).getNumId() == id){
+                        buttonItemCollectionCms = allScene.getData().get(i);
+                    }
+                }
+
+
+
+
         for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-            Log.d("getTT", buttonItemCollectionCms.getData().get(i).getstatus());
+
             buttonItemCms = buttonItemCollectionCms.getData().get(i);
 
             if (buttonItemCms.getType().equals("Air")) {
@@ -202,12 +232,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         }
+            }
+        }, 5000);
 //        SharedPreferences pref = context.getSharedPreferences("cms", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = pref.edit();
 //        String jsonRead = pref.getString("json", null);
 //        allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 
-        mRootRef.child("listTool").addValueEventListener(new ValueEventListener() {
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
@@ -220,18 +252,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             }
         });
-        mRootRef.child("listScene").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                allScene = dataSnapshot.getValue(ListScene.class);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -241,14 +262,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                         for (int j = 0; j < allTool.getData().size(); j++) {
                             String idTool = allTool.getData().get(j).getId();
                             if (idTool.equals(idToolInScene)) {
-                                Log.d("getStatus", buttonItemCollectionCms.getData().get(i).getstatus());
                                 allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
                             }
                         }
                     }
 
                 }
-                mRootRef.child("listTool").setValue(allTool);
+                mRootRef.child(pathListTool).setValue(allTool);
 
                 for (int i = 0; i < allScene.getData().size(); i++) {
                     String idScene = buttonItemCollectionCms.getId();
@@ -256,10 +276,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                         allScene.getData().get(i).setCheckTime("Off");
                     }
                 }
-                mRootRef.child("listScene").setValue(allScene);
+                mRootRef.child(pathListScene).setValue(allScene);
 
             }
-        }, 3000);
+        }, 5000);
 
 //        Intent i = new Intent(context, ShowEvent.class);
 //        ButtonItemCollectionCms buttonItemCollectionCms = intent.getParcelableExtra("sceneAlarm");

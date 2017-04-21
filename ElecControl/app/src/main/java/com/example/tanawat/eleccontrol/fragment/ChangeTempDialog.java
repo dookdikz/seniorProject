@@ -3,15 +3,21 @@ package com.example.tanawat.eleccontrol.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.cms.TestSendWeb;
+import com.example.tanawat.eleccontrol.manager.HttpManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by dookdikz on 26/3/2560.
@@ -19,7 +25,12 @@ import com.example.tanawat.eleccontrol.R;
 
 public class ChangeTempDialog extends DialogFragment {
     int mNum;
-String choose;
+    String choose;
+    Button btnChangeTemp;
+    EditText etChangeTemp;
+    static Call<TestSendWeb> call;
+    static String url = "http://158.108.122.70:5000/";
+
     public static ChangeTempDialog newInstance(int num) {
         ChangeTempDialog f = new ChangeTempDialog();
 
@@ -88,7 +99,59 @@ String choose;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_remote, container, false);
+        etChangeTemp = (EditText) thisDialog.findViewById(R.id.etChangeTemp);
+        btnChangeTemp = (Button) thisDialog.findViewById(R.id.btnChangeTemp);
 
+        //TODO:
+        HttpManager.setUrl(url);
+        btnChangeTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HttpManager.setUrl(url);
+                if (etChangeTemp.equals("18")) {
+
+                    call = HttpManager.getInstance().getService().temp18();
+                } else if (etChangeTemp.getText().toString().equals("19")) {
+                    call = HttpManager.getInstance().getService().temp19();
+                } else if (etChangeTemp.getText().toString().equals("20")) {
+                    call = HttpManager.getInstance().getService().temp20();
+                } else if (etChangeTemp.getText().toString().equals("21")) {
+                    call = HttpManager.getInstance().getService().temp21();
+                } else if (etChangeTemp.getText().toString().equals("22")) {
+                    call = HttpManager.getInstance().getService().temp22();
+                } else if (etChangeTemp.getText().toString().equals("23")) {
+                    call = HttpManager.getInstance().getService().temp23();
+                } else if (etChangeTemp.getText().toString().equals("24")) {
+                    call = HttpManager.getInstance().getService().temp24();
+                } else if (etChangeTemp.getText().toString().equals("25")) {
+                    Log.d("testChange", "eiei");
+                    call = HttpManager.getInstance().getService().temp25();
+                } else if (etChangeTemp.getText().toString().equals("26")) {
+                    call = HttpManager.getInstance().getService().temp26();
+                } else if (etChangeTemp.getText().toString().equals("27")) {
+                    call = HttpManager.getInstance().getService().temp27();
+                } else if (etChangeTemp.getText().toString().equals("28")) {
+                    call = HttpManager.getInstance().getService().temp28();
+                } else {
+                    call = null;
+                }
+
+                Log.d("testChange", etChangeTemp.getText().toString());
+                if (call != null) {
+                    call.enqueue(new Callback<TestSendWeb>() {
+                        @Override
+                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+                            Toast.makeText(getContext(),"pass "+ etChangeTemp.getText().toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+                            Toast.makeText(getContext(), "fail "+etChangeTemp.getText().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
 //        Button btnDateTimeCancel = (Button) thisDialog.findViewById(R.id.btnDateTimeCancel);
 
 
@@ -102,8 +165,6 @@ String choose;
 //                getDialog().dismiss();
 //            }
 //        });
-
-
 
 
         return thisDialog;

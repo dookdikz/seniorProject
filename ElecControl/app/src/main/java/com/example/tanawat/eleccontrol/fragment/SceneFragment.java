@@ -261,11 +261,12 @@ public class SceneFragment extends Fragment {
                         if (toolInScene.getstatus().equals("On")) {
                             for (int j = 0; j < allTool.getData().size(); j++) {
                                 if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
-                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
-                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                         call = HttpManager.getInstance().getService().openAir();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -273,11 +274,12 @@ public class SceneFragment extends Fragment {
                         } else {
                             for (int j = 0; j < allTool.getData().size(); j++) {
                                 if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
-                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
-                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                         call = HttpManager.getInstance().getService().closeAir();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -287,11 +289,12 @@ public class SceneFragment extends Fragment {
                         if (toolInScene.getstatus().equals("On")) {
                             for (int j = 0; j < allTool.getData().size(); j++) {
                                 if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
-                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
-                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                         call = HttpManager.getInstance().getService().openTv();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -299,11 +302,12 @@ public class SceneFragment extends Fragment {
                         } else {
                             for (int j = 0; j < allTool.getData().size(); j++) {
                                 if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
-                                    Log.d("checkLogScene",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
-                                        Log.d("checkLogScene1",toolInScene.getstatus()+" "+allTool.getData().get(j).getstatus());
                                         call = HttpManager.getInstance().getService().closeTv();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -317,6 +321,9 @@ public class SceneFragment extends Fragment {
                                         call = HttpManager.getInstance().getService().openSwitch1();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                                     }
+                                    else{
+                                        call = null;
+                                    }
                                 }
                             }
 
@@ -326,6 +333,9 @@ public class SceneFragment extends Fragment {
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
                                         call = HttpManager.getInstance().getService().closeSwitch1();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -339,6 +349,9 @@ public class SceneFragment extends Fragment {
                                         call = HttpManager.getInstance().getService().openSwitch2();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                                     }
+                                    else{
+                                        call = null;
+                                    }
                                 }
                             }
 
@@ -348,6 +361,9 @@ public class SceneFragment extends Fragment {
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
                                         call = HttpManager.getInstance().getService().closeSwitch2();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -361,6 +377,9 @@ public class SceneFragment extends Fragment {
                                         call = HttpManager.getInstance().getService().openCurtain();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
                                     }
+                                    else{
+                                        call = null;
+                                    }
                                 }
                             }
 
@@ -370,6 +389,9 @@ public class SceneFragment extends Fragment {
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
                                         call = HttpManager.getInstance().getService().closeCurtain();
                                         call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR));
+                                    }
+                                    else{
+                                        call = null;
                                     }
                                 }
                             }
@@ -406,6 +428,9 @@ public class SceneFragment extends Fragment {
 
                 mRootRef.child(pathListTool).setValue(allTool);
                 listView.setEnabled(false);
+                if(call==null){
+                    listView.setEnabled(true);
+                }
 
             }
 

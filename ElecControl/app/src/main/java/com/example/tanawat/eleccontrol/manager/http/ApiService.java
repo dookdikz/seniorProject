@@ -57,4 +57,25 @@ public interface ApiService {
     @GET("temp_28")
     Call<TestSendWeb> temp28();
 
+    @GET("tv_1")
+    Call<TestSendWeb> tv1();
+    @GET("tv_2")
+    Call<TestSendWeb> tv2();
+    @GET("tv_3")
+    Call<TestSendWeb> tv3();
+    @GET("tv_4")
+    Call<TestSendWeb> tv4();
+    @GET("tv_5")
+    Call<TestSendWeb> tv5();
+    @GET("tv_6")
+    Call<TestSendWeb> tv6();
+    @GET("tv_7")
+    Call<TestSendWeb> tv7();
+    @GET("tv_8")
+    Call<TestSendWeb> tv8();
+    @GET("tv_9")
+    Call<TestSendWeb> tv9();
+    @GET("tv_0")
+    Call<TestSendWeb> tv0();
+
 }

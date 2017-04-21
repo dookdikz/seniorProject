@@ -59,6 +59,7 @@ public class MyService extends Service {
         pathListScene = mUser+"/listScene";
         pathListTool = mUser+"/listTool";
         buttonItemCollectionCms = new ButtonItemCollectionCms();
+
         listScene = new ListScene();
         final String macAddress = android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address");
 
@@ -245,7 +246,7 @@ public class MyService extends Service {
                             checkCount += 1;
 
                         }
-                    } else if (listScene.getData().get(i).getCheckLightSen().equals("less than")) {
+                    } else if (listScene.getData().get(i).getCheckLightSen().equals("less than or equal")) {
 //                                    Log.d("testBack1", String.valueOf(light));
 //                                    Log.d("testBack2", listScene.getData().get(i).getLight());
                         if (light <= Long.parseLong(listScene.getData().get(i).getLight())) {
@@ -264,7 +265,7 @@ public class MyService extends Service {
                             checkCount += 1;
 
                         }
-                    } else if (listScene.getData().get(i).getCheckTempSen().equals("less than")) {
+                    } else if (listScene.getData().get(i).getCheckTempSen().equals("less than or equal")) {
                         if (temp <= Long.parseLong(listScene.getData().get(i).getTemp())) {
                             checkCount += 1;
 

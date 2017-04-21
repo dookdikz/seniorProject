@@ -1,8 +1,5 @@
 package com.example.tanawat.eleccontrol.fragment;
 
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -54,6 +51,7 @@ public class MainFragment extends Fragment {
     public interface FragmentListener {
         void onAddButtonClicked();
     }
+
     ButtonItemCms toolClicked;
     Button btnCommand;
     ButtonItemManager buttonListManager;
@@ -70,12 +68,13 @@ public class MainFragment extends Fragment {
     LinearLayout layoutListView;
     String pathNumId;
     String pathListTool;
+    String pathIp;
     static Call<TestSendWeb> call;
     final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
     ImageView btnGoScene;
-    static String url = "http://158.108.122.70:5000/";
+    String url;
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
         return buttonItemCollectionCms;
@@ -90,18 +89,13 @@ public class MainFragment extends Fragment {
         super();
     }
 
-    public static MainFragment newInstance(ButtonItemCms cms,String mUsername) {
+    public static MainFragment newInstance(ButtonItemCms cms, String mUsername) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putParcelable("cms", cms);
-        args.putString("mUser",mUsername);
+        args.putString("mUser", mUsername);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public static void setUrl(String url) {
-        MainFragment.url = url;
-        HttpManager.setUrl(MainFragment.url);
     }
 
     @Override
@@ -110,8 +104,9 @@ public class MainFragment extends Fragment {
         init(savedInstanceState);
         cms = getArguments().getParcelable("cms");
         mUsername = getArguments().getString("mUser");
-        pathNumId = mUsername+"/numId";
-        pathListTool = mUsername+"/listTool";
+        pathNumId = mUsername + "/numId";
+        pathListTool = mUsername + "/listTool";
+        pathIp = mUsername + "/ip";
         getActivity().setTitle("Tool");
         if (savedInstanceState != null) {
 
@@ -156,12 +151,11 @@ public class MainFragment extends Fragment {
         btnGoScene.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SceneFragment.newInstance(null,mUsername)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contentContainer, SceneFragment.newInstance(null, mUsername)).commit();
             }
         });
 //        editUrl = (EditText) rootView.findViewById(R.id.editUrl);
 //        btnChangeUrl = (Button) rootView.findViewById(R.id.btnChangeUrl);
-
 
 
         final ButtonItemCms buttonItemCms1 = new ButtonItemCms();
@@ -178,7 +172,30 @@ public class MainFragment extends Fragment {
         listCms.add(buttonItemCms1);
 
 //        listCms.add(buttonItemCms2);
-
+//        mRootRef.child(pathIp).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.getValue() == null) {
+//                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+//                    if (prev != null) {
+//                        ft.remove(prev);
+//                    }
+//                    ft.addToBackStack(null);
+//
+//                    // Create and show the dialog.
+//                    DialogFragment newFragment = SettingDialogFragment.newInstance(2);
+//                    newFragment.show(ft, "dialog");
+//                }else{
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         mRootRef.child(pathNumId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -214,7 +231,7 @@ public class MainFragment extends Fragment {
 //
 //
 //                }
-                listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(),mUsername);
+                listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(), mUsername);
                 listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
                 listAdapter.setmUser(mUsername);
                 tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
@@ -256,8 +273,7 @@ public class MainFragment extends Fragment {
 //        Log.d("aaa", getButtonItemCollectionCms().getData().get(0).getName());
 
 
-
-        listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(),mUsername);
+        listAdapter = new ToolListAdapter(buttonItemCollectionCms, getActivity(), mUsername);
         listAdapter.setmUser(mUsername);
         listAdapter.setButtonItemCollectionCms(buttonItemCollectionCms);
         tvCountTool.setText("All Tool" + "(" + listAdapter.getCount() + ")");
@@ -268,7 +284,12 @@ public class MainFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showChangTempDialog();
+                if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
+                    showChangTempDialog();
+                } else if (buttonItemCollectionCms.getData().get(position).getType().equals("Tv")) {
+                    showChangChannelDialog();
+                }
+
                 return true;
             }
         });
@@ -436,6 +457,7 @@ public class MainFragment extends Fragment {
 //        }
         return super.onOptionsItemSelected(item);
     }
+
     public void showChangTempDialog() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
@@ -448,6 +470,20 @@ public class MainFragment extends Fragment {
         DialogFragment newFragment = ChangeTempDialog.newInstance(4);
         newFragment.show(ft, "dialog");
     }
+
+    public void showChangChannelDialog() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = ChangeChannelDialog.newInstance(4);
+        newFragment.show(ft, "dialog");
+    }
+
     class SentToServer implements Callback<TestSendWeb> {
         public static final int MODE_OPEN_AIR = 1;
         public static final int MODE_CLOSE_AIR = 2;

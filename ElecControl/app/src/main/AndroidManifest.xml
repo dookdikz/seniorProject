@@ -43,10 +43,6 @@
             android:name=".activity.EditSceneActivity"
             android:label="Edit Scene"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -61,10 +57,6 @@
         <receiver
             android:name=".activity.AlarmReceiver"
             android:process=":remote">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" />
-            </intent-filter>
         </receiver>
 
         <receiver
