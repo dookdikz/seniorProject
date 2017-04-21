@@ -51,6 +51,7 @@ public class SceneFragment extends Fragment {
     static ListView listView;
     static TextView tvCountScene;
     static SceneListAdapter listAdapter;
+    ButtonItemCollectionCms sceneClick;
     ButtonItemCollectionCms buttonItemCollectionCms;
     ImageView btnGoTool;
     ListScene listScene;
@@ -65,6 +66,7 @@ public class SceneFragment extends Fragment {
     String pathListTool;
     String pathListScene;
     static Call<TestSendWeb> call;
+    final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     public static void setUrl(String url) {
         SceneFragment.url = url;
@@ -131,7 +133,7 @@ public class SceneFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+
         listView = (ListView) rootView.findViewById(R.id.listView);
         tvCountScene = (TextView) rootView.findViewById(R.id.tvCountScene);
         pgbLoad = (ProgressBar) rootView.findViewById(R.id.pgbLoad);
@@ -255,6 +257,7 @@ public class SceneFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                sceneClick = listScene.getData().get(position);
                 for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
@@ -407,26 +410,26 @@ public class SceneFragment extends Fragment {
 ////                String jsonRead = pref.getString("json", null);
 ////                allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 //
-                for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
-                    //Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
-                    String idToolInScene = listScene.getData().get(position).getData().get(i).getId();
-                    if (allTool != null) {
-                        for (int j = 0; j < allTool.getData().size(); j++) {
-                            String idTool = allTool.getData().get(j).getId();
-                            if (idTool.equals(idToolInScene)) {
-                                allTool.getData().get(j).setstatus(listScene.getData().get(position).getData().get(i).getstatus());
-                            }
-                        }
-                    }
-
-                }
+//                for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
+//                    //Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
+//                    String idToolInScene = listScene.getData().get(position).getData().get(i).getId();
+//                    if (allTool != null) {
+//                        for (int j = 0; j < allTool.getData().size(); j++) {
+//                            String idTool = allTool.getData().get(j).getId();
+//                            if (idTool.equals(idToolInScene)) {
+//                                allTool.getData().get(j).setstatus(listScene.getData().get(position).getData().get(i).getstatus());
+//                            }
+//                        }
+//                    }
+//
+//                }
 ////                String json = new Gson().toJson(allTool);
 ////                editor.putString("json", json);
 ////                editor.apply();
 //
 //
 
-                mRootRef.child(pathListTool).setValue(allTool);
+//                mRootRef.child(pathListTool).setValue(allTool);
                 listView.setEnabled(false);
                 if(call==null){
                     listView.setEnabled(true);
@@ -513,12 +516,40 @@ public class SceneFragment extends Fragment {
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
             Toast.makeText(getContext(), "Suscess + " + toolInScene.getName(), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < sceneClick.getData().size(); i++) {
+                //Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
+                String idToolInScene = sceneClick.getData().get(i).getId();
+                if (allTool != null) {
+                    for (int j = 0; j < allTool.getData().size(); j++) {
+                        String idTool = allTool.getData().get(j).getId();
+                        if (idTool.equals(idToolInScene)) {
+                            allTool.getData().get(j).setstatus(sceneClick.getData().get(i).getstatus());
+                        }
+                    }
+                }
+
+            }
+            mRootRef.child(pathListTool).setValue(allTool);
             listView.setEnabled(true);
         }
 
         @Override
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
             Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+//            for (int i = 0; i < sceneClick.getData().size(); i++) {
+//                //Toast.makeText(getContext(), listScene.getData().get(position).getData().get(i).getName() + " " + listScene.getData().get(position).getData().get(i).getstatus() + "+" + listScene.getData().get(position).getName() + "+" + String.valueOf(listScene.getData().get(position).getId() + "," + listScene.getData().get(position).getTime()), Toast.LENGTH_SHORT).show();
+//                String idToolInScene = sceneClick.getData().get(i).getId();
+//                if (allTool != null) {
+//                    for (int j = 0; j < allTool.getData().size(); j++) {
+//                        String idTool = allTool.getData().get(j).getId();
+//                        if (idTool.equals(idToolInScene)) {
+//                            allTool.getData().get(j).setstatus(sceneClick.getData().get(i).getstatus());
+//                        }
+//                    }
+//                }
+//
+//            }
+//            mRootRef.child(pathListTool).setValue(allTool);
             listView.setEnabled(true);
         }
     }
