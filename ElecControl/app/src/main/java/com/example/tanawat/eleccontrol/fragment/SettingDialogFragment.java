@@ -15,8 +15,11 @@ import android.widget.EditText;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -124,6 +127,20 @@ public class SettingDialogFragment extends DialogFragment {
         getDialog().setTitle("Setting IP");
         etSetUrl = (EditText) rootView.findViewById(R.id.etSetUrl);
         btnSetUrl=(Button) rootView.findViewById(R.id.btnSetUrl);
+        mRootRef.child(pathIp).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    etSetUrl.setText(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 

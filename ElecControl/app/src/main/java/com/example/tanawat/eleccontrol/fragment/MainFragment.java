@@ -189,6 +189,7 @@ public class MainFragment extends Fragment {
                 }else{
                     if(dataSnapshot.getValue(String.class)!=null){
                         url = dataSnapshot.getValue(String.class);
+                        HttpManager.instance=null;
                         HttpManager.setUrl(url);
                         Log.d("testSetIp",url);
                     }

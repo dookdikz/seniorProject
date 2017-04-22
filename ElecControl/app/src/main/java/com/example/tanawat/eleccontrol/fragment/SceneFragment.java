@@ -258,6 +258,7 @@ public class SceneFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 sceneClick = listScene.getData().get(position);
+                btnGoTool.setEnabled(false);
                 for (int i = 0; i < listScene.getData().get(position).getData().size(); i++) {
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
@@ -431,6 +432,7 @@ public class SceneFragment extends Fragment {
 
 //                mRootRef.child(pathListTool).setValue(allTool);
                 listView.setEnabled(false);
+
                 if(call==null){
                     listView.setEnabled(true);
                 }
@@ -530,6 +532,7 @@ public class SceneFragment extends Fragment {
 
             }
             mRootRef.child(pathListTool).setValue(allTool);
+            btnGoTool.setEnabled(true);
             listView.setEnabled(true);
         }
 
@@ -550,6 +553,7 @@ public class SceneFragment extends Fragment {
 //
 //            }
 //            mRootRef.child(pathListTool).setValue(allTool);
+            btnGoTool.setEnabled(true);
             listView.setEnabled(true);
         }
     }

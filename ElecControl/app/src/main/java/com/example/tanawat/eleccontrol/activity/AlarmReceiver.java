@@ -35,6 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.example.tanawat.eleccontrol.manager.HttpManager.url;
 
 /**
  * Created by Tanawat on 8/2/2560.
@@ -48,6 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     String mUser;
     String pathListTool;
     String pathListScene;
+    String pathIp;
     static Call<TestSendWeb> call;
     int id;
 
@@ -57,6 +59,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         mUser = intent.getStringExtra("mUser");
         pathListTool = mUser + "/listTool";
         pathListScene = mUser + "/listScene";
+        pathIp = mUser + "/ip";
         id = intent.getIntExtra("id",0);
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
@@ -70,7 +73,22 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             }
         });
+        mRootRef.child(pathIp).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    url = dataSnapshot.getValue(String.class);
+                    HttpManager.instance=null;
+                    HttpManager.setUrl(url);
+                }
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         Log.d("getTInt",mUser);
         Log.d("getTInt",String.valueOf(id));
         final Handler handler = new Handler();
@@ -249,6 +267,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     (NotificationManager)  context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(scene.getNumId(), notification);
 
-            Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
         }}
 }
