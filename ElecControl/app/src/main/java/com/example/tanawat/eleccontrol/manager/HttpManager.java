@@ -2,7 +2,6 @@ package com.example.tanawat.eleccontrol.manager;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.manager.http.ApiService;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by nuuneoi on 11/16/2014.
  */
 public class HttpManager {
-static public String url = "http://158.108.122.70:5000/" ;
+    static public String url = "http://160.118.122.70:5000/";
+    static public String mUser;
+
 
     public static String getUrl() {
         return url;
@@ -29,13 +30,14 @@ static public String url = "http://158.108.122.70:5000/" ;
 
     public static void setUrl(String url) {
         HttpManager.url = url;
+        Log.d("testSetIps",url);
     }
 
     public static HttpManager instance;
-
     public static HttpManager getInstance() {
-        if (instance == null)
+        if(instance==null){
             instance = new HttpManager();
+        }
         return instance;
     }
 
@@ -43,23 +45,23 @@ static public String url = "http://158.108.122.70:5000/" ;
     private ApiService service;
 
     public HttpManager() {
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("ip").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
-                    url = dataSnapshot.getValue(String.class);
-                }
+//        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+//        mRootRef.child(mUser+"/ip").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot!=null){
+//                    url = dataSnapshot.getValue(String.class);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         mContext = Contextor.getInstance().getContext();
-
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
@@ -71,12 +73,12 @@ static public String url = "http://158.108.122.70:5000/" ;
                 .build();
 
         service = retrofit.create(ApiService.class);
+
+
     }
 
 
-
-
-    public  ApiService getService(){
+    public ApiService getService() {
         return service;
     }
 

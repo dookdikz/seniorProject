@@ -92,22 +92,23 @@ public class ChangeTempDialog extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_remote, container, false);
+        getDialog().setTitle("Set Air Temperature");
         etChangeTemp = (EditText) thisDialog.findViewById(R.id.etChangeTemp);
         btnChangeTemp = (Button) thisDialog.findViewById(R.id.btnChangeTemp);
 
         //TODO:
-        HttpManager.setUrl(url);
+//        HttpManager.setUrl(url);
         btnChangeTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpManager.setUrl(url);
+//                HttpManager.setUrl(url);
                 if (etChangeTemp.equals("18")) {
 
                     call = HttpManager.getInstance().getService().temp18();

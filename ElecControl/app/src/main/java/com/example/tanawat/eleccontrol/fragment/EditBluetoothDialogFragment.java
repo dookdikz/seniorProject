@@ -81,13 +81,14 @@ String choose;
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_set_bluetooth, container, false);
+        getDialog().setTitle("Set Bluetooth");
         Button btnBluetoothOK = (Button) thisDialog.findViewById(R.id.btnBluetoothOK);
         Button btnBluetoothCancel = (Button) thisDialog.findViewById(R.id.btnBluetoothDialogCancel);
 

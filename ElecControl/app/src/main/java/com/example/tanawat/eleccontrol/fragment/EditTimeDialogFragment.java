@@ -82,13 +82,14 @@ public class EditTimeDialogFragment extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_set_time, container, false);
+        getDialog().setTitle("Set Time");
         Button btnDateTimeOK = (Button) thisDialog.findViewById(R.id.btnDateTimeOK);
 
         Calendar calendar = Calendar.getInstance();

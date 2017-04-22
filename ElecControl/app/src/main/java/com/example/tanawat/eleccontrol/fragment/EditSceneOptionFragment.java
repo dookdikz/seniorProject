@@ -24,6 +24,7 @@ import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 /**
@@ -126,9 +127,37 @@ public class EditSceneOptionFragment extends Fragment {
         tvSetTemp = (TextView) rootView.findViewById(R.id.tvSetTemp);
         tvSetTemp.setText(buttonItemCollectionCms.getTemp());
 
-
         if (!buttonItemCollectionCms.getTime().equals("No Set")) {
             cbEditTime.setChecked(true);
+            calendar = Calendar.getInstance();
+
+time = buttonItemCollectionCms.getTime();
+            String[] splitTime = buttonItemCollectionCms.getTime().split(":");
+            if(splitTime[0].equals("Sun")){
+                calendar.set(calendar.DAY_OF_WEEK, 1);
+            }
+            else if(splitTime[0].equals("Mon")){
+                calendar.set(calendar.DAY_OF_WEEK, 2);
+            }
+            else if(splitTime[0].equals("Tue")){
+                calendar.set(calendar.DAY_OF_WEEK, 3);
+            }
+            else if(splitTime[0].equals("Wed")){
+                calendar.set(calendar.DAY_OF_WEEK, 4);
+            }
+            else if(splitTime[0].equals("Thu")){
+                calendar.set(calendar.DAY_OF_WEEK, 5);
+            }
+            else if(splitTime[0].equals("Fri")){
+                calendar.set(calendar.DAY_OF_WEEK, 6);
+            }
+            else if(splitTime[0].equals("Sat")){
+                calendar.set(calendar.DAY_OF_WEEK, 7);
+            }
+            calendar.set(calendar.HOUR_OF_DAY, Integer.parseInt(splitTime[1]));
+            calendar.set(calendar.MINUTE, Integer.parseInt(splitTime[2]));
+
+
         }
         if(!buttonItemCollectionCms.getTemp().equals("No Set")){
             tvSetTemp.setText(buttonItemCollectionCms.getCheckTempSen()+" "+buttonItemCollectionCms.getTemp()+" C");
@@ -465,8 +494,9 @@ public class EditSceneOptionFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionSubmit) {
+            id = buttonItemCollectionCms.getNumId();
             if (!tvSetTime.getText().equals("No Set")) {
-                id = buttonItemCollectionCms.getNumId();
+
 //                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
 //                    Log.d("getT", buttonItemCollectionCms.getData().get(i).getstatus());
 //                }
@@ -483,6 +513,10 @@ public class EditSceneOptionFragment extends Fragment {
                 buttonItemCollectionCms.setCheckTime("On");
             }
             else {
+                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
                 buttonItemCollectionCms.setTime("No Set");
                 buttonItemCollectionCms.setCheckTime("Off");
             }

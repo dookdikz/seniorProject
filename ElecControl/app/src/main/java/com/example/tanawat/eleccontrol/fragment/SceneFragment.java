@@ -100,7 +100,7 @@ public class SceneFragment extends Fragment {
         init(savedInstanceState);
         getActivity().setTitle("Scene");
        //TODO: setURL
-        setUrl(HttpManager.getUrl());
+//        setUrl(HttpManager.getUrl());
         scene = getArguments().getParcelable("scene");
         editScene = getArguments().getParcelable("editScene");
         mUsername = getArguments().getString("mUser");

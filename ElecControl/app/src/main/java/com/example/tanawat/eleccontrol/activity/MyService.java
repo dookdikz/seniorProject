@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -21,7 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +40,7 @@ public class MyService extends Service {
     String pathListScene;
     String mUser;
     static Call<TestSendWeb> call;
-    final DatabaseReference mRootRef  = FirebaseDatabase.getInstance().getReference();
+    final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     NotificationCompat notification;
     int numNotifi = 0;
 
@@ -55,9 +53,10 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         mUser = intent.getStringExtra("mUser");
-        pathListScene = mUser+"/listScene";
-        pathListTool = mUser+"/listTool";
+        pathListScene = mUser + "/listScene";
+        pathListTool = mUser + "/listTool";
         buttonItemCollectionCms = new ButtonItemCollectionCms();
 
         listScene = new ListScene();
@@ -99,9 +98,9 @@ public class MyService extends Service {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    light = dataSnapshot.getValue(Long.class);
-                    if(light!=null){
-                        light = ((1023-light)*50/light);
+                    Long light = dataSnapshot.getValue(Long.class);
+                    if(light!=0){
+                        light = ((1023-light)*  50/light);
                     }
                     onBackground(macAddress, mRootRef);
                 }
@@ -213,7 +212,7 @@ public class MyService extends Service {
             @Override
             public void run() {
 
-
+                Log.d("LogBackground", "OK");
 
             }
         }, 3000);
@@ -221,10 +220,8 @@ public class MyService extends Service {
     }
 
     private void onBackground(String macAddress, DatabaseReference mRootRef) {
-        if (listScene != null &&statusBlue!=null &&light!=null &&buttonItemCollectionCms!=null)
-        {
-            for (int i = 0; i < listScene.getData().size(); i++)
-            {
+        if (listScene != null && statusBlue != null && light != null && buttonItemCollectionCms != null) {
+            for (int i = 0; i < listScene.getData().size(); i++) {
                 int count = 0;
                 int checkCount = 0;
                 if (!listScene.getData().get(i).getCheckTempSen().equals("Off")) {
@@ -274,8 +271,7 @@ public class MyService extends Service {
 
 
                 }
-                if (macBlue.equals(macAddress))
-                {
+                if (macBlue.equals(macAddress)) {
                     if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
                         if (listScene.getData().get(i).getBluetooth().equals("On")) {
                             if (statusBlue == 1) {
@@ -292,15 +288,15 @@ public class MyService extends Service {
                     }
                 }
 
-                if(count!=0 &&checkCount!=0){
-                    if(count==checkCount){
+                if (count != 0 && checkCount != 0) {
+                    if (count == checkCount) {
                         for (int j = 0; j < listScene.getData().get(i).getData().size(); j++) {
                             onCheck(listScene.getData().get(i).getData().get(j).getType(), i, j, mRootRef);
                         }
                     }
                 }
-                Log.d("temp",String.valueOf(count));
-                Log.d("tempC",String.valueOf(checkCount));
+                Log.d("temp", String.valueOf(count));
+                Log.d("tempC", String.valueOf(checkCount));
             }
 
         }
@@ -325,19 +321,18 @@ public class MyService extends Service {
                         } else {
                             call = HttpManager.getInstance().getService().openCurtain();
                         }
-                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, listScene.getData().get(i)));
                         if (type.equals("Air")) {
-                            if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+                            if (listScene.getData().get(i).getData().get(j).getValue() != null) {
                                 sentTempAir(i, j);
 //                                call = HttpManager.getInstance().getService().openAir();
                             }
 
                         }
                         mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
-                    }
-                    else{
+                    } else {
                         if (type.equals("Air")) {
-                            if(listScene.getData().get(i).getData().get(j).getValue()!=null){
+                            if (listScene.getData().get(i).getData().get(j).getValue() != null) {
                                 sentTempAir(i, j);
 //                                call = HttpManager.getInstance().getService().openAir();
                             }
@@ -362,7 +357,7 @@ public class MyService extends Service {
                         } else {
                             call = HttpManager.getInstance().getService().closeCurtain();
                         }
-                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,listScene.getData().get(i)));
+                        call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, listScene.getData().get(i)));
 
                     }
                 }
@@ -371,40 +366,29 @@ public class MyService extends Service {
     }
 
     private void sentTempAir(int i, int j) {
-        if(listScene.getData().get(i).getData().get(j).getValue().equals("18")){
+        if (listScene.getData().get(i).getData().get(j).getValue().equals("18")) {
             call = HttpManager.getInstance().getService().temp18();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("19")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("19")) {
             call = HttpManager.getInstance().getService().temp19();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("20")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("20")) {
             call = HttpManager.getInstance().getService().temp20();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("21")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("21")) {
             call = HttpManager.getInstance().getService().temp21();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("22")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("22")) {
             call = HttpManager.getInstance().getService().temp22();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("23")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("23")) {
             call = HttpManager.getInstance().getService().temp23();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("24")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("24")) {
             call = HttpManager.getInstance().getService().temp24();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("25")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("25")) {
             call = HttpManager.getInstance().getService().temp25();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("26")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("26")) {
             call = HttpManager.getInstance().getService().temp26();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("27")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("27")) {
             call = HttpManager.getInstance().getService().temp27();
-        }
-        else if(listScene.getData().get(i).getData().get(j).getValue().equals("28")){
+        } else if (listScene.getData().get(i).getData().get(j).getValue().equals("28")) {
             call = HttpManager.getInstance().getService().temp28();
-        }
-        else{
+        } else {
 
         }
         call.enqueue(new Callback<TestSendWeb>() {
@@ -432,8 +416,9 @@ public class MyService extends Service {
         public static final int MODE_OPEN_CURTAIN = 9;
         public static final int MODE_CLOSE_CURTAIN = 10;
         int mode;
-ButtonItemCollectionCms scene;
-        public SentToServer(int mode,ButtonItemCollectionCms buttonItemCollectionCms) {
+        ButtonItemCollectionCms scene;
+
+        public SentToServer(int mode, ButtonItemCollectionCms buttonItemCollectionCms) {
             this.mode = mode;
             scene = buttonItemCollectionCms;
         }
@@ -446,7 +431,7 @@ ButtonItemCollectionCms scene;
                     new NotificationCompat.Builder(getApplicationContext())
                             .setSmallIcon(R.mipmap.icon_app)
                             .setContentTitle("Notification")
-                            .setContentText(scene.getName()+" have worked")
+                            .setContentText(scene.getName() + " have worked")
                             .setAutoCancel(true)
                             .build();
 
@@ -464,14 +449,13 @@ ButtonItemCollectionCms scene;
                     new NotificationCompat.Builder(getApplicationContext())
                             .setSmallIcon(R.mipmap.icon_app)
                             .setContentTitle("Notification")
-                            .setContentText(scene.getName()+" have failed")
+                            .setContentText(scene.getName() + " have failed")
                             .setAutoCancel(true)
                             .build();
 
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(scene.getNumId(), notification);
-
 
 
         }

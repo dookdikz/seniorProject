@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -28,15 +30,18 @@ public class SettingDialogFragment extends DialogFragment {
     int mNum;
     Button btnSetUrl;
     EditText etSetUrl;
+    String pathIp;
+    final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     public SettingDialogFragment() {
         super();
     }
 
-    public static SettingDialogFragment newInstance(int num) {
+    public static SettingDialogFragment newInstance(int num,String pathIp) {
         SettingDialogFragment fragment = new SettingDialogFragment();
         Bundle args = new Bundle();
         args.putInt("num", num);
+        args.putString("pathIp",pathIp);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,6 +50,7 @@ public class SettingDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNum = getArguments().getInt("num");
+        pathIp = getArguments().getString("pathIp");
         int style = DialogFragment.STYLE_NORMAL, theme = 0;
         switch ((mNum - 1) % 6) {
             case 1:
@@ -89,7 +95,8 @@ public class SettingDialogFragment extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(style, theme);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
+
         init(savedInstanceState);
 
         if (savedInstanceState != null)
@@ -114,6 +121,7 @@ public class SettingDialogFragment extends DialogFragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        getDialog().setTitle("Setting IP");
         etSetUrl = (EditText) rootView.findViewById(R.id.etSetUrl);
         btnSetUrl=(Button) rootView.findViewById(R.id.btnSetUrl);
 
@@ -122,7 +130,7 @@ public class SettingDialogFragment extends DialogFragment {
         btnSetUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpManager.setUrl(etSetUrl.getText().toString());
+               mRootRef.child(pathIp).setValue(etSetUrl.getText().toString());
 //                MainFragment.setUrl(etSetUrl.getText().toString());
 //                SceneFragment.setUrl(etSetUrl.getText().toString());
                 getDialog().dismiss();

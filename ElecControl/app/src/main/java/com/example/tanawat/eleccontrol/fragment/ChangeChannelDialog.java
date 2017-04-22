@@ -99,16 +99,16 @@ public class ChangeChannelDialog extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_channel, container, false);
-
+        getDialog().setTitle("Change Channel");
        //TODO:
-        HttpManager.setUrl(url);
+//        HttpManager.setUrl(url);
         btnC1 = (Button) thisDialog.findViewById(R.id.btnTv1);
         btnC1.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient mGoogleApiClient;
+    Intent intentService;
 String mUsername;
     String mPhotoUrl;
 
@@ -73,6 +74,7 @@ String mUsername;
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
+
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
@@ -96,7 +98,7 @@ String mUsername;
 
         initInstance();
         if (savedInstanceState == null) {
-Intent intentService = new Intent(this,MyService.class);
+        intentService = new Intent(this,MyService.class);
             intentService.putExtra("mUser",mUsername);
 
             startService(intentService);
@@ -142,8 +144,11 @@ Intent intentService = new Intent(this,MyService.class);
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null){
                     Long light = dataSnapshot.getValue(Long.class);
-                    light = ((1023-light)*  50/light);
-                    tvLightSensor.setText(light.toString());
+                    if(light!=0){
+                        light = ((1023-light)*  50/light);
+                        tvLightSensor.setText(light.toString());
+                    }
+
                 }
 
             }
@@ -238,7 +243,7 @@ Intent intentService = new Intent(this,MyService.class);
             ft.addToBackStack(null);
 
             // Create and show the dialog.
-            DialogFragment newFragment = SettingDialogFragment.newInstance(2);
+            DialogFragment newFragment = SettingDialogFragment.newInstance(2,mUsername+"/ip");
             newFragment.show(ft, "dialog");
             }
         });
@@ -248,7 +253,10 @@ Intent intentService = new Intent(this,MyService.class);
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUsername = ANONYMOUS;
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                stopService(intentService);
+                startActivity(i);
             }
         });
         getSupportActionBar().setHomeButtonEnabled(true);

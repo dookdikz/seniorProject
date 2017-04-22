@@ -84,7 +84,7 @@ public class SetTimeDialogFragment extends DialogFragment {
                 theme = android.R.style.Theme_Holo_Light;
                 break;
         }
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
     @Nullable
@@ -92,7 +92,7 @@ public class SetTimeDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View thisDialog = inflater.inflate(R.layout.dialog_set_time, container, false);
         Button btnDateTimeOK = (Button) thisDialog.findViewById(R.id.btnDateTimeOK);
-
+        getDialog().setTitle("Set Time");
         Calendar calendar = Calendar.getInstance();
         int daySystem = calendar.get(Calendar.DAY_OF_WEEK);
         Button btnDateTimeCancel = (Button) thisDialog.findViewById(R.id.btnDateTimeCancel);

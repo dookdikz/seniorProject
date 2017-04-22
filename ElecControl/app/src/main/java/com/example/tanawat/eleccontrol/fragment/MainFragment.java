@@ -172,30 +172,37 @@ public class MainFragment extends Fragment {
         listCms.add(buttonItemCms1);
 
 //        listCms.add(buttonItemCms2);
-//        mRootRef.child(pathIp).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.getValue() == null) {
-//                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-//                    if (prev != null) {
-//                        ft.remove(prev);
-//                    }
-//                    ft.addToBackStack(null);
-//
-//                    // Create and show the dialog.
-//                    DialogFragment newFragment = SettingDialogFragment.newInstance(2);
-//                    newFragment.show(ft, "dialog");
-//                }else{
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        mRootRef.child(pathIp).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+                    ft.addToBackStack(null);
+
+                    // Create and show the dialog.
+                    DialogFragment newFragment = SettingDialogFragment.newInstance(2,pathIp);
+                    newFragment.show(ft, "dialog");
+                }else{
+                    if(dataSnapshot.getValue(String.class)!=null){
+                        url = dataSnapshot.getValue(String.class);
+                        HttpManager.setUrl(url);
+                        Log.d("testSetIp",url);
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mRootRef.child(pathNumId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -251,7 +258,8 @@ public class MainFragment extends Fragment {
                 // Do something after 5s = 5000ms
 
                 if (buttonItemCollectionCms != null) {
-
+                    HttpManager.instance=null;
+                    HttpManager.setUrl(url);
                     if (cms != null) {
 
                         buttonItemCollectionCms.addData(cms);
@@ -297,12 +305,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-
+                HttpManager.setUrl(url);
 //
 //                SharedPreferences pref = getContext().getSharedPreferences("cms", Context.MODE_PRIVATE);
 //                SharedPreferences.Editor editor = pref.edit();
-                //TODO: setUrl
-                HttpManager.setUrl(url);
+
                 toolClicked = buttonItemCollectionCms.getData().get(position);
                 if (buttonItemCollectionCms.getData().get(position).getType().equals("Air")) {
 //                    Toast.makeText(getContext(), "Open", Toast.LENGTH_SHORT).show();

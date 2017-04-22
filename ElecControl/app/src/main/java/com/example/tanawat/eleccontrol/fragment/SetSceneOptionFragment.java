@@ -426,6 +426,8 @@ public class SetSceneOptionFragment extends Fragment {
         calendar.set(calendar.DAY_OF_WEEK, day);
         calendar.set(calendar.HOUR_OF_DAY, hour);
         calendar.set(calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         String strHour = String.valueOf(hour);
         String strMinute = String.valueOf(minute);
         if (hour < 10) {
@@ -470,11 +472,12 @@ public class SetSceneOptionFragment extends Fragment {
 
             if (!tvSetTime.getText().equals("No Set")) {
                 Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                intent.putExtra("id",id);
                 intent.putExtra("sceneAlarm", buttonItemCollectionCms);
+                intent.putExtra("mUser",mUser);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),alarmManager.INTERVAL_DAY * 7, pendingIntent);
                 buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
 
