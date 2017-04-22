@@ -1,5 +1,7 @@
 package com.example.tanawat.eleccontrol.adapter;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tanawat.eleccontrol.R;
+import com.example.tanawat.eleccontrol.activity.AlarmReceiver;
 import com.example.tanawat.eleccontrol.activity.EditSceneActivity;
+import com.example.tanawat.eleccontrol.activity.MainActivity;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.fragment.SceneFragment;
@@ -194,7 +198,11 @@ pathListScene = mUser+"/listScene";
 //                        String jsonRead = pref.getString("json", null);
 //                        listScene = new Gson().fromJson(jsonRead, ListScene.class);
 
+                        Intent intent = new Intent(activity, AlarmReceiver.class);
 
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, listScene.getData().get(positionToRemove).getNumId(), intent, 0);
+                        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(activity.ALARM_SERVICE);
+                        alarmManager.cancel(pendingIntent);
                         listScene.deleteData(positionToRemove);
                         mRootRef.child(pathListScene).setValue(listScene);
 

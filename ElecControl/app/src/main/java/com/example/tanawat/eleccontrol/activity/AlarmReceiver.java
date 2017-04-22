@@ -5,23 +5,16 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.Parcelable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
-import com.example.tanawat.eleccontrol.activity.ShowEvent;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
 import com.example.tanawat.eleccontrol.cms.ListScene;
 import com.example.tanawat.eleccontrol.cms.TestSendWeb;
-import com.example.tanawat.eleccontrol.fragment.MainFragment;
-import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.manager.HttpManager;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +43,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     String pathListTool;
     String pathListScene;
     String pathIp;
+
+    final Handler handler = new Handler();
     static Call<TestSendWeb> call;
     int id;
 
@@ -60,7 +55,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         pathListTool = mUser + "/listTool";
         pathListScene = mUser + "/listScene";
         pathIp = mUser + "/ip";
-        id = intent.getIntExtra("id",0);
+        id = intent.getIntExtra("id", 0);
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,9 +71,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         mRootRef.child(pathIp).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
+                if (dataSnapshot != null) {
                     url = dataSnapshot.getValue(String.class);
-                    HttpManager.instance=null;
+                    HttpManager.instance = null;
                     HttpManager.setUrl(url);
                 }
 
@@ -89,76 +84,74 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             }
         });
-        Log.d("getTInt",mUser);
-        Log.d("getTInt",String.valueOf(id));
-        final Handler handler = new Handler();
+        Log.d("getTInt", mUser);
+        Log.d("getTInt", String.valueOf(id));
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                for(int i=0;i<allScene.getData().size();i++){
-                    if(allScene.getData().get(i).getNumId() == id){
+                for (int i = 0; i < allScene.getData().size(); i++) {
+                    if (allScene.getData().get(i).getNumId() == id) {
                         buttonItemCollectionCms = allScene.getData().get(i);
                     }
                 }
 
 
+                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
 
+                    buttonItemCms = buttonItemCollectionCms.getData().get(i);
 
-        for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                    if (buttonItemCms.getType().equals("Air")) {
+                        if (buttonItemCms.getstatus().equals("On")) {
+                            call = HttpManager.getInstance().getService().openAir();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        } else {
+                            call = HttpManager.getInstance().getService().closeAir();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        }
 
-            buttonItemCms = buttonItemCollectionCms.getData().get(i);
+                    } else if (buttonItemCms.getType().equals("Tv")) {
 
-            if (buttonItemCms.getType().equals("Air")) {
-                if (buttonItemCms.getstatus().equals("On")) {
-                    call = HttpManager.getInstance().getService().openAir();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                } else {
-                    call = HttpManager.getInstance().getService().closeAir();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                }
-
-            } else if (buttonItemCms.getType().equals("Tv")) {
-
-                if (buttonItemCms.getstatus().equals("On")) {
-                    call = HttpManager.getInstance().getService().openTv();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                } else {
-                    call = HttpManager.getInstance().getService().closeTv();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                }
-            } else if (buttonItemCms.getType().equals("Switch1")) {
+                        if (buttonItemCms.getstatus().equals("On")) {
+                            call = HttpManager.getInstance().getService().openTv();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        } else {
+                            call = HttpManager.getInstance().getService().closeTv();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        }
+                    } else if (buttonItemCms.getType().equals("Switch1")) {
 //                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
-                if (buttonItemCms.getstatus().equals("On")) {
-                    call = HttpManager.getInstance().getService().openSwitch1();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                } else {
-                    call = HttpManager.getInstance().getService().closeSwitch1();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                }
-            } else if (buttonItemCms.getType().equals("Switch2")) {
+                        if (buttonItemCms.getstatus().equals("On")) {
+                            call = HttpManager.getInstance().getService().openSwitch1();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        } else {
+                            call = HttpManager.getInstance().getService().closeSwitch1();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        }
+                    } else if (buttonItemCms.getType().equals("Switch2")) {
 //                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
-                if (buttonItemCms.getstatus().equals("On")) {
-                    call = HttpManager.getInstance().getService().openSwitch2();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                } else {
-                    call = HttpManager.getInstance().getService().closeSwitch2();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                }
-            } else if (buttonItemCms.getType().equals("Curtain")) {
+                        if (buttonItemCms.getstatus().equals("On")) {
+                            call = HttpManager.getInstance().getService().openSwitch2();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        } else {
+                            call = HttpManager.getInstance().getService().closeSwitch2();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        }
+                    } else if (buttonItemCms.getType().equals("Curtain")) {
 //                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
-                if (buttonItemCms.getstatus().equals("On")) {
-                    call = HttpManager.getInstance().getService().openCurtain();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                } else {
-                    call = HttpManager.getInstance().getService().closeCurtain();
-                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR,context,buttonItemCollectionCms));
-                }
-            } else {
-                Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
-            }
+                        if (buttonItemCms.getstatus().equals("On")) {
+                            call = HttpManager.getInstance().getService().openCurtain();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        } else {
+                            call = HttpManager.getInstance().getService().closeCurtain();
+                            call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+                        }
+                    } else {
+                        Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+                    }
 
 
-        }
+                }
             }
         }, 5000);
 //        SharedPreferences pref = context.getSharedPreferences("cms", Context.MODE_PRIVATE);
@@ -179,34 +172,34 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             }
         });
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+//                    String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+//                    if (allTool != null) {
+//                        for (int j = 0; j < allTool.getData().size(); j++) {
+//                            String idTool = allTool.getData().get(j).getId();
+//                            if (idTool.equals(idToolInScene)) {
+//                                allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
+//                            }
+//                        }
+//                    }
+//
+//                }
+//
+//
+////                for (int i = 0; i < allScene.getData().size(); i++) {
+////                    String idScene = buttonItemCollectionCms.getId();
+////                    if (idScene.equals(allScene.getData().get(i).getId())) {
+////                        allScene.getData().get(i).setCheckTime("Off");
+////                    }
+////                }
+////                mRootRef.child(pathListScene).setValue(allScene);
+//
+//            }
+//        }, 5000);
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                    String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
-                    if (allTool != null) {
-                        for (int j = 0; j < allTool.getData().size(); j++) {
-                            String idTool = allTool.getData().get(j).getId();
-                            if (idTool.equals(idToolInScene)) {
-                                allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
-                            }
-                        }
-                    }
-
-                }
-                mRootRef.child(pathListTool).setValue(allTool);
-
-                for (int i = 0; i < allScene.getData().size(); i++) {
-                    String idScene = buttonItemCollectionCms.getId();
-                    if (idScene.equals(allScene.getData().get(i).getId())) {
-                        allScene.getData().get(i).setCheckTime("Off");
-                    }
-                }
-                mRootRef.child(pathListScene).setValue(allScene);
-
-            }
-        }, 5000);
 
 //        Intent i = new Intent(context, ShowEvent.class);
 //        ButtonItemCollectionCms buttonItemCollectionCms = intent.getParcelableExtra("sceneAlarm");
@@ -215,6 +208,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 //        i.putExtra("sceneAlarm", buttonItemCollectionCms);
 //        context.startActivity(i);
     }
+
     class SentToServer implements Callback<TestSendWeb> {
         public static final int MODE_OPEN_AIR = 1;
         public static final int MODE_CLOSE_AIR = 2;
@@ -226,11 +220,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         public static final int MODE_CLOSE_SWITCH2 = 8;
         public static final int MODE_OPEN_CURTAIN = 9;
         public static final int MODE_CLOSE_CURTAIN = 10;
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         int mode;
         Context context;
         ButtonItemCollectionCms scene;
 
-        public SentToServer(int mode,Context context,ButtonItemCollectionCms scene) {
+        public SentToServer(int mode, Context context, ButtonItemCollectionCms scene) {
             this.mode = mode;
             this.context = context;
             this.scene = scene;
@@ -238,35 +233,75 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+
+            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+                if (allTool != null) {
+                    for (int j = 0; j < allTool.getData().size(); j++) {
+                        String idTool = allTool.getData().get(j).getId();
+                        if (idTool.equals(idToolInScene)) {
+                            allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
+                        }
+                    }
+                }
+
+            }
+
+
             Notification notification =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.icon_app)
                             .setContentTitle("Notification")
-                            .setContentText(scene.getName()+" have worked")
+                            .setContentText(scene.getName() + " have worked")
                             .setAutoCancel(true)
                             .build();
 
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(scene.getNumId(), notification);
+            mRootRef.child(pathListTool).setValue(allTool);
             Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
         }
 
         @Override
 
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
+            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+                String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+                if (allTool != null) {
+                    for (int j = 0; j < allTool.getData().size(); j++) {
+                        String idTool = allTool.getData().get(j).getId();
+                        if (idTool.equals(idToolInScene)) {
+                            allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
+                        }
+                    }
+                }
+
+            }
+
+
+//                for (int i = 0; i < allScene.getData().size(); i++) {
+//                    String idScene = buttonItemCollectionCms.getId();
+//                    if (idScene.equals(allScene.getData().get(i).getId())) {
+//                        allScene.getData().get(i).setCheckTime("Off");
+//                    }
+//                }
+//                mRootRef.child(pathListScene).setValue(allScene);
+
+
             Notification notification =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.icon_app)
                             .setContentTitle("Notification")
-                            .setContentText(scene.getName()+" have failed")
+                            .setContentText(scene.getName() + " have failed")
                             .setAutoCancel(true)
                             .build();
 
             NotificationManager notificationManager =
-                    (NotificationManager)  context.getSystemService(NOTIFICATION_SERVICE);
+                    (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(scene.getNumId(), notification);
-
+            mRootRef.child(pathListTool).setValue(allTool);
             Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
-        }}
+        }
+    }
 }

@@ -2,8 +2,6 @@ package com.example.tanawat.eleccontrol.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,8 +171,8 @@ public class SetTimeDialogFragment extends DialogFragment {
                 calendar.set(Calendar.MINUTE, tpSelectedTime.getCurrentMinute());
                 final int _id = 5;
 
-                SetSceneOptionFragment setSceneOptionFragment =new SetSceneOptionFragment();
-                setSceneOptionFragment.setTime(strDay,dayOfWeek,tpSelectedTime.getCurrentHour(),tpSelectedTime.getCurrentMinute());
+                SetSceneOptionFragment setSceneOptionFragment = new SetSceneOptionFragment();
+                setSceneOptionFragment.setTime(strDay, dayOfWeek, tpSelectedTime.getCurrentHour(), tpSelectedTime.getCurrentMinute());
                 getDialog().dismiss();
 
             }
