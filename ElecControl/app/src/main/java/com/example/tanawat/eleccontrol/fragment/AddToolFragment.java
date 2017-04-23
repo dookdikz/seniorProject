@@ -101,6 +101,7 @@ public class AddToolFragment extends Fragment {
                         return null;
                 }
             }
+
         });
         slidingTabLayout = (SlidingTabLayout )rootView.findViewById(R.id.slideTabLayout);
         slidingTabLayout.setViewPager(viewPager);

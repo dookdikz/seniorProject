@@ -53,7 +53,7 @@ public class SceneFragment extends Fragment {
     static SceneListAdapter listAdapter;
     ButtonItemCollectionCms sceneClick;
     ButtonItemCollectionCms buttonItemCollectionCms;
-    ImageView btnGoTool;
+    LinearLayout btnGoTool;
     ListScene listScene;
     ButtonItemCollectionCms scene;
     ButtonItemCollectionCms editScene;
@@ -140,7 +140,7 @@ public class SceneFragment extends Fragment {
         layoutListView = (LinearLayout) rootView.findViewById(R.id.layoutListView);
         pgbLoad.setVisibility(View.VISIBLE);
         layoutListView.setVisibility(View.GONE);
-        btnGoTool = (ImageView) rootView.findViewById(R.id.btnGoTool);
+        btnGoTool = (LinearLayout) rootView.findViewById(R.id.btnGoTool);
         btnGoTool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -472,7 +472,7 @@ public class SceneFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_add_command, menu);
+        inflater.inflate(R.menu.menu_scene, menu);
     }
 
     @Override

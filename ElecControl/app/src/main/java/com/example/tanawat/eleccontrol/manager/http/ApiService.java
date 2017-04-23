@@ -13,9 +13,9 @@ import retrofit2.http.POST;
  * Created by Tanawat on 27/11/2559.
  */
 public interface ApiService {
-    @GET("on_light")
+    @GET("on_tv")
     Call<TestSendWeb> openTv();
-    @GET("off_light")
+    @GET("off_tv")
     Call<TestSendWeb> closeTv();
     @GET("on_air")
     Call<TestSendWeb> openAir();

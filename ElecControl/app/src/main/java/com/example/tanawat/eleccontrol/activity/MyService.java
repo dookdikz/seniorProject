@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 
 public class MyService extends Service {
     ButtonItemCollectionCms buttonItemCollectionCms;
+    ButtonItemCollectionCms allTool;
     ListScene listScene;
     Long temp;
     Long light;
@@ -98,7 +100,7 @@ public class MyService extends Service {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    Long light = dataSnapshot.getValue(Long.class);
+                    light = dataSnapshot.getValue(Long.class);
                     if(light!=0){
                         light = ((1023-light)*  50/light);
                     }
@@ -220,6 +222,7 @@ public class MyService extends Service {
     }
 
     private void onBackground(String macAddress, DatabaseReference mRootRef) {
+        Log.d("LogOnBackground","run");
         if (listScene != null && statusBlue != null && light != null && buttonItemCollectionCms != null) {
             for (int i = 0; i < listScene.getData().size(); i++) {
                 int count = 0;
@@ -272,7 +275,8 @@ public class MyService extends Service {
 
                 }
                 if (macBlue.equals(macAddress)) {
-                    if (!listScene.getData().get(i).getCheckBluetooth().equals("Off")) {
+                    if (!listScene.getData().get(i).getCheckBluetooth().equals("Off"))
+                    {
                         if (listScene.getData().get(i).getBluetooth().equals("On")) {
                             if (statusBlue == 1) {
                                 checkCount += 1;
@@ -295,21 +299,28 @@ public class MyService extends Service {
                         }
                     }
                 }
-                Log.d("temp", String.valueOf(count));
-                Log.d("tempC", String.valueOf(checkCount));
+                Log.d("tempC", String.valueOf(count));
+                Log.d("tempCC", String.valueOf(checkCount));
             }
 
         }
     }
 
     private void onCheck(String type, int i, int j, DatabaseReference mRootRef) {
-        if (listScene.getData().get(i).getData().get(j).getstatus().equals("On")) {
-            for (int k = 0; k < buttonItemCollectionCms.getData().size(); k++) {
-//                Log.d("testBack3", buttonItemCollectionCms.getData().get(k).getId());
-//                Log.d("testBack4", listScene.getData().get(i).getData().get(j).getId());
-                if (buttonItemCollectionCms.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId())) {
-                    if (buttonItemCollectionCms.getData().get(k).getstatus().equals("Off")) {
-                        buttonItemCollectionCms.getData().get(k).setstatus("On");
+        Log.d("tempC", "onCheck");
+        allTool = buttonItemCollectionCms;
+        Log.d("tempCcc",allTool.toString());
+        if (listScene.getData().get(i).getData().get(j).getstatus().equals("On"))
+        {
+
+            for (int k = 0; k < allTool.getData().size(); k++) {
+                Log.d("tempC1", allTool.getData().get(k).getId());
+                Log.d("tempC2", listScene.getData().get(i).getData().get(j).getId());
+                if (allTool.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId()))
+                {
+                    if (allTool.getData().get(k).getstatus().equals("Off"))
+                    {
+                        allTool.getData().get(k).setstatus("On");
                         if (type.equals("Air")) {
                             call = HttpManager.getInstance().getService().openAir();
                         } else if (type.equals("Tv")) {
@@ -329,8 +340,10 @@ public class MyService extends Service {
                             }
 
                         }
-                        mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
-                    } else {
+//    TODO:                    mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+                    }
+                    else
+                    {
                         if (type.equals("Air")) {
                             if (listScene.getData().get(i).getData().get(j).getValue() != null) {
                                 sentTempAir(i, j);
@@ -342,15 +355,22 @@ public class MyService extends Service {
                 }
             }
         } else if (listScene.getData().get(i).getData().get(j).getstatus().equals("Off")) {
-            for (int k = 0; k < buttonItemCollectionCms.getData().size(); k++) {
-                if (buttonItemCollectionCms.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId())) {
-                    if (buttonItemCollectionCms.getData().get(k).getstatus().equals("On")) {
-                        buttonItemCollectionCms.getData().get(k).setstatus("Off");
+            for (int k = 0; k < allTool.getData().size(); k++) {
+                Log.d("tempC1", allTool.getData().get(k).getId());
+                Log.d("tempC2", listScene.getData().get(i).getData().get(j).getId());
+                if (allTool.getData().get(k).getId().equals(listScene.getData().get(i).getData().get(j).getId())) {
+                    if (allTool.getData().get(k).getstatus().equals("On")) {
+                        Log.d("tempC4", "On");
+                        allTool.getData().get(k).setstatus("Off");
                         if (type.equals("Air")) {
                             call = HttpManager.getInstance().getService().closeAir();
+                            Log.d("tempC4", "Air");
                         } else if (type.equals("Tv")) {
+                            Log.d("tempC4", "Tv");
                             call = HttpManager.getInstance().getService().closeTv();
                         } else if (type.equals("Switch1")) {
+                            Log.d("tempC4", "Switch1");
+
                             call = HttpManager.getInstance().getService().closeSwitch1();
                         } else if (type.equals("Switch2")) {
                             call = HttpManager.getInstance().getService().closeSwitch2();
@@ -426,7 +446,9 @@ public class MyService extends Service {
         @Override
         public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
 //
-            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+            mRootRef.child(pathListTool).setValue(allTool);
+            resetValue();
+            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
             Notification notification =
                     new NotificationCompat.Builder(getApplicationContext())
                             .setSmallIcon(R.mipmap.icon_app)
@@ -445,6 +467,8 @@ public class MyService extends Service {
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
 
 //            mRootRef.child(pathListTool).setValue(buttonItemCollectionCms);
+            resetValue();
+            Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
             Notification notification =
                     new NotificationCompat.Builder(getApplicationContext())
                             .setSmallIcon(R.mipmap.icon_app)
@@ -459,5 +483,19 @@ public class MyService extends Service {
 
 
         }
+    }
+    private void resetValue(){
+        mRootRef.child(pathListTool).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

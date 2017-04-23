@@ -73,7 +73,7 @@ public class MainFragment extends Fragment {
     final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
-    ImageView btnGoScene;
+    LinearLayout btnGoScene;
     String url;
 
     public ButtonItemCollectionCms getButtonItemCollectionCms() {
@@ -147,7 +147,7 @@ public class MainFragment extends Fragment {
         pgbLoad.setVisibility(View.VISIBLE);
         layoutListView.setVisibility(View.GONE);
         tvCountTool = (TextView) rootView.findViewById(R.id.tvCountTool);
-        btnGoScene = (ImageView) rootView.findViewById(R.id.btnGoScene);
+        btnGoScene = (LinearLayout) rootView.findViewById(R.id.btnGoScene);
         btnGoScene.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,9 +227,10 @@ public class MainFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
 
+                    buttonItemCollectionCms = dataSnapshot.getValue(ButtonItemCollectionCms.class);
                 }
+
 
 
 //                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {

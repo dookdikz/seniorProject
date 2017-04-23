@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg_login"
+    android:scaleType="centerCrop">
 
     <ImageView
         android:layout_width="match_parent"
@@ -18,15 +20,19 @@
         android:layout_height="wrap_content"
         android:textSize="50sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:text="Sign in"/>
 
-    <com.google.android.gms.common.SignInButton
+    <Button
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_google"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:text="Sign in with Google"
         android:layout_centerInParent="true"
         android:visibility="visible"
         android:layout_gravity="center"/>

@@ -5,61 +5,98 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="horizontal">
-        <ImageView
+
+        <LinearLayout
             android:id="@+id/btnGoTool"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:src="@drawable/tool_icon"
-            android:text="Tool"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:textColor="#ffffff"
 
-            />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <ImageView
+            <ImageView
 
-            android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="0.55"
+                android:src="@drawable/tool_icon_off"
+
+
+                android:text="Tool" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Tool"
+
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnGoScene"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:src="@drawable/scene_icon_off"
-            android:text="Scene" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
 
+            <ImageView
 
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/scene_icon"
+                android:text="Scene" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Scene"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
+
+
     <ProgressBar
-        android:visibility="visible"
         android:id="@+id/pgbLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:visibility="visible"
 
 
         />
+
     <LinearLayout
         android:id="@+id/layoutListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <TextView
-        android:id="@+id/tvCountTool"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="all tool()" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        <TextView
+            android:id="@+id/tvCountTool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="all tool()" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
 
 

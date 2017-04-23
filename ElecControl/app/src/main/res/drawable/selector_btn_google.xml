@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/btn_google_signin_dark_focus_xhdpi" android:state_focused="true"></item>
+    <item android:drawable="@drawable/btn_google_signin_dark_pressed_xhdpi" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/btn_google_signin_dark_normal_xhdpi"></item>
+
+</selector>
