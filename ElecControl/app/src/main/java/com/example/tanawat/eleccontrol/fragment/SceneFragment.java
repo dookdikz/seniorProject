@@ -263,7 +263,52 @@ public class SceneFragment extends Fragment {
                     toolInScene = listScene.getData().get(position).getData().get(i);
                     if (toolInScene.getType().equals("Air")) {
                         if (toolInScene.getstatus().equals("On")) {
-                            for (int j = 0; j < allTool.getData().size(); j++) {
+                            if(toolInScene.getValue()!= null){
+                                Call<TestSendWeb> callTemp=null;
+                                if (toolInScene.getValue().equals("18")) {
+                                    callTemp = HttpManager.getInstance().getService().temp18();
+                                } else if (toolInScene.getValue().equals("19")) {
+                                    callTemp = HttpManager.getInstance().getService().temp19();
+                                } else if (toolInScene.getValue().equals("20")) {
+                                    callTemp = HttpManager.getInstance().getService().temp20();
+                                } else if (toolInScene.getValue().equals("21")) {
+                                    callTemp = HttpManager.getInstance().getService().temp21();
+                                } else if (toolInScene.getValue().equals("22")) {
+                                    callTemp = HttpManager.getInstance().getService().temp22();
+                                } else if (toolInScene.getValue().equals("23")) {
+                                    callTemp = HttpManager.getInstance().getService().temp23();
+                                } else if (toolInScene.getValue().equals("24")) {
+                                    callTemp = HttpManager.getInstance().getService().temp24();
+                                } else if (toolInScene.getValue().equals("25")) {
+                                    callTemp = HttpManager.getInstance().getService().temp25();
+                                } else if (toolInScene.getValue().equals("26")) {
+                                    callTemp = HttpManager.getInstance().getService().temp26();
+                                } else if (toolInScene.getValue().equals("27")) {
+                                    callTemp = HttpManager.getInstance().getService().temp27();
+                                } else if (toolInScene.getValue().equals("28")) {
+                                    callTemp = HttpManager.getInstance().getService().temp28();
+                                } else {
+
+                                }
+
+                                if(callTemp!=null){
+                                    callTemp.enqueue(new Callback<TestSendWeb>() {
+                                        @Override
+                                        public void onResponse(Call<TestSendWeb> call, Response<TestSendWeb> response) {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<TestSendWeb> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+
+                            }
+
+                            for (int j = 0; j < allTool.getData().size(); j++)
+                            {
                                 if (toolInScene.getId().equals(allTool.getData().get(j).getId())) {
                                     if (!toolInScene.getstatus().equals(allTool.getData().get(j).getstatus())) {
                                         call = HttpManager.getInstance().getService().openAir();
@@ -533,7 +578,7 @@ public class SceneFragment extends Fragment {
 
             }
             mRootRef.child(pathListTool).setValue(allTool);
-
+            btnGoTool.setEnabled(true);
             listView.setEnabled(true);
         }
 
