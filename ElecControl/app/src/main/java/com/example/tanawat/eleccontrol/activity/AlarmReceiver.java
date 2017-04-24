@@ -35,7 +35,7 @@ import static com.example.tanawat.eleccontrol.manager.HttpManager.url;
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
-    ButtonItemCollectionCms buttonItemCollectionCms;
+    static ButtonItemCollectionCms buttonItemCollectionCms;
     ButtonItemCollectionCms allTool;
     ListScene allScene;
     ButtonItemCms buttonItemCms;
@@ -43,8 +43,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     String pathListTool;
     String pathListScene;
     String pathIp;
+    int check = 0;
 
-    final Handler handler = new Handler();
+
     static Call<TestSendWeb> call;
     int id;
 
@@ -56,11 +57,29 @@ public class AlarmReceiver extends BroadcastReceiver {
         pathListScene = mUser + "/listScene";
         pathIp = mUser + "/ip";
         id = intent.getIntExtra("id", 0);
+        Log.d("getTInt", String.valueOf(id));
+        check = 1;
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.child(pathListScene).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                allScene = dataSnapshot.getValue(ListScene.class);
+                if (dataSnapshot.getValue() != null) {
+                    allScene = dataSnapshot.getValue(ListScene.class);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
+
+
             }
 
             @Override
@@ -84,19 +103,22 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             }
         });
-        Log.d("getTInt", mUser);
-        Log.d("getTInt", String.valueOf(id));
 
-        handler.postDelayed(new Runnable() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable()
+        {
             @Override
             public void run() {
-                for (int i = 0; i < allScene.getData().size(); i++) {
-                    if (allScene.getData().get(i).getNumId() == id) {
-                        buttonItemCollectionCms = allScene.getData().get(i);
+                for (int j = 0; j < allScene.getData().size(); j++) {
+                    Log.d("getTInt2", String.valueOf(allScene.getData().get(j).getNumId()));
+                    if (allScene.getData().get(j).getNumId() == id) {
+                        buttonItemCollectionCms = allScene.getData().get(j);
+                        Log.d("getTTool", buttonItemCollectionCms.getName());
                     }
+
                 }
-
-
+                Log.d("getTName", buttonItemCollectionCms.getName());
+                Log.d("getTSize", String.valueOf(allScene.getData().size()));
                 for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
 
                     buttonItemCms = buttonItemCollectionCms.getData().get(i);
@@ -150,28 +172,78 @@ public class AlarmReceiver extends BroadcastReceiver {
                         Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
                     }
 
-
                 }
             }
-        }, 5000);
+        }, 6000);
+
+
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+//
+//            buttonItemCms = buttonItemCollectionCms.getData().get(i);
+//
+//            if (buttonItemCms.getType().equals("Air")) {
+//                if (buttonItemCms.getstatus().equals("On")) {
+//                    call = HttpManager.getInstance().getService().openAir();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                } else {
+//                    call = HttpManager.getInstance().getService().closeAir();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                }
+//
+//            } else if (buttonItemCms.getType().equals("Tv")) {
+//
+//                if (buttonItemCms.getstatus().equals("On")) {
+//                    call = HttpManager.getInstance().getService().openTv();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                } else {
+//                    call = HttpManager.getInstance().getService().closeTv();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                }
+//            } else if (buttonItemCms.getType().equals("Switch1")) {
+////                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
+//                if (buttonItemCms.getstatus().equals("On")) {
+//                    call = HttpManager.getInstance().getService().openSwitch1();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                } else {
+//                    call = HttpManager.getInstance().getService().closeSwitch1();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                }
+//            } else if (buttonItemCms.getType().equals("Switch2")) {
+////                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
+//                if (buttonItemCms.getstatus().equals("On")) {
+//                    call = HttpManager.getInstance().getService().openSwitch2();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                } else {
+//                    call = HttpManager.getInstance().getService().closeSwitch2();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                }
+//            } else if (buttonItemCms.getType().equals("Curtain")) {
+////                    Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show();
+//                if (buttonItemCms.getstatus().equals("On")) {
+//                    call = HttpManager.getInstance().getService().openCurtain();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                } else {
+//                    call = HttpManager.getInstance().getService().closeCurtain();
+//                    call.enqueue(new SentToServer(SentToServer.MODE_CLOSE_AIR, context, buttonItemCollectionCms));
+//                }
+//            } else {
+//                Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+//            }
+//
+//
+//        }
+//    }
+//}, 3000);
 //        SharedPreferences pref = context.getSharedPreferences("cms", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = pref.edit();
 //        String jsonRead = pref.getString("json", null);
 //        allTool = new Gson().fromJson(jsonRead, ButtonItemCollectionCms.class);
 
-        mRootRef.child(pathListTool).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                allTool = dataSnapshot.getValue(ButtonItemCollectionCms.class);
 
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 //        handler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -197,8 +269,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 ////                }
 ////                mRootRef.child(pathListScene).setValue(allScene);
 //
-//            }
-//        }, 5000);
 
 
 //        Intent i = new Intent(context, ShowEvent.class);
@@ -266,18 +336,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         @Override
 
         public void onFailure(Call<TestSendWeb> call, Throwable t) {
-            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
-                String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
-                if (allTool != null) {
-                    for (int j = 0; j < allTool.getData().size(); j++) {
-                        String idTool = allTool.getData().get(j).getId();
-                        if (idTool.equals(idToolInScene)) {
-                            allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
-                        }
-                    }
-                }
-
-            }
+//            for (int i = 0; i < buttonItemCollectionCms.getData().size(); i++) {
+//                String idToolInScene = buttonItemCollectionCms.getData().get(i).getId();
+//                if (allTool != null) {
+//                    for (int j = 0; j < allTool.getData().size(); j++) {
+//                        String idTool = allTool.getData().get(j).getId();
+//                        if (idTool.equals(idToolInScene)) {
+//                            allTool.getData().get(j).setstatus(buttonItemCollectionCms.getData().get(i).getstatus());
+//                        }
+//                    }
+//                }
+//
+//            }
 
 
 //                for (int i = 0; i < allScene.getData().size(); i++) {
@@ -300,7 +370,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(scene.getNumId(), notification);
-            mRootRef.child(pathListTool).setValue(allTool);
+//            mRootRef.child(pathListTool).setValue(allTool);
             Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
         }
     }

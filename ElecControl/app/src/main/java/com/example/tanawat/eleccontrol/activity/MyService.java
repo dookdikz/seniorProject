@@ -3,7 +3,9 @@ package com.example.tanawat.eleccontrol.activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,8 +58,12 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        mUser = intent.getStringExtra("mUser");
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("mUserId", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        String jsonRead = pref.getString("json", null);
+        mUser = new Gson().fromJson(jsonRead, String.class);
+        Log.d("mUserService",mUser);
+//        mUser = intent.getStringExtra("mUser");
         pathListScene = mUser + "/listScene";
         pathListTool = mUser + "/listTool";
         buttonItemCollectionCms = new ButtonItemCollectionCms();
@@ -102,7 +109,10 @@ public class MyService extends Service {
                 if (dataSnapshot != null) {
                     light = dataSnapshot.getValue(Long.class);
                     if(light!=0){
-                        light = ((1023-light)*  50/light);
+                        if(light>1023){
+                            light = Long.valueOf(1023);
+                        }
+                        light = ((1023-light)*  100/light);
                     }
                     onBackground(macAddress, mRootRef);
                 }

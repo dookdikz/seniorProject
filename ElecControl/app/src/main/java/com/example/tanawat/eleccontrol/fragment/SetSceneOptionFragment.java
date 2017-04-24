@@ -477,7 +477,7 @@ public class SetSceneOptionFragment extends Fragment {
                 intent.putExtra("mUser",mUser);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),alarmManager.INTERVAL_DAY * 7, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 buttonItemCollectionCms.setTime(this.time);
                 buttonItemCollectionCms.setCheckTime("On");
 

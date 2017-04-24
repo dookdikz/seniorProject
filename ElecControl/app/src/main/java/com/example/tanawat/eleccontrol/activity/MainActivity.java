@@ -1,21 +1,22 @@
 package com.example.tanawat.eleccontrol.activity;
 
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +27,9 @@ import android.widget.Toast;
 import com.example.tanawat.eleccontrol.R;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCms;
 import com.example.tanawat.eleccontrol.cms.ButtonItemCollectionCms;
-import com.example.tanawat.eleccontrol.fragment.LoginFragment;
 import com.example.tanawat.eleccontrol.fragment.MainFragment;
 import com.example.tanawat.eleccontrol.fragment.SceneFragment;
 import com.example.tanawat.eleccontrol.fragment.SettingDialogFragment;
-
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener, SceneFragment.FragmentListener, GoogleApiClient.OnConnectionFailedListener {
     private static final String ANONYMOUS ="anonymous" ;
@@ -60,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient mGoogleApiClient;
+    final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+
     Intent intentService;
 String mUsername;
     String mPhotoUrl;
@@ -70,8 +71,10 @@ String mUsername;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mUsername = ANONYMOUS;
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
 
@@ -80,8 +83,6 @@ String mUsername;
             return;
         } else {
             mUsername = mFirebaseUser.getUid();
-
-            Log.d("mUser",mUsername);
             if (mFirebaseUser.getPhotoUrl() != null) {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
@@ -98,7 +99,12 @@ String mUsername;
 
         initInstance();
         if (savedInstanceState == null) {
-        intentService = new Intent(this,MyService.class);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("mUserId", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            String json = new Gson().toJson(mUsername);
+            editor.putString("json", json);
+            editor.apply();
+            intentService = new Intent(this,MyService.class);
             intentService.putExtra("mUser",mUsername);
 
             startService(intentService);
@@ -131,7 +137,7 @@ String mUsername;
         mRootRef.child("sensor/temp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                tvTempSensor.setText(dataSnapshot.getValue().toString());
+                tvTempSensor.setText(dataSnapshot.getValue().toString()+" C");
             }
 
             @Override
@@ -143,10 +149,13 @@ String mUsername;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null){
-                    Long light = dataSnapshot.getValue(Long.class);
-                    if(light!=0){
-                        light = ((1023-light)*  50/light);
-                        tvLightSensor.setText(light.toString());
+                    if(dataSnapshot.getValue(Long.class)!=0){
+                        Long light =dataSnapshot.getValue(Long.class) ;
+                        if(light>1023){
+                            light = Long.valueOf(1023);
+                        }
+                        light = ((1023-light)*  100/light);
+                        tvLightSensor.setText(light.toString()+" Lux");
                     }
 
                 }

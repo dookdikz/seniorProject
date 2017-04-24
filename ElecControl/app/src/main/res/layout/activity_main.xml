@@ -35,7 +35,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="?attr/colorPrimary">
+   android:background="@drawable/head_ham">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -53,8 +53,14 @@
             android:id="@+id/layoutAddTool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="@drawable/border">
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/add_tool_ham"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,8 +74,14 @@
             android:id="@+id/layoutAddScene"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="@drawable/border">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/add_scene_ham"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,8 +94,14 @@
             android:id="@+id/layoutSetBluetooth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="@drawable/border">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/bluetooth_icon_ham"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,8 +114,14 @@
             android:id="@+id/layoutSetIp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="@drawable/border">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/setting_icon_ham"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,8 +134,14 @@
             android:id="@+id/layoutSignOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="@drawable/border">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/logout_ham"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

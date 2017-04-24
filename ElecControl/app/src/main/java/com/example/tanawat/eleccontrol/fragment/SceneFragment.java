@@ -434,6 +434,7 @@ public class SceneFragment extends Fragment {
                 listView.setEnabled(false);
 
                 if(call==null){
+                    btnGoTool.setEnabled(true);
                     listView.setEnabled(true);
                 }
 
@@ -532,7 +533,7 @@ public class SceneFragment extends Fragment {
 
             }
             mRootRef.child(pathListTool).setValue(allTool);
-            btnGoTool.setEnabled(true);
+
             listView.setEnabled(true);
         }
 
