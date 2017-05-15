@@ -156,6 +156,8 @@ time = buttonItemCollectionCms.getTime();
             }
             calendar.set(calendar.HOUR_OF_DAY, Integer.parseInt(splitTime[1]));
             calendar.set(calendar.MINUTE, Integer.parseInt(splitTime[2]));
+            calendar.set(calendar.SECOND, 0);
+            calendar.set(calendar.MILLISECOND, 0);
 
 
         }
@@ -464,6 +466,8 @@ time = buttonItemCollectionCms.getTime();
         calendar.set(calendar.DAY_OF_WEEK, day);
         calendar.set(calendar.HOUR_OF_DAY, hour);
         calendar.set(calendar.MINUTE, minute);
+        calendar.set(calendar.SECOND, 0);
+        calendar.set(calendar.MILLISECOND, 0);
         String strHour=String.valueOf(hour);
         String strMinute=String.valueOf(minute);
         if(hour<10){

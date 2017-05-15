@@ -109,6 +109,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         {
             @Override
             public void run() {
+                Log.d("getTInt1.5", String.valueOf(allScene.getData().size()));
                 for (int j = 0; j < allScene.getData().size(); j++) {
                     Log.d("getTInt2", String.valueOf(allScene.getData().get(j).getNumId()));
                     if (allScene.getData().get(j).getNumId() == id) {

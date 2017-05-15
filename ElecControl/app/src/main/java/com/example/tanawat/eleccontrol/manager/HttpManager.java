@@ -45,20 +45,20 @@ public class HttpManager {
     private ApiService service;
 
     public HttpManager() {
-//        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-//        mRootRef.child(mUser+"/ip").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if(dataSnapshot!=null){
-//                    url = dataSnapshot.getValue(String.class);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.child(mUser+"/ip").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    url = dataSnapshot.getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         mContext = Contextor.getInstance().getContext();
